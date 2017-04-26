@@ -1,0 +1,20 @@
+{
+  "name": "reverse-auction",
+  "version": "1.0.0",
+  "description": "project serverside",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "(https://github.com/ssehuun/Reverse-aution.git)"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "underscore": "^1.8.3"
+  }
+}
