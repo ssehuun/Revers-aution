@@ -16,17 +16,19 @@
           <ul>
             <% for(var i=0; i < topics.length; i++){ %>
               <li>
-                <a href='/content/<%= topics[i] %>'><%= topics[i] %></a>
+                <a href='/content/<%= topics[i].id %>'><%= topics[i].title %></a>
               </li>
             <% } %>
           </ul>
         </div>
 
-        <form class="" action="/form_receiver_data" method="post">
+        <form class="" action="/content/add" method="post">
           <p>글 제목</p>
-          <input type="text" name="title" value="">
+          <input type="text" name="title" value="" placeholder="제목">
           <p>글 내용</p>
-          <textarea name="description" rows="8" cols="80"></textarea>
+          <textarea name="description" rows="8" cols="80" placeholder="내용"></textarea>
+          <p>저자</p>
+          <input type="text" name="author" value="" placeholder="저자">
           <input type="submit">
         </form>
         <p>=====================================</p>

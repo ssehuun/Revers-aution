@@ -16,17 +16,25 @@
           <ul>
             <% for(var i=0; i < topics.length; i++){ %>
               <li>
-                <a href='/content/<%= topics[i] %>'><%= topics[i] %></a>
+                <a href='/content/<%= topics[i].id %>'><%= topics[i].title %></a>
               </li>
             <% } %>
           </ul>
         </div>
+
         <div class="">
-            <h2><%= title %></h2>
-            <%= description %>
+          <% if (locals.topic){ %>
+            <h2><%= topic.title %></h2>
+            <h4><%= topic.description %><h4>
+            by <%= topic.author %>
+          <%}else{%>
+            <h2>Welcome</h2>
+            This is server side javascript tutorial.
+          <%}%>
         </div>
+
         <div class="">
-          <a href="/form/new">글 작성하기</a>
+          <a href="/content/add">글 작성하기</a>
         </div>
     </main>
 

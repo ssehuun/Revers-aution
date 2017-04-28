@@ -31,18 +31,6 @@ var conn = mysql.createConnection({
 });
 conn.connect();
 
-conn.query('select * from topic',
-  function (error, results, fields) {
-    if (error){
-      console.log(error);
-    }else{
-      console.log('rows', results);
-      console.log('columns', fields);
-    }
-});
-
-conn.end();
-
 app.locals.pretty = true;
 //public 디렉토리에 있는 정적 파일을 '/static'으로 사용
 app.use('/static', express.static('public'));
@@ -65,87 +53,53 @@ app.get('/about', function (req, res) {
 app.get('/route', function(req, res){
   res.send('Hey rounter, <img src="/static/me.jpeg">');
 });
-// query 객체사용
-app.get('/query', function(req, res){
-  res.send(req.query.id);
-});
-// query 객체할용
-app.get('/topic', function(req, res){
-  //DB data
-  var topics = [
-    'revrerse',
-    'auction',
-    'thrid'
-  ];
-  var output = `
-    <a href=/topic/id=0>reverse</a>
-    <a href=/topic/id=1>auction</a>
-    <a href=/topic/id=2>third</a>
-    ${topics[req.query.id]}
-  `;
-  res.send(output);
-});
-// query 객체를 path방식으로 바꾸기
-app.get('/topic/:id/:mode', function(req, res){
-  res.send(req.params.id+','+req.params.mode);
-});
+
 // form.ejs render
-app.get('/form/new', function(req, res){
-  // data 목록 보여주는건 공통
-  fs.readdir('data', function(err, files){
+app.get('/content/add', function(req, res){
+  // mysql data 목록 보여주는건 공통
+  var allRows = 'select id, title from topic';
+  conn.query(allRows, function(err, rows, fields){
     if(err){
       console.log(err);
       res.status(500).send('Internal Server Error');
+    }else{
+      res.render('add', {topics:rows});
     }
-    res.render('form', {topics:files});
   });
 });
-// form에서 get방식으로 서버에 날리면 받는다
-app.get('/form_receiver', function(req, res){
-  var title = req.query.title;
-  var description = req.query.description;
-  res.send(title+','+description);
-});
-// form에서 post방식으로 서버에 날리면 받는다
-app.post('/form_receiver', function(req, res){
-  var title = req.body.title;
-  var description = req.body.description;
-  res.send(title+','+description);
-});
 
-// file 쓰기
-app.post('/form_receiver_data', function(req, res){
+// data 쓰기
+app.post('/content/add', function(req, res){
   var title = req.body.title;
   var description = req.body.description;
-  fs.writeFile('data/'+title, description, function(err){
+  var author = req.body.author;
+  var insertRow = 'INSERT INTO topic (title,description,author) VALUES(?,?,?)';
+  conn.query(insertRow, [title,description,author], function(err, rows, fields){
     if(err){
       console.log(err);
       res.status(500).send('Internal Server Error');
+    }else{
+      res.redirect('/content/'+rows.insertId);
     }
-    res.redirect('/content/'+title);
   });
 });
 // index.ejs 페이지 라우팅, data 목록 보여주기
 app.get(['/', '/content/:id'], function(req, res){
-  // data 목록 보여주는건 공통
-  fs.readdir('data', function(err, files){
-    if(err){
-      console.log(err);
-      res.status(500).send('Internal Server Error');
-    }
+  var allRows = 'select id, title from topic';
+  conn.query(allRows, function(err, rows, fields){
     var id = req.params.id;
-    // id값이 있을때만 파일을 읽음
     if(id){
-      // 목록의 파일을 읽음
-      fs.readFile('data/'+id, function(err, data){
+      var oneRow = 'select * from topic where id=?';
+      conn.query(oneRow, [id], function(err, row, fields){
         if(err){
           console.log(err);
           res.status(500).send('Internal Server Error');
+        }else{
+          res.render('index', {topics:rows, topic:row[0]});
         }
-        res.render('index', {topics:files, title:id, description:data});
       });
     }else{
-      res.render('index', {topics:files, title:'Welcome', description:'Reverse Auction Platform'});
+      res.render('index', {topics:rows});
     }
   });
 });
@@ -167,7 +121,7 @@ app.post('/upload', upload.single('userfile'), function(req, res){
 
 
 
-
+//conn.end();
 
 // 3000번 포트에 접속확인
 app.listen(3000, function () {
