@@ -1,20 +1,11 @@
 /* jshint esversion:6 */
 /* Hello nodejs*/
-
-
 var _ = require('underscore');
 var express = require('express');
 var app = express();
-
 var http = require('http').Server(app);
+// socket.io 서버로 업그레이드
 var io = require('socket.io')(http);
-io.on('connection', function(socket){
-  console.log('a user connected');
-  socket.on('chat message', function(msg){
-    console.log('message: ' + msg);
-    io.emit('chat message', msg);
-  });
-});
 //middleware body-parser 선언
 var bodyParser = require('body-parser');
 // DB들어가기전 로컬데이터를 fs를 이용해 저장해봄
@@ -56,15 +47,28 @@ app.set('views', './views');
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-
-// about.ejs 파일 render
-app.get('/about', function (req, res) {
-  res.render('about', {name:'Sehun', age:'27'});
+app.get('/recoFee', function(req, res){
+  res.render('recoFee');
+});
+app.get('/recoPhone', function(req, res){
+  res.render('recoPhone');
+});
+app.get('/reverseAuction', function(req, res){
+  res.render('reverseAuction');
 });
 // chat.ejs 파일 render
 app.get('/chat', function (req, res) {
   res.render('chat');
 });
+app.get('/myPage', function(req, res){
+  res.send('마이페이지');
+});
+
+// about.ejs 파일 render
+app.get('/about', function (req, res) {
+  res.render('about', {name:'Sehun', age:'27'});
+});
+
 // static file과 라우팅
 app.get('/route', function(req, res){
   res.send('Hey rounter, <img src="/static/me.jpeg">');
@@ -135,4 +139,12 @@ app.post('/upload', upload.single('userfile'), function(req, res){
 // 3000번 포트에 접속확인
 http.listen(3000, function () {
   console.log('Example app listening on port 3000!');
+});
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('chat message', function(msg){
+    console.log('message: ' + msg);
+    io.emit('chat message', msg);
+  });
 });
