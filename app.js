@@ -29,7 +29,7 @@ var mysql      = require('mysql');
 var conn = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'ekqlscl135',
+  password : 'ahffk214',
   database : 'o2'
 });
 conn.connect();
@@ -46,6 +46,123 @@ app.set('views', './views');
 // middleware가 대기하고 있다가 post request오면 먼저처리
 app.use(bodyParser.urlencoded({ extended: true }));
 
+////템플릿 셈플
+app.get('/default', function (req, res) {
+	  res.render('test/default');
+	});
+
+
+app.get('/appbanner', function (req, res) {
+	  res.render('test/appbanner');
+	});
+
+app.get('/banner', function (req, res) {
+	  res.render('test/banner');
+	});
+
+
+app.get('/blog-single', function (req, res) {
+	  res.render('test/blog-single');
+	});
+
+app.get('/blognews', function (req, res) {
+	  res.render('test/blognews');
+	});
+
+app.get('/ComingSoon', function (req, res) {
+	  res.render('test/ComingSoon');
+	});
+
+app.get('/components', function (req, res) {
+	  res.render('test/components');
+	});
+
+app.get('/gallery', function (req, res) {
+	  res.render('test/gallery');
+	});
+
+app.get('/home', function (req, res) {
+	  res.render('test/home');
+	});
+
+app.get('/landing-banner', function (req, res) {
+	  res.render('test/landing-banner');
+	});
+
+app.get('/landingbanner', function (req, res) {
+	  res.render('test/landingbanner');
+	});
+
+app.get('/lecture', function (req, res) {
+	  res.render('test/lecture');
+	});
+
+app.get('/mypage', function (req, res) {
+	  res.render('test/mypage');
+	});
+
+app.get('/Navi', function (req, res) {
+	  res.render('test/Navi');
+	});
+
+app.get('/pricing', function (req, res) {
+	  res.render('test/pricing');
+	});
+
+app.get('/sectionbackground', function (req, res) {
+	  res.render('test/sectionbackground');
+	});
+
+app.get('/services', function (req, res) {
+	  res.render('test/services');
+	});
+
+app.get('/SidebarMenu', function (req, res) {
+	  res.render('test/SidebarMenu');
+	});
+
+app.get('/sliderbackground', function (req, res) {
+	  res.render('test/sliderbackground');
+	});
+
+
+app.get('/sliderbanner', function (req, res) {
+	  res.render('test/sliderbanner');
+	});
+
+app.get('/staticbackground', function (req, res) {
+	  res.render('test/staticbackground');
+	});
+
+app.get('/staticbanner', function (req, res) {
+	  res.render('test/staticbanner');
+	});
+
+app.get('/team', function (req, res) {
+	  res.render('test/team');
+	});
+
+app.get('/testimonial', function (req, res) {
+	  res.render('test/testimonial');
+	});
+
+app.get('/typed-banner', function (req, res) {
+	  res.render('test/typed-banner');
+	});
+
+app.get('/typedbanner', function (req, res) {
+	  res.render('test/typedbanner');
+	});
+
+app.get('/videobackground', function (req, res) {
+	  res.render('test/videobackground');
+	});
+
+//./템플릿 셈플
+
+// about.ejs 파일 render
+app.get('/about', function (req, res) {
+  res.render('about', {name:'Sehun', age:'27'});
 
 app.get('/recoFee', function(req, res){
   res.render('recoFee');
@@ -55,6 +172,7 @@ app.get('/recoPhone', function(req, res){
 });
 app.get('/reverseAuction', function(req, res){
   res.render('reverseAuction');
+
 });
 // chat.ejs 파일 render
 app.get('/chat', function (req, res) {
