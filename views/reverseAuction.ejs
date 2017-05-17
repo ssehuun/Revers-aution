@@ -1,17 +1,30 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-      <% include partials/head %>
-  </head>
-  <body class="container">
-      <header>
-          <% include partials/header %>
-      </header>
-    역경매 페이지
 
-      <footer>
-          <% include partials/footer %>
-      </footer>
+<head>
+    <% include partials/head %>
+</head>
 
-  </body>
+<body class="container">
+    <header>
+        <% include partials/header %>
+    </header>
+    <ul>
+    <% for(var name in products){%>
+        <li>
+            <a href='/cart/<%=name%>'><%= products[name].title%> (<%=products[name]%>)</a>
+        </li>
+    <%}%>
+    </ul>
+
+
+    <footer>
+        <% include partials/footer %>
+    </footer>
+
+</body>
+
+<script>
+</script>
+
 </html>
