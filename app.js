@@ -33,8 +33,8 @@ var mysql = require('mysql');
 var conn = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'ekqlscl135',
-    database: 'o2'
+    password: 'ahffk214',
+    database: 'o5'
 });
 conn.connect();
 
@@ -151,6 +151,13 @@ app.get('/content/add', function(req, res) {
         }
     });
 });
+
+
+// 디자인 페이지 - 성민
+app.get('/index1', function (req, res) {
+	  res.render('des/index');
+	});
+
 
 // data 쓰기
 app.post('/content/add', function(req, res) {
