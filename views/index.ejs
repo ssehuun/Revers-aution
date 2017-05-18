@@ -5,19 +5,19 @@
 </head>
 <body class="container">
 
+    <%if (displayName) {%>
+        <%=displayName%>
+        <a href='/auth/logout'>logout</a>
+    <%}else{%>
+        welcome, 로그인 하세요
+        <a href='/auth/login/'>로그인</a>
+        <a href='/auth/register/'>회원가입</a>
+    <%}%>
+
     <header>
         <% include partials/header %>
     </header>
-    <h1>회원가입</h1>
-    <form class="" action="/auth/login" method="post">
-        <p>
-            <input type="text" name="username" value="" placeholder="이메일">
-        </p>
-        <p>
-            <input type="password" name="password" value="" placeholder="비밀번호">
-        </p>
-        <p><input type="submit" name="" value="제출"></p>
-    </form>
+
 
 
     <footer>
