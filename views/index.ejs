@@ -1,27 +1,411 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-    <% include ./partials/head %>
+    <% include partials/head.ejs %>
+    <style>
+        .totombot{
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100px;
+        }
+    </style>
 </head>
-<body class="container">
 
-    <%if (displayName) {%>
-        <%=displayName%>
-        <a href='/auth/logout'>logout</a>
-    <%}else{%>
-        welcome, 로그인 하세요
-        <a href='/auth/login/'>로그인</a>
-        <a href='/auth/register/'>회원가입</a>
-    <%}%>
+<body class="slider-background">
 
-    <header>
-        <% include partials/header %>
-    </header>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div id="status">&nbsp;</div>
+    </div>
+    <!-- ./Preloader -->
+
+    <!-- pattern -->
+    <div id="bg_pattern"></div>
+    <!-- ./pattern -->
 
 
+    <!-- scrollToTop -->
+    <a href="#" class="scrollToTop"> <i class="fa fa-angle-up fa-2x"></i></a>
+    <!-- ./scrollToTop -->
 
-    <footer>
-        <% include partials/footer %>
-    </footer>
+
+    <!-- sidebar -->
+    <nav class="sidebar">
+        <a class="logo" href="/"> <img src="static/des/img/logo.png"
+			alt="" style="width: 160px;">
+		</a> <a href="#" class="menu-toggle"><i class="fa fa-navicon"></i></a>
+
+		<ul class="menu">
+			<li>
+				<a data-scroll href="" data-toggle="modal" data-target="#register">회원가입</a>
+			</li>
+			<% if(nickname){ %>
+		        <%= nickname %>
+		        <li><a href='/auth/logout'>로그아웃</a></li>
+		    <% }else{ %>
+		    <li>
+				<a data-scroll href="" data-toggle="modal" data-target="#login">로그인</a>
+			</li>
+		    <% } %>
+            <li><a data-scroll href="">마이페이지</a></li>
+            <li><a data-scroll href="#findCost">요금제찾기/구매하기</a></li>
+            <li><a data-scroll href="#findCost">판매자등록/판매하기</a></li>
+            <li><a data-scroll href="">판매자페이지</a></li>
+            <li><a data-scroll href="#team">개발 팀</a></li>
+            <li><a data-scroll href="#contact">Contact</a></li>
+        </ul>
+        <form class="" action="/auth/register" method="post">
+            <p>
+                <input type="text" class="form-control" name="username" placeholder="이메일">
+            </p>
+            <p>
+                <input type="password" class="form-control" name="password" placeholder="비밀번호">
+            </p>
+            <p>
+                <input type="text" class="form-control" name="nickname" placeholder="닉네임">
+            </p>
+            <p>
+                <input type="text" class="form-control" name="phone" placeholder="연락처">
+            </p>
+            <p><input type="submit" name="" value="제출"></p>
+        </form>
+        <!--tomtombot-->
+        <div class="tomtombot">
+            <a id="tomlink" href="https://www.messenger.com/t/731585810353330" target="popup" onclick="window.open('https://www.messenger.com/t/731585810353330','popup','width=900,height=600'); return false;">탐탐봇</a>
+        </div>
+    </nav>
+    <!-- ./sidebar -->
+
+
+	<!-- 로그인Modal -->
+	<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="login">
+	    <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="myModalLabel">로그인</h4>
+	            </div>
+	            <div class="modal-body">
+                    <form class="" action="/auth/login" method="post">
+                        <p>
+                            <input type="text" name="username" value="" placeholder="이메일">
+                        </p>
+                        <p>
+                            <input type="password" name="password" value="" placeholder="비밀번호">
+                        </p>
+                        <p><input type="submit" name="" value="제출"></p>
+                    </form>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+	                <button type="button" class="btn btn-primary">로그인</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+
+	<!-- 회원가입 모달
+
+	<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="register">
+	    <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="myModalLabel">회원가입</h4>
+	            </div>
+	            <div class="modal-body">
+                    <form class="" action="/auth/register" method="post">
+                        <p>
+                            <input type="text" class="form-control" name="username" placeholder="이메일">
+                        </p>
+                        <p>
+                            <input type="password" class="form-control" name="password" placeholder="비밀번호">
+                        </p>
+                        <p>
+                            <input type="text" class="form-control" name="nickname" placeholder="닉네임">
+                        </p>
+                        <p><input type="submit" name="" value="제출" id="a"></p>
+                    </form>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+	                <button type="button" class="btn btn-primary" id="rgBtn">회원가입</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>-->
+
+
+    <!-- right-content -->
+    <div class="right-content">
+
+        <!-- slider-banner -->
+        <section id="slider-banner" class="section wow fadeInUp">
+            <div class="container-fluid">
+                <!-- slider -->
+                <div id="slider" class="owl-carousel">
+                    <div class="item">
+                        <i class="fa fa-mobile"></i>
+                        <h2>내가 찾던 요금제</h2>
+                        <p>
+                            매달 나가는 요금제를 아낄 수 있다면?<br> 몇개의 간단한 답변으로 보다 좋은 요금제를 추천받아보세요.
+                        </p>
+                        <a href="#findCost" class="btn btn-custom btn-lg">요금제 찾기</a>
+                    </div>
+                    <div class="item">
+                        <i class="fa fa-suitcase"></i>
+                        <h2>요금제 계약 추천받기</h2>
+                        <p>
+                            찾기 서비스로 맘에 든 요금제를 확인했다면, 구매희망에 등록하세요.<br> 매장을 돌아다닐 필요없이 판매자들이 거래조건을 작성하여 제안합니다.
+                        </p>
+
+                        <a href="#" class="btn btn-custom btn-lg">거래게시판 확인하기</a>
+                    </div>
+                    <div class="item">
+                        <i class="fa fa-hand-peace-o"></i>
+                        <h2>마케팅이 없는 판매시장</h2>
+                        <p>
+                            마케팅과 상관없이 오로지 서비스로만 판매경쟁하는 시스템.<br> 탐탐은 개인사업자분들을 응원합니다<br> 탐탐에 판매자 등록을 하세요
+                        </p>
+                        <a href="#" class="btn btn-custom btn-lg">판매자 등록하기</a>
+                    </div>
+
+                </div>
+                <!-- ./slider -->
+            </div>
+        </section>
+        <!-- ./slider-banner -->
+
+
+        <!-- findCost -->
+        <section id="findCost" class="section wow fadeInUp">
+            <div class="banner-content">
+                <div class="container">
+                    <h1>
+						<span class="element"></span> 요금제 찾기
+					</h1>
+                    <p>
+                        통신사마다 다양한 요금제가 많고, 그 중에 내가 필요한 요금제를 찾기란 시간과 노력이 듭니다. <br> 몇 가지로 간단한 질문만으로 요금제를 추천해드리는 탐탐 요금제 찾기 서비스를 사용해보세요.<br> 맘에 드는 요금제를 찾고난 뒤엔 해당 요금제로 판매자들에게 제안받는 거래를 등록할 수 있습니다.
+                    </p>
+                    <a href="#" class="btn btn-custom btn-lg">요금제 찾기 시작</a> <a href="#" class="btn btn-custom btn-lg">구매희망 게시판</a>
+                </div>
+            </div>
+
+        </section>
+        <!-- ./findCost -->
+
+        <!-- sellCost -->
+        <section id="sellCost" class="section wow fadeInUp">
+            <div class="banner-content">
+                <div class="container">
+                    <h1>
+						<span class="element"></span> 판매하기
+					</h1>
+                    <p>
+                        전단지 홍보, 대규모 마케팅 광고 없이, 소규모 개인사업자도 <br> 오로지 계약 서비스 내용으로만 판매 경쟁에 참여하세요.
+                    </p>
+                    <a href="#" class="btn btn-custom btn-lg">구매희망상품에 제안하기</a> <a href="#" class="btn btn-custom btn-lg">내 제안 거래현황 확인</a>
+                </div>
+            </div>
+        </section>
+        <!-- ./findCost -->
+
+        <!-- team -->
+        <section id="team" class="section wow fadeInUp">
+            <div class="container-fluid">
+
+                <div class="section-heading">
+                    <h2>Our Team</h2>
+                    <div class="separator"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-3 col-sm-6">
+                        <div class="team-box1">
+                            <img src="static/des/img/team1.jpg" alt="image" class="img-responsive" height="200px">
+                            <h4>정세훈</h4>
+                            <span>Technical Engineer</span>
+                            <hr>
+                            <p>자기소개1</p>
+                            <ul class="social">
+                                <li><a href="#" class="circle"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#" class="circle"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#" class="circle"><i class="fa fa-google"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="team-box1">
+                            <img src="static/des/img/team2.jpg" alt="image" class="img-responsive">
+                            <h4>박성민</h4>
+                            <span>DB Designer, Web Designer</span>
+                            <hr>
+                            <p>자기소개2</p>
+                            <ul class="social">
+                                <li><a href="#" class="circle"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#" class="circle"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#" class="circle"><i class="fa fa-google"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- ./row -->
+            </div>
+        </section>
+        <!-- ./team -->
+
+        <!-- contact -->
+        <section id="contact" class="section wow fadeInUp">
+            <div class="container-fluid">
+
+                <div class="section-heading">
+                    <h2>Contact Us</h2>
+                    <div class="separator"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+
+                        <!-- Working Contact Form -->
+                        <!--
+                        <form name="sentMessage" id="contactForm" novalidate>
+                            <div class="row">
+                                <div class="control-group form-group col-sm-6">
+                                    <div class="controls">
+                                        <label>Name</label> <input type="text" class="form-control dark" id="name" placeholder="" required data-validation-required-message="Please enter your name.">
+                                        <p class="help-block"></p>
+                                    </div>
+                                </div>
+                                <div class="control-group form-group col-sm-6">
+                                    <div class="controls">
+                                        <label>Email</label> <input type="email" class="form-control dark" id="email" placeholder="" required data-validation-required-message="Please enter your email address.">
+                                        <p class="help-block"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group form-group">
+                                <div class="controls">
+                                    <label>Message</label>
+                                    <textarea class="form-control dark" rows="7" id="message" placeholder="" required data-validation-required-message="Please enter your message" maxlength="999" style="resize: none"></textarea>
+                                    <p class="help-block"></p>
+                                </div>
+                            </div>
+                            <div id="success"></div>
+                            <div class="padd-tb-10">
+                                <button type="submit" class="btn btn-success btn-lg btn-block">문의 보내기</button>
+                            </div>
+
+                        </form>
+                    -->
+                        <div class="clearfix"></div>
+                        <!-- Working Contact Form -->
+
+                        <!-- contact-info -->
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4">
+                                <div class="contact-info">
+                                    <i class="fa fa-map-marker"></i> Inha - Unviersity, InCheon, Korea
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <div class="contact-info">
+                                    <i class="fa fa-envelope-o"></i> soorte214@gmail.com
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <div class="contact-info">
+                                    <i class="fa fa-phone"></i> (+82)10-7564-0504
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ./contact-info -->
+
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+        <!-- ./contact -->
+
+        <!-- footer -->
+        <% include partials/footer.ejs %>
+        <!-- ./footer -->
+
+    </div>
+    <!-- ./right-content -->
+
+
+
+    <!-- Modal -->
+    <%# <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>%>
+
+
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="static/des/js/jquery-1.11.3.min.js"></script>
+    <script src="static/des/js/bootstrap.min.js"></script>
+
+    <!-- smooth-scroll -->
+    <script src="static/des/plugins/smooth-scroll/smooth-scroll.js"></script>
+
+    <!-- backstretch -->
+    <script src="static/des/plugins/backstretch/backstretch.min.js"></script>
+
+    <!-- owl-carousel -->
+    <script src="static/des/plugins/owl-carousel/owl.carousel.js"></script>
+
+    <!-- wow -->
+    <script src="static/des/plugins/wow/wow.js"></script>
+
+    <!-- typed -->
+    <script src="static/des/plugins/typed/typed.min.js"></script>
+
+    <!-- magnific-popup -->
+    <script src="static/des/plugins/magnific-popup/jquery.magnific-popup.js"></script>
+
+    <!-- jqBootstrapValidation -->
+    <script src="static/des/plugins/jqBootstrapValidation/jqBootstrapValidation.js"></script>
+
+    <!-- switcher -->
+    <script type="text/javascript" src="static/des/switcher/switcher.js"></script>
+
+    <!-- main js -->
+    <script src="static/des/js/main.js"></script>
+
+    <script>
+    // $(document).ready(function(){
+    //     $('#a').on("click", function(){
+    //         console.log('click');
+    //
+    //
+    //
+    //     })
+    // })
+
+    </script>
+
 </body>
+
 </html>
