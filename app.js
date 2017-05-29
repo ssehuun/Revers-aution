@@ -9,6 +9,8 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const http = require('http').Server(app);
+const randomstring = require("randomstring");
+
 // socket.io 서버로 업그레이드
 const io = require('socket.io')(http);
 //middleware body-parser 선언
@@ -40,7 +42,7 @@ const conn = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     //password: 'ekqlscl135',
-    database: 'o5'
+    database: 'o6'
 });
 conn.connect();
 const passport = require('passport');
@@ -72,7 +74,7 @@ app.use(session({
         port: 3306,
         user: 'root',
         //password: 'ekqlscl135',
-        database: 'o5'
+        database: 'o6'
     })
 }));
 app.use(passport.initialize());
@@ -83,37 +85,107 @@ app.use(passport.session());
 // 	res.render('des/index');
 // });
 
+let user_reply = [];
 
-app.get('/moomootest', function(req,res){
+app.get('/selectFee', function(req, res) {
+    console.log('요금제 선택1');
     var jsonResponse = {
-  "messages": [
-    {
-      "attachment": {
-        "payload":{
-          "template_type": "button",
-          "text": "test JSON with postback",
-          "buttons": [
-            {
-              "url": "https://d2ba20a2.ngrok.io/moomootest",
-              "type":"json_plugin_url",
-              "title":"go"
+        "messages": [{
+            "attachment": {
+                "payload": {
+                    "template_type": "button",
+                    "text": "24요금제 선택하셨습니다.\n\n4. 현재 사용중인 기기는 무엇입니까?",
+                    "buttons": [{
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
+                            "type": "json_plugin_url",
+                            "title": "갤럭시8"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "갤럭시7"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/3",
+                            "type": "json_plugin_url",
+                            "title": "아이폰7"
+                        }
+                    ]
+                },
+                "type": "template"
             }
-          ]
-        },
-        "type": "template"
-      }
-    }
-  ]
-}
+        }]
+    };
+    res.send(jsonResponse);
+});
+// app.get(['/', '/content/:id'], function(req, res) {
+//     var allRows = 'select id, title from topic';
+//     conn.query(allRows, function(err, rows, fields) {
+//         var id = req.params.id;
+//         if (id) {
+//             var oneRow = 'select * from topic where id=?';
+//             conn.query(oneRow, [id], function(err, row, fields) {
+//                 if (err) {
+//                     console.log(err);
+//                     res.status(500).send('Internal Server Error');
+//                 } else {
+//                     res.render('index', {
+//                         topics: rows,
+//                         topic: row[0]
+//                     });
+//                 }
+//             });
+//         } else {
+//             res.render('index', {
+//                 topics: rows
+//             });
+//         }
+//     });
+// });
+app.get('/usingPhone/:id', function(req, res) {
+    console.log(req.params.id);
+    //let = SELECT
+    //user_reply.push(req.params.id.title);
+    console.log(user_reply);
 
-
+    var jsonResponse = {
+    "messages": [{
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "list",
+                "top_element_style": "compact",
+                "elements": [{
+                        "title": "Classic White T-Shirt",
+                        "image_url": "http://doughnutkitten.com/PNGs/1_doughnut_kitten_Tania_Hennessy.png",
+                        "subtitle": "Soft white cotton t-shirt is back in style",
+                        "buttons": [{
+                            "type": "web_url",
+                            "url": "https://petersapparel.parseapp.com/view_item?item_id=100",
+                            "title": "View Item"
+                        }]
+                    },
+                    {
+                        "title": "Classic Grey T-Shirt",
+                        "image_url": "http://doughnutkitten.com/PNGs/1_doughnut_kitten_Tania_Hennessy.png",
+                        "subtitle": "Soft gray cotton t-shirt is back in style",
+                        "buttons": [{
+                            "type": "web_url",
+                            "url": "https://petersapparel.parseapp.com/view_item?item_id=101",
+                            "title": "View Item"
+                        }]
+                    }
+                ]
+            }
+        }
+    }]
+};
     res.send(jsonResponse);
 });
 
-
 passport.serializeUser(function(user, done) {
     // done함수의 두번째 인자로 user를 식별하는데 이 값이 세션에 저장된다.
-    done(null, user.code);
+    done(null, user.CODE);
 });
 // 두번째 로그인시 세션에 저장된 user.username이 id 값으로 들어감
 passport.deserializeUser(function(id, done) {
@@ -132,16 +204,17 @@ passport.use(new LocalStrategy(
     function(username, password, done) {
         var uname = username;
         var pwd = password;
-        var sql = 'SELECT * FROM MEMBER WHERE CODE=?';
-        conn.query(sql, ['local:'+uname], function(err, results){
+        var sql = 'SELECT * FROM MEMBER WHERE EMAIL=?';
+        //conn.query(sql, [c], function(err, results){
+        conn.query(sql, [uname], function(err, results){
+            console.log(results);
             if(!results[0]){
-                console.log(results[0]);
                 return done('There is no user');
             }
             var user = results[0];
             //입력한 비번과 저장되어있는 salt를 인자로 받음
-            return hasher({password:pwd, salt:user.salt}, function(err, pass, salt, hash){
-                if(hash === user.password){
+            return hasher({password:pwd, salt:user.SALT}, function(err, pass, salt, hash){
+                if(hash === user.PASSWORD){
                     // 비번까지 맞으면, done함수의 인자인 user가 serializeUser로 넘어감
                     console.log('LocalStrategy', user);
                     done(null, user);
@@ -157,16 +230,7 @@ passport.use(new LocalStrategy(
         });
     }
 ));
-// index.ejs 페이지 라우팅, data 목록 보여주기
-app.get(['/', '/content/:id'], function(req, res) {
-    // passport는 원래 req가 가지고 있지 않은 객체인 user객체를 req의 소속으로 만들어줌
-    // user는 deserializeUser의 done함수의 두번째 인자인 user로 부터 기인
-    if(req.user && req.user.nickname){
-        res.render('index',{nickname:req.user.nickname});
-    }else{
-        res.render('index',{nickname:''});
-    }
-});
+
 app.get('/auth/register', function(req, res){
     res.render('register');
 });
@@ -174,14 +238,14 @@ app.post('/auth/register', function(req, res){
     hasher({password:req.body.password}, function(err, pass, salt, hash){
         var user = {
             //authId: 'local:'+req.body.username,
-            code: 'local'+req.body.username,
+            code: randomstring.generate(5),
             email: req.body.username,
             password: hash,
             salt: salt,
+            name: req.body.realname,
             nickname: req.body.nickname,
             phone: req.body.phone
         };
-        console.log(user);
         // set? 를 통해 user객체로 사용자정보를 추가할 수 있다
         var sql = 'INSERT INTO MEMBER SET ?';
         conn.query(sql, user, function(err, results){
@@ -189,7 +253,7 @@ app.post('/auth/register', function(req, res){
                 console.log(err);
                 res.status(500);
             }else{
-                console.log('login');
+                console.log('register completed');
                 // passport에서 처리하는 세션, 등록후 바로 로그인
                 req.login(user, function(err){
                     req.session.save(function(){
@@ -200,22 +264,27 @@ app.post('/auth/register', function(req, res){
         });
     });
 });
-app.get('/auth/login', function(req, res){
-    res.render('login');
-});
-
 //passport 모듈을 이용해 직접 메일, 비번 입력으로 로그인
 app.post('/auth/login',
     passport.authenticate(
         'local',
         {
             successRedirect: '/',
-            failureRedirect: '/auth/login',
+            failureRedirect: '/',
             failureFlash: true
         }
     )
 );
-
+// index.ejs 페이지 라우팅, data 목록 보여주기
+app.get(['/', '/content/:id'], function(req, res) {
+    // passport는 원래 req가 가지고 있지 않은 객체인 user객체를 req의 소속으로 만들어줌
+    // user는 deserializeUser의 done함수의 두번째 인자인 user로 부터 기인
+    if(req.user && req.user.NICKNAME){
+        res.render('index',{nickname:req.user.NICKNAME});
+    }else{
+        res.render('index',{nickname:''});
+    }
+});
 app.get('/auth/logout', function(req, res){
     //delete req.session.displayName;
     // req.session.save(function(){
@@ -240,7 +309,7 @@ app.get('/recoPhone', function(req, res) {
     res.render('recoPhone');
 });
 
-app.get('/reverseAuction', function(req, res) {
+/*app.get('/reverseAuction', function(req, res) {
     var cart = req.cookies.cart;
     if(!cart){
         res.send('Empty');
@@ -248,7 +317,7 @@ app.get('/reverseAuction', function(req, res) {
         res.render('reverseAuction', {products:products});
     }
 });
-
+*/
 // chat.ejs 파일 render
 app.get('/chat', function(req, res) {
     res.render('chat');
@@ -420,3 +489,9 @@ io.on('connection', function(socket) {
 //         }
 //     }
 // });
+
+/* login.ejs
+app.get('/auth/login', function(req, res){
+    res.render('login');
+});
+*/

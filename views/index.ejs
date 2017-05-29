@@ -41,6 +41,7 @@
 			<li>
 				<a data-scroll href="" data-toggle="modal" data-target="#register">회원가입</a>
 			</li>
+
 			<% if(nickname){ %>
 		        <%= nickname %>
 		        <li><a href='/auth/logout'>로그아웃</a></li>
@@ -62,6 +63,9 @@
             </p>
             <p>
                 <input type="password" class="form-control" name="password" placeholder="비밀번호">
+            </p>
+            <p>
+                <input type="text" class="form-control" name="realname" placeholder="이름">
             </p>
             <p>
                 <input type="text" class="form-control" name="nickname" placeholder="닉네임">
@@ -98,10 +102,10 @@
                         <p><input type="submit" name="" value="제출"></p>
                     </form>
 	            </div>
-	            <div class="modal-footer">
+	            <!--<div class="modal-footer">
 	                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 	                <button type="button" class="btn btn-primary">로그인</button>
-	            </div>
+	            </div>-->
 	        </div>
 	    </div>
 	</div>
