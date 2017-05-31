@@ -87,28 +87,86 @@ app.use(passport.session());
 
 let user_reply = [];
 
+// 3번 질문
 app.get('/selectFee', function(req, res) {
-    console.log('요금제 선택1');
+    var jsonResponse = {
+    "messages": [{
+        "attachment": {
+            "payload": {
+                "template_type": "button",
+                "text": "3. 현재 이용중인 요금제는 무엇입니까?",
+                "buttons": [{
+                    "url": "https://af816d00.ngrok.io/selectProduct/1",
+                    "type": "json_plugin_url",
+                    "title": "24요금제"
+                },{
+                    "url": "https://af816d00.ngrok.io/selectProduct/2",
+                    "type": "json_plugin_url",
+                    "title": "45요금제"
+                },{
+                    "url": "https://af816d00.ngrok.io/selectProduct/3",
+                    "type": "json_plugin_url",
+                    "title": "69요금제"
+                }]
+            },
+            "type": "template"
+        }
+    }]
+};
+    res.send(jsonResponse);
+});
+// 4번 질문
+app.get('/selectProduct/:id', function(req, res){
+    const sql = 'SELECT * FROM PRODUCT';
+    conn.query(sql, function(err, results, fields){
+
+        var jsonResponse = {
+            "messages" : []
+        };
+        var message=[{
+            "text": "4. 현재 사용 기기는 무엇입니까?"
+        }];
+        for(let i=0; i<9; i++){
+            message.push({
+                "text": results[i].NAME
+            });
+        }
+        jsonResponse.messages = message;
+        res.send(jsonResponse);
+
+        message = [];
+        for(let i=9; i<18; i++){
+            message.push({
+                "text": results[i].NAME
+            });
+        }
+        jsonResponse.messages = message;
+        res.send(jsonResponse);
+    });
+});
+
+// 5번 질문
+app.get('/howLongUse', function(req, res){
     var jsonResponse = {
         "messages": [{
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "24요금제 선택하셨습니다.\n\n4. 현재 사용중인 기기는 무엇입니까?",
+                    "text": "24요금제 선택하셨습니다.\n\n5. 요금제에 가입한지 얼마나 되었습니까?",
                     "buttons": [{
                             "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
                             "type": "json_plugin_url",
-                            "title": "갤럭시8"
+                            "title": "1개월~6개월"
                         },
                         {
                             "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
                             "type": "json_plugin_url",
-                            "title": "갤럭시7"
+                            "title": "6개월~1년"
                         },
                         {
                             "url": "https://d2ba20a2.ngrok.io/usingPhone/3",
                             "type": "json_plugin_url",
-                            "title": "아이폰7"
+                            "title": "1년~2년"
                         }
                     ]
                 },
@@ -118,30 +176,424 @@ app.get('/selectFee', function(req, res) {
     };
     res.send(jsonResponse);
 });
-// app.get(['/', '/content/:id'], function(req, res) {
-//     var allRows = 'select id, title from topic';
-//     conn.query(allRows, function(err, rows, fields) {
-//         var id = req.params.id;
-//         if (id) {
-//             var oneRow = 'select * from topic where id=?';
-//             conn.query(oneRow, [id], function(err, row, fields) {
-//                 if (err) {
-//                     console.log(err);
-//                     res.status(500).send('Internal Server Error');
-//                 } else {
-//                     res.render('index', {
-//                         topics: rows,
-//                         topic: row[0]
-//                     });
-//                 }
-//             });
-//         } else {
-//             res.render('index', {
-//                 topics: rows
-//             });
-//         }
-//     });
-// });
+// 6번 질문
+app.get('/sameServiceProvide', function(req, res){
+    var jsonResponse = {
+        "messages": [{
+            "attachment": {
+                "payload": {
+                    "template_type": "button",
+                    "text": "6. 가족중에 같은 통신사가 몇 명 있습니까?",
+                    "buttons": [{
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
+                            "type": "json_plugin_url",
+                            "title": "없음"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "1~2명"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/3",
+                            "type": "json_plugin_url",
+                            "title": "3명 이상"
+                        }
+                    ]
+                },
+                "type": "template"
+            }
+        }]
+    };
+    res.send(jsonResponse);
+});
+
+// 7번 질문
+app.get('/howOld', function(req, res){
+    var jsonResponse = {
+        "messages": [{
+            "attachment": {
+                "payload": {
+                    "template_type": "button",
+                    "text": "7. 고객님의 연령대가 어떻게 되십니까?",
+                    "buttons": [{
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
+                            "type": "json_plugin_url",
+                            "title": "10대"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "20대"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/3",
+                            "type": "json_plugin_url",
+                            "title": "30대 이상"
+                        }
+                    ]
+                },
+                "type": "template"
+            }
+        }]
+    };
+    res.send(jsonResponse);
+});
+
+// 8번 질문
+app.get('/hotSpot', function(req, res){
+    var jsonResponse = {
+        "messages": [{
+            "attachment": {
+                "payload": {
+                    "template_type": "button",
+                    "text": "8. 단말기의 핫스팟 기능을 많이 사용하십니까?",
+                    "buttons": [{
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
+                            "type": "json_plugin_url",
+                            "title": "그렇다"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "아니다"
+                        }
+                    ]
+                },
+                "type": "template"
+            }
+        }]
+    };
+    res.send(jsonResponse);
+});
+// 9번 질문
+app.get('/whichMost', function(req, res){
+    var jsonResponse = {
+        "messages": [{
+            "attachment": {
+                "payload": {
+                    "template_type": "button",
+                    "text": "9. 음성/데이터/문자 중 가장 많이 쓰는 유형이 무엇입니까?",
+                    "buttons": [{
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
+                            "type": "json_plugin_url",
+                            "title": "음성"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "데이터"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "문자"
+                        }
+                    ]
+                },
+                "type": "template"
+            }
+        }]
+    };
+    res.send(jsonResponse);
+});
+// 10번 질문
+app.get('/whichMost', function(req, res){
+    var jsonResponse = {
+        "messages": [{
+            "attachment": {
+                "payload": {
+                    "template_type": "button",
+                    "text": "10. 하루 통화량이 얼마나 되십니까?",
+                    "buttons": [{
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
+                            "type": "json_plugin_url",
+                            "title": "10분이하"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "10분 이상 60분 이하"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "60분 이상"
+                        }
+                    ]
+                },
+                "type": "template"
+            }
+        }]
+    };
+    res.send(jsonResponse);
+});
+// 11번 질문
+app.get('/textByDay', function(req, res){
+    var jsonResponse = {
+        "messages": [{
+            "attachment": {
+                "payload": {
+                    "template_type": "button",
+                    "text": "11. 하루 문자량이 얼마나 되십니까?",
+                    "buttons": [{
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
+                            "type": "json_plugin_url",
+                            "title": "10개이하"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "10개 이상 100개이하"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "100개 이상"
+                        }
+                    ]
+                },
+                "type": "template"
+            }
+        }]
+    };
+    res.send(jsonResponse);
+});
+// 12번 질문
+app.get('/wifiUse', function(req, res){
+    var jsonResponse = {
+        "messages": [{
+            "attachment": {
+                "payload": {
+                    "template_type": "button",
+                    "text": "12. 와이파이를 자주 사용하십니까?",
+                    "buttons": [{
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
+                            "type": "json_plugin_url",
+                            "title": "10분이하"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "10분 이상 60분 이하"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "60분 이상"
+                        }
+                    ]
+                },
+                "type": "template"
+            }
+        }]
+    };
+    res.send(jsonResponse);
+});
+// 13번 질문
+app.get('/videoOrGame', function(req, res){
+    var jsonResponse = {
+        "messages": [{
+            "attachment": {
+                "payload": {
+                    "template_type": "button",
+                    "text": "13. 동영상이나 게임을 많이 사용하십니까?",
+                    "buttons": [{
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
+                            "type": "json_plugin_url",
+                            "title": "예"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "아니오"
+                        }
+                    ]
+                },
+                "type": "template"
+            }
+        }]
+    };
+    res.send(jsonResponse);
+});
+// 14번 질문
+app.get('/dataSpeed', function(req, res){
+    var jsonResponse = {
+        "messages": [{
+            "attachment": {
+                "payload": {
+                    "template_type": "button",
+                    "text": "14. 데이터의 속도(3G, 4G)가 고객에게 중요합니까?",
+                    "buttons": [{
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
+                            "type": "json_plugin_url",
+                            "title": "예"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "아니오"
+                        }
+                    ]
+                },
+                "type": "template"
+            }
+        }]
+    };
+    res.send(jsonResponse);
+});
+// 단말기 추천 여부 묻기
+app.get('/reco2Start', function(req, res){
+    var jsonResponse = {
+        "messages": [{
+            "attachment": {
+                "payload": {
+                    "template_type": "button",
+                    "text": "통신요금과 함께 단말기를 추천 받고 싶으시면 '이어가기'를 선택하시고 통신비만 원하신다면 '그만'을 선택해 주세요.",
+                    "buttons": [{
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
+                            "type": "json_plugin_url",
+                            "title": "이어가기"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "그만"
+                        }
+                    ]
+                },
+                "type": "template"
+            }
+        }]
+    };
+    res.send(jsonResponse);
+});
+
+// 15. 단말기 가격대
+app.get('/reco2Start', function(req, res){
+    var jsonResponse = {
+        "messages": [{
+            "attachment": {
+                "payload": {
+                    "template_type": "button",
+                    "text": "원하시는 단말기 가격대를 선택해주세요.",
+                    "buttons": [{
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
+                            "type": "json_plugin_url",
+                            "title": "프리미엄 최신폰(90이상)"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "준 프리미엄(60~90)"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "보급(30~60)"
+                        }
+                    ]
+                },
+                "type": "template"
+            }
+        }]
+    };
+    res.send(jsonResponse);
+});
+// 16. 제조사
+app.get('/company', function(req, res){
+    var jsonResponse = {
+        "messages": [{
+            "attachment": {
+                "payload": {
+                    "template_type": "button",
+                    "text": "원하시는 제조사를 선택해주세요.",
+                    "buttons": [{
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
+                            "type": "json_plugin_url",
+                            "title": "삼성"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "엘지"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "애플"
+                        }
+                    ]
+                },
+                "type": "template"
+            }
+        }]
+    };
+    res.send(jsonResponse);
+});
+// 17. 화면크기
+app.get('/displaySize', function(req, res){
+    var jsonResponse = {
+        "messages": [{
+            "attachment": {
+                "payload": {
+                    "template_type": "button",
+                    "text": "원하시는 화면크기를 선택해주세요.",
+                    "buttons": [{
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
+                            "type": "json_plugin_url",
+                            "title": "4~5인치"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "엘지"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "애플"
+                        }
+                    ]
+                },
+                "type": "template"
+            }
+        }]
+    };
+    res.send(jsonResponse);
+});
+// 1. 화면크기
+app.get('/displaySize', function(req, res){
+    var jsonResponse = {
+        "messages": [{
+            "attachment": {
+                "payload": {
+                    "template_type": "button",
+                    "text": "원하시는 화면크기를 선택해주세요.",
+                    "buttons": [{
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/1",
+                            "type": "json_plugin_url",
+                            "title": "4~5인치"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "엘지"
+                        },
+                        {
+                            "url": "https://d2ba20a2.ngrok.io/usingPhone/2",
+                            "type": "json_plugin_url",
+                            "title": "애플"
+                        }
+                    ]
+                },
+                "type": "template"
+            }
+        }]
+    };
+    res.send(jsonResponse);
+});
+
 app.get('/usingPhone/:id', function(req, res) {
     console.log(req.params.id);
     //let = SELECT

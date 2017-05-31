@@ -43,7 +43,7 @@
 			</li>
 
 			<% if(nickname){ %>
-		        <%= nickname %>
+		    <li><%= nickname %>님 환영합니다!</li>
 		        <li><a href='/auth/logout'>로그아웃</a></li>
 		    <% }else{ %>
 		    <li>
@@ -57,24 +57,7 @@
             <li><a data-scroll href="#team">개발 팀</a></li>
             <li><a data-scroll href="#contact">Contact</a></li>
         </ul>
-        <form class="" action="/auth/register" method="post">
-            <p>
-                <input type="text" class="form-control" name="username" placeholder="이메일">
-            </p>
-            <p>
-                <input type="password" class="form-control" name="password" placeholder="비밀번호">
-            </p>
-            <p>
-                <input type="text" class="form-control" name="realname" placeholder="이름">
-            </p>
-            <p>
-                <input type="text" class="form-control" name="nickname" placeholder="닉네임">
-            </p>
-            <p>
-                <input type="text" class="form-control" name="phone" placeholder="연락처">
-            </p>
-            <p><input type="submit" name="" value="제출"></p>
-        </form>
+
         <!--tomtombot-->
         <div class="tomtombot">
             <a id="tomlink" href="https://www.messenger.com/t/731585810353330" target="popup" onclick="window.open('https://www.messenger.com/t/731585810353330','popup','width=900,height=600'); return false;">탐탐봇</a>
@@ -110,8 +93,7 @@
 	    </div>
 	</div>
 
-	<!-- 회원가입 모달
-
+	<!-- 회원가입 모달-->
 	<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="register">
 	    <div class="modal-dialog" role="document">
 	        <div class="modal-content">
@@ -128,18 +110,24 @@
                             <input type="password" class="form-control" name="password" placeholder="비밀번호">
                         </p>
                         <p>
+                            <input type="text" class="form-control" name="realname" placeholder="이름">
+                        </p>
+                        <p>
                             <input type="text" class="form-control" name="nickname" placeholder="닉네임">
                         </p>
-                        <p><input type="submit" name="" value="제출" id="a"></p>
+                        <p>
+                            <input type="text" class="form-control" name="phone" placeholder="연락처">
+                        </p>
+                        <p><input type="submit" name="" value="제출"></p>
                     </form>
 	            </div>
-	            <div class="modal-footer">
+	            <!--<div class="modal-footer">
 	                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-	                <button type="button" class="btn btn-primary" id="rgBtn">회원가입</button>
+	                <button type="button" class="btn btn-primary" id="rgBtn">회원가입</button>-->
 	            </div>
 	        </div>
 	    </div>
-	</div>-->
+	</div>
 
 
     <!-- right-content -->
