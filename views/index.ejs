@@ -10,6 +10,8 @@
             right: 0;
             height: 100px;
         }
+
+
     </style>
 </head>
 
@@ -56,12 +58,13 @@
             <li><a data-scroll href="">판매자페이지</a></li>
             <li><a data-scroll href="#team">개발 팀</a></li>
             <li><a data-scroll href="#contact">Contact</a></li>
+            <li><a href="https://www.messenger.com/t/731585810353330" target="popup" onclick="window.open('https://www.messenger.com/t/731585810353330','popup','width=900,height=600'); return false;">탐탐봇</a></li>
         </ul>
 
         <!--tomtombot-->
-        <div class="tomtombot">
-            <a id="tomlink" href="https://www.messenger.com/t/731585810353330" target="popup" onclick="window.open('https://www.messenger.com/t/731585810353330','popup','width=900,height=600'); return false;">탐탐봇</a>
-        </div>
+<!--         <div class="tomtombot"> -->
+<!--             <a id="tomlink" href="https://www.messenger.com/t/731585810353330" target="popup" onclick="window.open('https://www.messenger.com/t/731585810353330','popup','width=900,height=600'); return false;">탐탐봇</a> -->
+<!--         </div> -->
     </nav>
     <!-- ./sidebar -->
 
@@ -82,7 +85,7 @@
                         <p>
                             <input type="password" name="password" value="" placeholder="비밀번호">
                         </p>
-                        <p><input type="submit" name="" value="제출"></p>
+                        <p><input class="btn btn-default btn-lg" type="submit" name="" value="제출"></p>
                     </form>
 	            </div>
 	            <!--<div class="modal-footer">
@@ -118,7 +121,7 @@
                         <p>
                             <input type="text" class="form-control" name="phone" placeholder="연락처">
                         </p>
-                        <p><input type="submit" name="" value="제출"></p>
+                        <p><input class="btn btn-default btn-lg" type="submit" name="" value="제출"></p>
                     </form>
 	            </div>
 	            <!--<div class="modal-footer">
@@ -144,7 +147,7 @@
                         <p>
                             매달 나가는 요금제를 아낄 수 있다면?<br> 몇개의 간단한 답변으로 보다 좋은 요금제를 추천받아보세요.
                         </p>
-                        <a href="#findCost" class="btn btn-custom btn-lg">요금제 찾기</a>
+                        <a href="/recoPage" class="btn btn-custom btn-lg">요금제 찾기</a>
                     </div>
                     <div class="item">
                         <i class="fa fa-suitcase"></i>
@@ -153,7 +156,7 @@
                             찾기 서비스로 맘에 든 요금제를 확인했다면, 구매희망에 등록하세요.<br> 매장을 돌아다닐 필요없이 판매자들이 거래조건을 작성하여 제안합니다.
                         </p>
 
-                        <a href="#" class="btn btn-custom btn-lg">거래게시판 확인하기</a>
+                        <a href="/boardPage" class="btn btn-custom btn-lg">거래게시판 확인하기</a>
                     </div>
                     <div class="item">
                         <i class="fa fa-hand-peace-o"></i>
@@ -176,12 +179,12 @@
             <div class="banner-content">
                 <div class="container">
                     <h1>
-						<span class="element"></span> 요금제 찾기
+						<span class="element" ></span> 요금제 찾기
 					</h1>
                     <p>
                         통신사마다 다양한 요금제가 많고, 그 중에 내가 필요한 요금제를 찾기란 시간과 노력이 듭니다. <br> 몇 가지로 간단한 질문만으로 요금제를 추천해드리는 탐탐 요금제 찾기 서비스를 사용해보세요.<br> 맘에 드는 요금제를 찾고난 뒤엔 해당 요금제로 판매자들에게 제안받는 거래를 등록할 수 있습니다.
                     </p>
-                    <a href="#" class="btn btn-custom btn-lg">요금제 찾기 시작</a> <a href="#" class="btn btn-custom btn-lg">구매희망 게시판</a>
+                    <a class="btn btn-custom btn-lg" href="https://www.messenger.com/t/731585810353330" target="popup" onclick="window.open('https://www.messenger.com/t/731585810353330','popup','width=900,height=600'); return false;">요금제 찾기 시작</a> <a href="#" class="btn btn-custom btn-lg">구매희망 게시판</a>
                 </div>
             </div>
 

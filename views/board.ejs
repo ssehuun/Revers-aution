@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<% include partials/head.ejs %>
+<style>
+.totombot {
+	position: fixed;
+	top: 0;
+	right: 0;
+	height: 100px;
+}
+
+.image-box {
+	background: white;
+	border-radius: 10px;
+}
+</style>
+</head>
+
+<body class="slider-background">
+
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- ./Preloader -->
+
+	<!-- pattern -->
+	<div id="bg_pattern"></div>
+	<!-- ./pattern -->
+
+
+	<!-- scrollToTop -->
+	<a href="#" class="scrollToTop"> <i class="fa fa-angle-up fa-2x"></i></a>
+	<!-- ./scrollToTop -->
+
+
+	<!-- sidebar -->
+	<nav class="sidebar">
+		<a class="logo" href="/"> <img src="static/des/img/logo.png"
+			alt="" style="width: 160px;">
+		</a> <a href="#" class="menu-toggle"><i class="fa fa-navicon"></i></a>
+
+		<ul class="menu">
+			<li><a data-scroll href="" data-toggle="modal"
+				data-target="#register">회원가입</a></li> <% if(nickname){ %>
+			<li><%= nickname %>님 환영합니다!</li>
+			<li><a href='/auth/logout'>로그아웃</a></li> <% }else{ %>
+			<li><a data-scroll href="" data-toggle="modal"
+				data-target="#login">로그인</a></li> <% } %>
+			<li><a data-scroll href="">마이페이지</a></li>
+			<li><a data-scroll href="#findCost">요금제찾기/구매하기</a></li>
+			<li><a data-scroll href="#findCost">판매자등록/판매하기</a></li>
+			<li><a data-scroll href="">판매자페이지</a></li>
+			<li><a data-scroll href="#team">개발 팀</a></li>
+			<li><a data-scroll href="#contact">Contact</a></li>
+			<li><a href="https://www.messenger.com/t/731585810353330"
+				target="popup"
+				onclick="window.open('https://www.messenger.com/t/731585810353330','popup','width=900,height=600'); return false;">탐탐봇</a></li>
+		</ul>
+
+	</nav>
+	<!-- ./sidebar -->
+
+
+	<!-- 로그인Modal -->
+	<div class="modal fade" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" id="login">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">로그인</h4>
+				</div>
+				<div class="modal-body">
+					<form class="" action="/auth/login" method="post">
+						<p>
+							<input type="text" name="username" value="" placeholder="이메일">
+						</p>
+						<p>
+							<input type="password" name="password" value=""
+								placeholder="비밀번호">
+						</p>
+						<p>
+							<input class="btn btn-default btn-lg" type="submit" name=""
+								value="제출">
+						</p>
+					</form>
+				</div>
+				<!--<div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+	                <button type="button" class="btn btn-primary">로그인</button>
+	            </div>-->
+			</div>
+		</div>
+	</div>
+
+	<!-- 회원가입 모달-->
+	<div class="modal fade" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" id="register">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">회원가입</h4>
+				</div>
+				<div class="modal-body">
+					<form class="" action="/auth/register" method="post">
+						<p>
+							<input type="text" class="form-control" name="username"
+								placeholder="이메일">
+						</p>
+						<p>
+							<input type="password" class="form-control" name="password"
+								placeholder="비밀번호">
+						</p>
+						<p>
+							<input type="text" class="form-control" name="realname"
+								placeholder="이름">
+						</p>
+						<p>
+							<input type="text" class="form-control" name="nickname"
+								placeholder="닉네임">
+						</p>
+						<p>
+							<input type="text" class="form-control" name="phone"
+								placeholder="연락처">
+						</p>
+						<p>
+							<input class="btn btn-default btn-lg" type="submit" name=""
+								value="제출">
+						</p>
+					</form>
+				</div>
+				<!--<div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+	                <button type="button" class="btn btn-primary" id="rgBtn">회원가입</button>-->
+			</div>
+		</div>
+	</div>
+	</div>
+
+
+	<!-- portfolio -->
+	<section id="portfolio" class="section">
+		<div class="container">
+
+			<div class="section-heading">
+				<h2>filter</h2>
+				<div class="separator"></div>
+			</div>
+
+			<div class="text-center">
+				<ul id="filter">
+					<li class="current"><a href="#">All</a></li>
+					<li><a href="#">LG</a></li>
+					<li><a href="#">KT</a></li>
+					<li><a href="#">SK</a></li>
+				</ul>
+			</div>
+
+			<div class="row">
+				<ul id="portfolio-filter">
+
+					<li class="lg">
+						<div class="col-sm-4 col-md-3">
+							<div class="image-box">
+
+								<div class="caption">
+									<a href="#" data-toggle="modal" data-target="#modal-popup">
+										<h4>요청요금제 : LTE 69</h4>
+										<p>통신사 :KT</p>
+										<p>추가옵션 : 데이터 안심옵션</p>
+										<p>희망단말기 : 없음</p>
+										<p>제안시작일 : 월/일 몇시</p>
+										<p>제안마감일 : 월/일 몇시</p>
+									</a>
+								</div>
+							</div>
+
+						</div>
+					</li>
+
+					<li class="sk">
+						<div class="col-sm-4 col-md-3">
+							<div class="image-box">
+
+								<div class="caption">
+									<a href="#" data-toggle="modal" data-target="#modal-popup">
+										<h4>요청요금제 :Band 데이터 6.5G</h4>
+										<p>통신사 :KT</p>
+										<p>추가옵션 : 없음</p>
+										<p>희망단말기 : 갤럭시 S8</p>
+										<p>제안시작일 : 월/일 몇시</p>
+										<p>제안마감일 : 월/일 몇시</p>
+									</a>
+								</div>
+							</div>
+
+						</div>
+					</li>
+					<li class="lg">
+						<div class="col-sm-4 col-md-3">
+							<div class="image-box">
+
+								<div class="caption">
+									<a href="#" data-toggle="modal" data-target="#modal-popup">
+										<h4>요청요금제 : LTE 69</h4>
+										<p>통신사 :LG</p>
+										<p>추가옵션 : 데이터 안심옵션</p>
+										<p>희망단말기 : 없음</p>
+										<p>제안시작일 : 월/일 몇시</p>
+										<p>제안마감일 : 월/일 몇시</p>
+									</a>
+								</div>
+							</div>
+
+						</div>
+					</li>
+
+					<li class="sk">
+						<div class="col-sm-4 col-md-3">
+							<div class="image-box">
+
+								<div class="caption">
+									<a href="#" data-toggle="modal" data-target="#modal-popup">
+										<h4>요청요금제 :Band 데이터 6.5G</h4>
+										<p>통신사 :SK</p>
+										<p>추가옵션 : 없음</p>
+										<p>희망단말기 : 갤럭시 S8</p>
+										<p>제안시작일 : 월/일 몇시</p>
+										<p>제안마감일 : 월/일 몇시</p>
+									</a>
+								</div>
+							</div>
+
+						</div>
+					</li>
+
+					<li class="kt">
+						<div class="col-sm-4 col-md-3">
+							<div class="image-box">
+
+								<div class="caption">
+									<a href="#" data-toggle="modal" data-target="#modal-popup">
+										<h4>요청요금제 :데이터 선택 65.8</h4>
+										<p>통신사 :KT</p>
+										<p>추가옵션 : 없음</p>
+										<p>희망단말기 : 갤럭시 S7</p>
+										<p>제안시작일 : 월/일 몇시</p>
+										<p>제안마감일 : 월/일 몇시</p>
+									</a>
+								</div>
+							</div>
+
+						</div>
+					</li>
+
+					<li class="kt">
+						<div class="col-sm-4 col-md-3">
+							<div class="image-box">
+
+								<div class="caption">
+									<a href="#" data-toggle="modal" data-target="#modal-popup">
+										<h4>요청요금제 :데이터 선택 65.8</h4>
+										<p>통신사 :KT</p>
+										<p>추가옵션 : 없음</p>
+										<p>희망단말기 : 갤럭시 S7</p>
+										<p>제안시작일 : 월/일 몇시</p>
+										<p>제안마감일 : 월/일 몇시</p>
+									</a>
+								</div>
+							</div>
+
+						</div>
+					</li>
+
+					<li class="kt">
+						<div class="col-sm-4 col-md-3">
+							<div class="image-box">
+
+								<div class="caption">
+									<a href="#" data-toggle="modal" data-target="#modal-popup">
+										<h4>요청요금제 :데이터 선택 65.8</h4>
+										<p>통신사 :KT</p>
+										<p>추가옵션 : 없음</p>
+										<p>희망단말기 : 갤럭시 S7</p>
+										<p>제안시작일 : 월/일 몇시</p>
+										<p>제안마감일 : 월/일 몇시</p>
+									</a>
+								</div>
+							</div>
+
+						</div>
+					</li>
+
+					<li class="kt">
+						<div class="col-sm-4 col-md-3">
+							<div class="image-box">
+
+								<div class="caption">
+									<a href="#" data-toggle="modal" data-target="#modal-popup">
+										<h4>요청요금제 :데이터 선택 65.8</h4>
+										<p>통신사 :KT</p>
+										<p>추가옵션 : 없음</p>
+										<p>희망단말기 : 갤럭시 S7</p>
+										<p>제안시작일 : 월/일 몇시</p>
+										<p>제안마감일 : 월/일 몇시</p>
+									</a>
+								</div>
+							</div>
+
+						</div>
+					</li>
+
+				</ul>
+			</div>
+
+
+		</div>
+		<!-- ./container -->
+
+	</section>
+	<!-- ./portfolio -->
+
+
+	<div class="modal fade modal-theme" id="modal-popup" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Image Title</h4>
+				</div>
+				<div class="modal-body">
+					<figure>
+						<img src="img/img1.jpg" alt="image"
+							class="img-responsive text-center">
+					</figure>
+					<h4>Description</h4>
+					<p>Donec diam quam, sagittis nec velit condimentum, imperdiet
+						tincidunt leo. Vivamus ullamcorper nibh ut purus mattis tempus.
+						Praesent vel enim tincidunt, euismod urna vitae, ullamcorper
+						felis. Morbi interdum, ex ut ornare aliquam, sapien tellus commodo
+						neque, in convallis diam mi ut leo. Praesent id lectus porta,
+						ultrices arcu quis, auctor orci. Mauris eget pharetra leo. Quisque
+						eu sapien tortor. Pellentesque fringilla porta lectus, eu
+						sollicitudin est imperdiet ut. Suspendisse at tortor sit amet
+						turpis semper cursus. Aenean tortor est, blandit id turpis vel,
+						placerat dictum risus.</p>
+					<a href="#">Sample Link</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ./ modal-theme -->
+
+
+
+
+
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="static/des/js/jquery-1.11.3.min.js"></script>
+	<script src="static/des/js/bootstrap.min.js"></script>
+
+	<!-- smooth-scroll -->
+	<script src="static/des/plugins/smooth-scroll/smooth-scroll.js"></script>
+
+	<!-- backstretch -->
+	<script src="static/des/plugins/backstretch/backstretch.min.js"></script>
+
+	<!-- owl-carousel -->
+	<script src="static/des/plugins/owl-carousel/owl.carousel.js"></script>
+
+	<!-- wow -->
+	<script src="static/des/plugins/wow/wow.js"></script>
+
+	<!-- typed -->
+	<script src="static/des/plugins/typed/typed.min.js"></script>
+
+	<!-- magnific-popup -->
+	<script
+		src="static/des/plugins/magnific-popup/jquery.magnific-popup.js"></script>
+
+	<!-- jqBootstrapValidation -->
+	<script
+		src="static/des/plugins/jqBootstrapValidation/jqBootstrapValidation.js"></script>
+
+	<!-- switcher -->
+	<script type="text/javascript" src="static/des/switcher/switcher.js"></script>
+
+	<!-- main js -->
+	<script src="static/des/js/main.js"></script>
+
+	<script>
+		// $(document).ready(function(){
+		//     $('#a').on("click", function(){
+		//         console.log('click');
+		//
+		//
+		//
+		//     })
+		// })
+	</script>
+
+</body>
+
+</html>
