@@ -4,15 +4,20 @@
 <head>
     <% include partials/head.ejs %>
     <style>
-        .totombot{
-            position: fixed;
-            top: 0;
-            right: 0;
-            height: 100px;
+        input[type="submit"] {
+            color: black;
         }
 
+        h4#myModalLabel {
+            color: black;
+        }
+
+        .form-control {
+            background-color: rgba(202, 193, 193, 0.5);
+        }
 
     </style>
+
 </head>
 
 <body class="slider-background">
@@ -26,7 +31,6 @@
     <!-- pattern -->
     <div id="bg_pattern"></div>
     <!-- ./pattern -->
-
 
     <!-- scrollToTop -->
     <a href="#" class="scrollToTop"> <i class="fa fa-angle-up fa-2x"></i></a>
@@ -52,19 +56,14 @@
 				<a data-scroll href="" data-toggle="modal" data-target="#login">로그인</a>
 			</li>
 		    <% } %>
-            <li><a data-scroll href="">마이페이지</a></li>
+            <li><a data-scroll href="#">마이페이지</a></li>
             <li><a data-scroll href="#findCost">요금제찾기/구매하기</a></li>
             <li><a data-scroll href="#findCost">판매자등록/판매하기</a></li>
             <li><a data-scroll href="">판매자페이지</a></li>
             <li><a data-scroll href="#team">개발 팀</a></li>
             <li><a data-scroll href="#contact">Contact</a></li>
-            <li><a href="https://www.messenger.com/t/731585810353330" target="popup" onclick="window.open('https://www.messenger.com/t/731585810353330','popup','width=900,height=600'); return false;">탐탐봇</a></li>
+            <li><a href="https://www.messenger.com/t/731585810353330" target="popup" onclick="window.open('https://www.messenger.com/t/731585810353330','popup','width=800,height=700'); return false;">탐탐봇</a></li>
         </ul>
-
-        <!--tomtombot-->
-<!--         <div class="tomtombot"> -->
-<!--             <a id="tomlink" href="https://www.messenger.com/t/731585810353330" target="popup" onclick="window.open('https://www.messenger.com/t/731585810353330','popup','width=900,height=600'); return false;">탐탐봇</a> -->
-<!--         </div> -->
     </nav>
     <!-- ./sidebar -->
 
@@ -126,8 +125,8 @@
 	            </div>
 	            <!--<div class="modal-footer">
 	                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-	                <button type="button" class="btn btn-primary" id="rgBtn">회원가입</button>-->
-	            </div>
+	                <button type="button" class="btn btn-primary" id="rgBtn">회원가입</button>
+	            </div>-->
 	        </div>
 	    </div>
 	</div>
@@ -184,7 +183,7 @@
                     <p>
                         통신사마다 다양한 요금제가 많고, 그 중에 내가 필요한 요금제를 찾기란 시간과 노력이 듭니다. <br> 몇 가지로 간단한 질문만으로 요금제를 추천해드리는 탐탐 요금제 찾기 서비스를 사용해보세요.<br> 맘에 드는 요금제를 찾고난 뒤엔 해당 요금제로 판매자들에게 제안받는 거래를 등록할 수 있습니다.
                     </p>
-                    <a class="btn btn-custom btn-lg" href="https://www.messenger.com/t/731585810353330" target="popup" onclick="window.open('https://www.messenger.com/t/731585810353330','popup','width=900,height=600'); return false;">요금제 찾기 시작</a> <a href="#" class="btn btn-custom btn-lg">구매희망 게시판</a>
+                    <a class="btn btn-custom btn-lg" href="#" target="popup" onclick="window.open('https://www.messenger.com/t/731585810353330','popup','width=900,height=600'); return false;">요금제 찾기 시작</a> <a href="/boardPage" class="btn btn-custom btn-lg">구매희망 게시판</a>
                 </div>
             </div>
 
@@ -333,7 +332,6 @@
     <!-- ./right-content -->
 
 
-
     <!-- Modal -->
     <%# <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -354,8 +352,6 @@
 
         </div>
     </div>%>
-
-
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -389,17 +385,13 @@
     <!-- main js -->
     <script src="static/des/js/main.js"></script>
 
-    <script>
-    // $(document).ready(function(){
-    //     $('#a').on("click", function(){
-    //         console.log('click');
-    //
-    //
-    //
-    //     })
-    // })
 
-    </script>
+
+
+
+
+</script>
+
 
 </body>
 

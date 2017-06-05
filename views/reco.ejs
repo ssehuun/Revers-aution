@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<% include partials/head.ejs %>
+<style>
+input[type="submit"] {
+	color: black;
+}
+
+h4#myModalLabel {
+	color: black;
+}
+
+.form-control {
+	background-color: rgba(202, 193, 193, 0.5);
+}
+
+.right-content .section {
+	padding: 100px 0 0px;
+}
+
+.fixed-table-body {
+	overflow-x: auto;
+	height:250px;
+	border: solid 5px white;
+    border-radius: 10px;
+}
+
+.container_border {
+    border: solid 5px white;
+    border-radius: 10px;
+    padding-left: 5%;
+    padding-right: 5%;
+    background: #3a3838;
+}
+
+.row1 input{
+	color:black;
+}
+</style>
+
+
+<!-- datepicker -->
+<link rel="stylesheet" type="text/css"
+	href="static/datetimepicker/build/jquery.datetimepicker.css" />
+<style type="text/css">
+.custom-date-style {
+	background-color: red !important;
+}
+
+.input {
+
+}
+
+.input-wide {
+	width: 500px;
+}
+
+</style>
+
+</head>
+
+<body class="slider-background">
+
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- ./Preloader -->
+
+	<!-- pattern -->
+	<div id="bg_pattern"></div>
+	<!-- ./pattern -->
+
+
+	<!-- scrollToTop -->
+	<a href="#" class="scrollToTop"> <i class="fa fa-angle-up fa-2x"></i></a>
+	<!-- ./scrollToTop -->
+
+
+	<!-- sidebar -->
+	<nav class="sidebar">
+		<a class="logo" href="/"> <img src="static/des/img/logo.png"
+			alt="" style="width: 160px;">
+		</a> <a href="#" class="menu-toggle"><i class="fa fa-navicon"></i></a>
+
+		<ul class="menu">
+			<li><a data-scroll href="" data-toggle="modal"
+				data-target="#register">회원가입</a></li>
+                <% if(nickname){ %>
+			<li><%= nickname %>님 환영합니다!</li>
+			<li><a href='/auth/logout'>로그아웃</a></li> <% }else{ %>
+			<li><a data-scroll href="" data-toggle="modal"
+				data-target="#login">로그인</a></li> <% } %>
+			<li><a data-scroll href="">마이페이지</a></li>
+			<li><a data-scroll href="#findCost">요금제찾기/구매하기</a></li>
+			<li><a data-scroll href="#findCost">판매자등록/판매하기</a></li>
+			<li><a data-scroll href="">판매자페이지</a></li>
+			<li><a data-scroll href="#team">개발 팀</a></li>
+			<li><a data-scroll href="#contact">Contact</a></li>
+			<li><a href="https://www.messenger.com/t/731585810353330"
+				target="popup"
+				onclick="window.open('https://www.messenger.com/t/731585810353330','popup','width=900,height=600'); return false;">탐탐봇</a></li>
+		</ul>
+	</nav>
+	<!-- ./sidebar -->
+
+
+	<!-- 로그인Modal -->
+	<div class="modal fade" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" id="login">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">로그인</h4>
+				</div>
+				<div class="modal-body">
+					<form class="" action="/auth/login" method="post">
+						<p>
+							<input type="text" name="username" value="" placeholder="이메일">
+						</p>
+						<p>
+							<input type="password" name="password" value=""
+								placeholder="비밀번호">
+						</p>
+						<p>
+							<input class="btn btn-default btn-lg" type="submit" name=""
+								value="제출">
+						</p>
+					</form>
+				</div>
+				<!--<div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+	                <button type="button" class="btn btn-primary">로그인</button>
+	            </div>-->
+			</div>
+		</div>
+	</div>
+
+	<!-- 회원가입 모달-->
+	<div class="modal fade" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" id="register">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">회원가입</h4>
+				</div>
+				<div class="modal-body">
+					<form class="" action="/auth/register" method="post">
+						<p>
+							<input type="text" class="form-control" name="username"
+								placeholder="이메일">
+						</p>
+						<p>
+							<input type="password" class="form-control" name="password"
+								placeholder="비밀번호">
+						</p>
+						<p>
+							<input type="text" class="form-control" name="realname"
+								placeholder="이름">
+						</p>
+						<p>
+							<input type="text" class="form-control" name="nickname"
+								placeholder="닉네임">
+						</p>
+						<p>
+							<input type="text" class="form-control" name="phone"
+								placeholder="연락처">
+						</p>
+						<p>
+							<input class="btn btn-default btn-lg" type="submit" name=""
+								value="제출">
+						</p>
+					</form>
+				</div>
+				<!--<div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+	                <button type="button" class="btn btn-primary" id="rgBtn">회원가입</button>-->
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- right-content -->
+	<div class="right-content">
+
+		<!-- section -->
+		<section class="section">
+			<div class="container">
+				<div class="section-heading">
+					<h2>요금제 분석 결과</h2>
+					<% if(basicReco){ %>
+						<%= basicReco %>
+					<%} else{%>
+					<%}%>
+					<div class="separator"></div>
+				</div>
+			</div>
+			<!-- ./container -->
+
+		</section>
+		<!-- ./section -->
+		<!-- section -->
+		<section class="section">
+			<div class="container container_border">
+				<div class="row">
+					<div class="col-md-4">
+						<label for="Co_select1">유사 유저기반 추천</label> <select
+							class="form-control" id="Co_select1">
+							<option>없음</option>
+						</select>
+					</div>
+					<div class="col-md-4">
+						<label for="Co_select2">기본요금제 추천</label> <select
+							class="form-control" id="Co_select2">
+							<option>없음</option>
+							<option>1</option>
+							<option>2</option>
+						</select>
+					</div>
+					<div class="col-md-4">
+						<label for="Co_select3">기본+데이터안심 조합 추천</label> <select
+							class="form-control" id="Co_select3">
+							<option>없음</option>
+							<option>1</option>
+							<option>2</option>
+						</select>
+					</div>
+				</div>
+				<div class="row"></div>
+				<div class="row">
+					<div class="col-md-6">
+						<label for="Di_select1">가족할인 추천</label> <select
+							class="form-control" id="Di_select1">
+							<option>없음</option>
+						</select>
+					</div>
+					<div class="col-md-6">
+						<label for="Di_select2">장기할인 추천</label> <select
+							class="form-control" id="Di_select2">
+							<option value=''>없음</option>
+							<option value='코드값1'>1</option>
+							<option value='코드값2'>2</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row ">
+					<label>단말기 정보</label>
+					<p>애플사 단말기의 경우 통신사가 지원하지않거나 통신사마다 단말기 가격이 달라질 수 있습니다.
+					<div class="fixed-table-body">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th scope="col">선 택 </th>
+									<th scope="col">단말기 이름</th>
+									<th scope="col">용량</th>
+									<th scope="col">제조사</th>
+									<th scope="col">단말기 가격</th>
+									<th scope="col">공시지원금</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td scope="row"><input type="radio" name="Pd_select" value="코드값"></td>
+									<td>아이폰 7S 플러스</td>
+									<td>32GB</td>
+									<td>애플</td>
+									<td>1021900</td>
+									<td>71000</td>
+								</tr>
+								<tr>
+									<td scope="row"><input type="radio" name="Pd_select" value="코드값"></td>
+									<td>아이폰 7S 플러스</td>
+									<td>32GB</td>
+									<td>애플</td>
+									<td>1021900</td>
+									<td>71000</td>
+								</tr>
+								<tr>
+									<td scope="row"><input type="radio" name="Pd_select" value="코드값"></td>
+									<td>아이폰 7S 플러스</td>
+									<td>32GB</td>
+									<td>애플</td>
+									<td>1021900</td>
+									<td>71000</td>
+								</tr>
+								<tr>
+									<td scope="row"><input type="radio" name="Pd_select" value="코드값"></td>
+									<td>아이폰 7S 플러스</td>
+									<td>32GB</td>
+									<td>애플</td>
+									<td>1021900</td>
+									<td>71000</td>
+								</tr>
+								<tr>
+									<td scope="row"><input type="radio" name="Pd_select" value="코드값"></td>
+									<td>아이폰 7S 플러스</td>
+									<td>32GB</td>
+									<td>애플</td>
+									<td>1021900</td>
+									<td>71000</td>
+								</tr>
+								<tr>
+									<td scope="row"><input type="radio" name="Pd_select" value="코드값"></td>
+									<td>아이폰 7S 플러스</td>
+									<td>32GB</td>
+									<td>애플</td>
+									<td>1021900</td>
+									<td>71000</td>
+								</tr>
+								<tr>
+									<td scope="row"><input type="radio" name="Pd_select" value="코드값"></td>
+									<td>아이폰 7S 플러스</td>
+									<td>32GB</td>
+									<td>애플</td>
+									<td>1021900</td>
+									<td>71000</td>
+								</tr>
+
+
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="row row1">
+					<div class="col-md-3">
+						<label>단말할인 선택 </label><br />
+						<input type="text"id="result1" readonly/>
+					</div>
+					<div class="col-md-3">
+						<label>24개월 약정할인 선택시 </label><br />
+						<input type="text"id="result2" readonly/>
+					</div>
+
+					<div class="col-md-3">
+						<label>경매시작일</label><br /> <input type="text" class="some_class"
+							value="" id="start_date" />
+					</div>
+					<div class="col-md-3">
+						<label>경매마감일</label><br /> <input type="text" class="some_class"
+							value="" id="end_date" />
+					</div>
+				</div>
+
+
+				<div class="row">
+					<div class="col-md-1 col-md-offset-11">
+						<input class="btn btn-default" type="submit" name=""
+							value="제안받기">
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- ./section -->
+		<!-- footer -->
+		<% include partials/footer.ejs %>
+		<!-- ./footer -->
+
+	</div>
+	<!-- ./right-content -->
+
+
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="static/des/js/jquery-1.11.3.min.js"></script>
+	<script src="static/des/js/bootstrap.min.js"></script>
+
+	<!-- smooth-scroll -->
+	<script src="static/des/plugins/smooth-scroll/smooth-scroll.js"></script>
+
+	<!-- backstretch -->
+	<script src="static/des/plugins/backstretch/backstretch.min.js"></script>
+
+	<!-- owl-carousel -->
+	<script src="static/des/plugins/owl-carousel/owl.carousel.js"></script>
+
+	<!-- wow -->
+	<script src="static/des/plugins/wow/wow.js"></script>
+
+	<!-- typed -->
+	<script src="static/des/plugins/typed/typed.min.js"></script>
+
+	<!-- magnific-popup -->
+	<script
+		src="static/des/plugins/magnific-popup/jquery.magnific-popup.js"></script>
+
+	<!-- jqBootstrapValidation -->
+	<script
+		src="static/des/plugins/jqBootstrapValidation/jqBootstrapValidation.js"></script>
+
+	<!-- switcher -->
+	<script type="text/javascript" src="static/des/switcher/switcher.js"></script>
+
+	<!-- main js -->
+	<script src="static/des/js/main.js"></script>
+
+	<!-- datepickier -->
+	<script src="static/datetimepicker/build/jquery.datetimepicker.full.js"></script>
+	<script>
+		$('.some_class').datetimepicker();
+	</script>
+
+</body>
+
+</html>

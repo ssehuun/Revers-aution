@@ -1109,7 +1109,7 @@ app.get(['/', '/content/:id'], function(req, res) {
         res.render('index',{nickname:''});
     }
 });
-// boardPage.ejs 페이지 라우팅
+// board.ejs 페이지 라우팅
 app.get('/boardPage', function(req, res) {
     // passport는 원래 req가 가지고 있지 않은 객체인 user객체를 req의 소속으로 만들어줌
     // user는 deserializeUser의 done함수의 두번째 인자인 user로 부터 기인
@@ -1119,7 +1119,7 @@ app.get('/boardPage', function(req, res) {
         res.render('board',{nickname:''});
     }
 });
-// recoPage.ejs 페이지 라우팅
+// board.ejs 페이지 라우팅
 app.get('/recoPage', function(req, res) {
     // passport는 원래 req가 가지고 있지 않은 객체인 user객체를 req의 소속으로 만들어줌
     // user는 deserializeUser의 done함수의 두번째 인자인 user로 부터 기인
