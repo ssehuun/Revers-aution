@@ -88,11 +88,13 @@ h4#myModalLabel {
 		<ul class="menu">
 			<li><a data-scroll href="" data-toggle="modal"
 				data-target="#register">회원가입</a></li>
-                <% if(nickname){ %>
+            <% if(nickname){ %>
 			<li><%= nickname %>님 환영합니다!</li>
-			<li><a href='/auth/logout'>로그아웃</a></li> <% }else{ %>
+			<li><a href='/auth/logout'>로그아웃</a></li> <% }
+			else{ %>
 			<li><a data-scroll href="" data-toggle="modal"
-				data-target="#login">로그인</a></li> <% } %>
+				data-target="#login">로그인</a></li>
+			<% } %>
 			<li><a data-scroll href="">마이페이지</a></li>
 			<li><a data-scroll href="#findCost">요금제찾기/구매하기</a></li>
 			<li><a data-scroll href="#findCost">판매자등록/판매하기</a></li>
@@ -199,10 +201,6 @@ h4#myModalLabel {
 			<div class="container">
 				<div class="section-heading">
 					<h2>요금제 분석 결과</h2>
-					<% if(basicReco){ %>
-						<%= basicReco %>
-					<%} else{%>
-					<%}%>
 					<div class="separator"></div>
 				</div>
 			</div>
@@ -215,49 +213,43 @@ h4#myModalLabel {
 			<div class="container container_border">
 				<div class="row">
 					<div class="col-md-4">
-						<label for="Co_select1">유사 유저기반 추천</label> <select
-							class="form-control" id="Co_select1">
-							<option>없음</option>
+						<label for="Co_select1">유사 유저기반 추천</label>
+						<select class="form-control" id="Co_select1">
+							<option value=""></option>
 						</select>
 					</div>
 					<div class="col-md-4">
-						<label for="Co_select2">기본요금제 추천</label> <select
-							class="form-control" id="Co_select2">
-							<option>없음</option>
-							<option>1</option>
-							<option>2</option>
+						<label for="Co_select2">기본요금제 추천</label>
+						<select class="form-control" id="Co_select2">
+						<% for (let cost in basicReco) {%>
+							<option value=""><%=basicReco[cost]%></option>
+						<%}%>
 						</select>
 					</div>
 					<div class="col-md-4">
-						<label for="Co_select3">기본+데이터안심 조합 추천</label> <select
-							class="form-control" id="Co_select3">
-							<option>없음</option>
-							<option>1</option>
-							<option>2</option>
-						</select>
+						<label for="Co_select3">기본+데이터안심 조합 추천</label>
+						<button id="co3">조합 데이터 가져오기</button>
+						<select class="form-control" id="Co_select3"></select>
 					</div>
 				</div>
 				<div class="row"></div>
 				<div class="row">
 					<div class="col-md-6">
-						<label for="Di_select1">가족할인 추천</label> <select
-							class="form-control" id="Di_select1">
-							<option>없음</option>
-						</select>
+						<label for="Di_select1">가족할인 추천</label>
+						<button id="di1">가족할인 가져오기</button>
+						<select class="form-control" id="Di_select1"></select>
 					</div>
 					<div class="col-md-6">
-						<label for="Di_select2">장기할인 추천</label> <select
-							class="form-control" id="Di_select2">
-							<option value=''>없음</option>
-							<option value='코드값1'>1</option>
-							<option value='코드값2'>2</option>
-						</select>
+						<label for="Di_select2">장기할인 추천</label>
+						<button id="di2">가족할인 가져오기</button>
+						<select class="form-control" id="Di_select2"></select>
 					</div>
 				</div>
 
 				<div class="row ">
 					<label>단말기 정보</label>
-					<p>애플사 단말기의 경우 통신사가 지원하지않거나 통신사마다 단말기 가격이 달라질 수 있습니다.
+					<p>애플사 단말기의 경우 통신사가 지원하지않거나 통신사마다 단말기 가격이 달라질 수 있습니다.</p>
+					<button type="button" name="button" id="di3"></button>
 					<div class="fixed-table-body">
 						<table class="table table-bordered">
 							<thead>
@@ -270,71 +262,17 @@ h4#myModalLabel {
 									<th scope="col">공시지원금</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td scope="row"><input type="radio" name="Pd_select" value="코드값"></td>
-									<td>아이폰 7S 플러스</td>
-									<td>32GB</td>
-									<td>애플</td>
-									<td>1021900</td>
-									<td>71000</td>
-								</tr>
-								<tr>
-									<td scope="row"><input type="radio" name="Pd_select" value="코드값"></td>
-									<td>아이폰 7S 플러스</td>
-									<td>32GB</td>
-									<td>애플</td>
-									<td>1021900</td>
-									<td>71000</td>
-								</tr>
-								<tr>
-									<td scope="row"><input type="radio" name="Pd_select" value="코드값"></td>
-									<td>아이폰 7S 플러스</td>
-									<td>32GB</td>
-									<td>애플</td>
-									<td>1021900</td>
-									<td>71000</td>
-								</tr>
-								<tr>
-									<td scope="row"><input type="radio" name="Pd_select" value="코드값"></td>
-									<td>아이폰 7S 플러스</td>
-									<td>32GB</td>
-									<td>애플</td>
-									<td>1021900</td>
-									<td>71000</td>
-								</tr>
-								<tr>
-									<td scope="row"><input type="radio" name="Pd_select" value="코드값"></td>
-									<td>아이폰 7S 플러스</td>
-									<td>32GB</td>
-									<td>애플</td>
-									<td>1021900</td>
-									<td>71000</td>
-								</tr>
-								<tr>
-									<td scope="row"><input type="radio" name="Pd_select" value="코드값"></td>
-									<td>아이폰 7S 플러스</td>
-									<td>32GB</td>
-									<td>애플</td>
-									<td>1021900</td>
-									<td>71000</td>
-								</tr>
-								<tr>
-									<td scope="row"><input type="radio" name="Pd_select" value="코드값"></td>
-									<td>아이폰 7S 플러스</td>
-									<td>32GB</td>
-									<td>애플</td>
-									<td>1021900</td>
-									<td>71000</td>
-								</tr>
-
-
+							<tbody id="Di_select3">
 
 							</tbody>
 						</table>
 					</div>
 				</div>
-
+				<div class="row">
+					<p>
+					<textarea name="name" rows="4" cols="80" placeholder="고객님의 요구사항을 적어주세요"></textarea>
+					</p>
+				</div>
 				<div class="row row1">
 					<div class="col-md-3">
 						<label>단말할인 선택 </label><br />
@@ -412,7 +350,92 @@ h4#myModalLabel {
 	<script>
 		$('.some_class').datetimepicker();
 	</script>
-
+	<script>
+		// 기존+데이터 안심
+		$('#co3').on('click', function(){
+			$.ajax({
+				type: "GET",
+			    url: "/addOption",
+			    dataType: "json",
+			    cache:false,
+			    success: function (data) {
+					console.log(data);
+					$('#Co_select3').empty();
+					let str = '';
+					str += '<option>선택</option>'
+					for(let i in data){
+						str += '<option>'+(parseInt(i)+1)+'. '+data[i].spName+' '+data[i].coName+'</option>'
+					}
+					$(str).appendTo('#Co_select3')
+				}
+			})
+		})
+		// 가족할인
+		$('#di1').on('click', function(){
+			$.ajax({
+				type: "GET",
+			    url: "/familyDc",
+			    dataType: "json",
+			    cache:false,
+			    success: function (data) {
+					console.log(data);
+					$('#Di_select1').empty();
+					let str = '';
+					str += '<option>선택</option>'
+					for(let i in data){
+						str += '<option>'+(parseInt(i)+1)+'. '+data[i].diName+' '+data[i].content+'</option>'
+					}
+					$(str).appendTo('#Di_select1')
+				}
+			})
+		})
+		// 장기할인
+		$('#di2').on('click', function(){
+			$.ajax({
+				type: "GET",
+			    url: "/longUseDc",
+			    dataType: "json",
+			    cache:false,
+			    success: function (data) {
+					console.log(data);
+					$('#Di_select2').empty();
+					let str = '';
+					str += '<option>선택</option>'
+					for(let i in data){
+						str += '<option>'+(parseInt(i)+1)+'. '+data[i].diName+' '+data[i].content+'</option>'
+					}
+					$(str).appendTo('#Di_select2')
+				}
+			})
+		})
+		// 단말기 정보
+		$('#di3').on('click', function(){
+			$.ajax({
+				type: "GET",
+			    url: "/productInfo",
+			    dataType: "json",
+			    cache:false,
+			    success: function (data) {
+					console.log(data);
+					$('#Di_select3').empty();
+					let str = '';
+					for(let i in data){
+						str += '<tr>'
+						str += '<td scope="row">'
+						str += '<input type="radio" name="Pd_select"value="코드값">'
+						str += '</td>'
+						str += '<td>'+data[i].pdname+'</td>'
+						str += '<td>'+data[i].memsize+'</td>'
+						str += '<td>'+data[i].cpname+'</td>'
+						str += '<td>'+data[i].pdprice+'</td>'
+						str += '<td>'+data[i].grprice+'</td>'
+						str += '</tr>'
+					}
+					$(str).appendTo('#Di_select3')
+				}
+			})
+		})
+	</script>
 </body>
 
 </html>

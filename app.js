@@ -248,21 +248,21 @@ app.get(['/currentFee', '/currentFee/:id'], function(req, res){
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "5. 요금제에 가입한지 얼마나 되었습니까?",
+                    "text": "5. 통신사에 가입한지 얼마나 되었습니까?",
                     "buttons": [{
                             "url": "https://f416d4f5.ngrok.io/howLongUse/1",
                             "type": "json_plugin_url",
-                            "title": "1개월~6개월"
+                            "title": "7년 이상"
                         },
                         {
                             "url": "https://f416d4f5.ngrok.io/howLongUse/2",
                             "type": "json_plugin_url",
-                            "title": "6개월~1년"
+                            "title": "10~14년 이상"
                         },
                         {
                             "url": "https://f416d4f5.ngrok.io/howLongUse/3",
                             "type": "json_plugin_url",
-                            "title": "1년~2년"
+                            "title": "15년 이상"
                         }
                     ]
                 },
@@ -277,15 +277,15 @@ app.get('/howLongUse/:id', function(req, res){
     let id = req.params.id;
     if(id === '1'){
         userInfo.push({
-            "howLongUse" : "0"
+            "howLongUse" : "7"
         });
     }else if(id === '2'){
         userInfo.push({
-            "howLongUse" : "1"
+            "howLongUse" : "10"
         });
     }else if(id === '3'){
         userInfo.push({
-            "howLongUse" : "2"
+            "howLongUse" : "15"
         });
     }
     console.log(userInfo);
@@ -294,7 +294,7 @@ app.get('/howLongUse/:id', function(req, res){
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "6. 가족중에 같은 통신사가 몇 명 있습니까?",
+                    "text": "6. 가족중에 같은 통신사가 몇 명 있습니까?(본인제외)",
                     "buttons": [{
                             "url": "https://f416d4f5.ngrok.io/sameFamily/1",
                             "type": "json_plugin_url",
@@ -303,12 +303,12 @@ app.get('/howLongUse/:id', function(req, res){
                         {
                             "url": "https://f416d4f5.ngrok.io/sameFamily/2",
                             "type": "json_plugin_url",
-                            "title": "1~2명"
+                            "title": "1명"
                         },
                         {
                             "url": "https://f416d4f5.ngrok.io/sameFamily/3",
                             "type": "json_plugin_url",
-                            "title": "3명 이상"
+                            "title": "2명 이상"
                         }
                     ]
                 },
@@ -979,7 +979,7 @@ app.get(['/displaySize','/displaySize/:id'], function(req, res){
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "18. 단말기 출시일을 선택해주세요(갤럭시 8 기준).",
+                    "text": "18. 단말기 출시일을 선택해주세요(갤럭시8 기준(17.04.21)).",
                     "buttons": [{
                             "url": "https://f416d4f5.ngrok.io/releaseDate/1",
                             "type": "json_plugin_url",
@@ -1008,15 +1008,15 @@ app.get(['/releaseDate','/releaseDate/:id'], function(req, res){
     let id = req.params.id;
     if(id === '1'){
         userInfo.push({
-            "releaseDate" : "0"
+            "releaseDate" : "6"
         });
     }else if(id === '2'){
         userInfo.push({
-            "releaseDate" : "1"
+            "releaseDate" : "12"
         });
     }else if(id === '3'){
         userInfo.push({
-            "releaseDate" : "2"
+            "releaseDate" : "24"
         });
     }
     console.log(userInfo);
@@ -1027,7 +1027,7 @@ app.get(['/releaseDate','/releaseDate/:id'], function(req, res){
                     "template_type": "button",
                     "text": "설문이 끝났습니다. 요금제 추천을 시작할까요?.",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/recoStart",
+                            "url": "https://f416d4f5.ngrok.io/recoPage",
                             "type": "json_plugin_url",
                             "title": "추천 시작하기"
                         }
@@ -1040,10 +1040,10 @@ app.get(['/releaseDate','/releaseDate/:id'], function(req, res){
     res.send(jsonResponse);
 });
 userInfo = [
-    { findProvide: 'K' },
+    { findProvide: 'S' },
     { currentProvide: 'S' },
-    { howLongUse: '0' },
-    { sameFamily: '1' },
+    { howLongUse: '10' },
+    { sameFamily: '2' },
     { age: 'G' },
     { hotSpot: '1' },
     { whichMost: 'data' },
@@ -1054,11 +1054,11 @@ userInfo = [
     { wifiUse: '1' },
     { company: 'S' },
     { displaySize: '5' },
-    { releaseDate: '0' }
+    { releaseDate: '6' }
 ];
 
 // reco.ejs 추천페이지로 이동, 기본질의
-app.get('/recoStart', function(req, res) {
+app.get('/recoPage', function(req, res) {
     let recoCost;
     let sql = "SELECT COCODE, CONAME, SPCODE, SPNAME, COPRICE, TALK, MSN, DATASIZE, FLOOR((DATASIZE/COPRICE)*100) AS DATARATE, ABS((DATASIZE-4000)/4000) as DATANEAR \
     FROM COSTVIEW \
@@ -1071,27 +1071,25 @@ app.get('/recoStart', function(req, res) {
 
     conn.query(sql, [userInfo[0].findProvide, userInfo[4].age], function(err, rows, fields){
         if(!err){
-            console.log(rows);
-
+            //console.log(rows);
             let list = [];
-            for(var i in rows){
+            for(let i in rows){
                 let spName = rows[i].SPNAME;
                 let coName = rows[i].CONAME;
-                list.push(spName + ' ' + coName);
+                list.push(parseInt(i)+1+'. '+spName + ' ' + coName);
             }
-            //let jsonList = JSON.parse(JSON.stringfy(list));
+            // let jsonResponse = {
+            //     "messages": [{"text": "추천이 완료되었습니다. 고객님의 추천 요금제는 홈페이지에서 확인 가능합니다."}]
+            // };
+            // for(let i in list){
+            //     jsonResponse.messages.push({
+            //         "text":(parseInt(i)+1)+". "+list[i]
+            //     });
+            // }
             console.log(list);
-            var jsonResponse = {
-                "messages": [{"text": "추천이 완료되었습니다. 고객님의 추천 요금제는"}]
-            };
-            for(let i in list){
-                jsonResponse.messages.push({
-                    "text":(parseInt(i)+1)+". "+list[i]
-                });
-            }
 
-            console.log(jsonResponse.messages);
-            res.send(jsonResponse);
+            res.render('reco', {basicReco:list, nickname:req.user.NICKNAME, userInfo:userInfo});
+
             //res.redirect('/recoPage/?rows='+rows);
 
         }else{
@@ -1099,27 +1097,19 @@ app.get('/recoStart', function(req, res) {
         }
     });
 });
-app.get('/recoPage', function(req, res){
-    if(req.user && req.user.NICKNAME){
-        res.render('reco',{basicReco:'fuck', nickname:req.user.NICKNAME});
-    }else{
-        res.render('reco', {nickname:'', basicReco:'no'});
-    }
-});
 
 // 데이터 안심 추가옵션
 app.get('/addOption', function(req, res){
-    let sql = "SELECT COCODE,CONAME,SPCODE,SPNAME,COPRICE,TALK,MSN,DATASIZE,EXTRA,APCODE,AGNAME,FLOOR((DATASIZE/COPRICE)*100) AS DATARATE,\
-    ABS((DATASIZE-4000)/4000) as DATANEAR\
+    let sql = "SELECT COCODE,CONAME,SPCODE,SPNAME,COPRICE,TALK,MSN,DATASIZE,EXTRA,APCODE,AGNAME,FLOOR((DATASIZE/COPRICE)*100) AS DATARATE, ABS((DATASIZE-4000)/4000) as DATANEAR\
     FROM COSTVIEW\
     WHERE\
-    SPCODE='L' \
-    AND (APCODE='G' OR APCODE='A')\
+    SPCODE = ? \
+    AND (APCODE = ?)\
     AND DATASIZE > 4000*0.2\
     AND COPRICE<=   (( SELECT MIN(COPRICE) FROM COSTVIEW\
                         WHERE\
-                            SPCODE='L' \
-                            AND (APCODE='G' OR APCODE='A')\
+                            SPCODE=? \
+                            AND (APCODE=?)\
                             AND (DATASIZE >= 4000*0.7 AND abs((DATASIZE-4000)/4000)<1)\
                             AND (TALK=-1 OR TALK >=30*10)\
                             AND (MSN=-1 OR MSN >=30*5)\
@@ -1127,18 +1117,101 @@ app.get('/addOption', function(req, res){
                 )\
     AND (TALK=-1 OR TALK >=30*10)\
     AND (MSN=-1 OR MSN >=30*5)\
-ORDER BY COPRICE DESC\
-LIMIT 3";
+    ORDER BY COPRICE DESC\
+    LIMIT 3";
 
-    conn.query(sql, [userInfo[0].findProvide, userInfo[4].age], function(err, rows, fields){
+    conn.query(sql, [userInfo[0].findProvide, userInfo[4].age, userInfo[0].findProvide, userInfo[4].age], function(err, rows, fields){
         if(!err){
-            console.log(rows);
+            let list = [];
+            for(var i in rows){
+                let spName = rows[i].SPNAME;
+                let coName = rows[i].CONAME;
+                list.push({spName, coName});
+            }
+            console.log(list);
+
+            res.send(list);
+            //res.render('reco', {combiReco:list, nickname:req.user.NICKNAME});
+
         }else{
             console.log(err);
         }
     });
 });
+// 가족체크 했을때 가족할인옵션
+app.get('/familyDc', function(req, res){
+    let sql = "SELECT DICODE,DINAME,SPCODE,DPNAME,DPCODE,DPNAME,DISCOUNT,PERIOD,FAMILY,COST,CONTENT \
+    FROM DISCOUNTVIEW \
+    WHERE FAMILY<=? AND SPCODE= ?\
+    ORDER BY DISCOUNT DESC;";
 
+    conn.query(sql, [userInfo[3].sameFamily, userInfo[0].findProvide], function(err, rows, fields){
+        if(!err){
+            let list = [];
+            for(var i in rows){
+                let diName = rows[i].DINAME;
+                let content = rows[i].CONTENT;
+                list.push({diName,content});
+            }
+            console.log(list);
+            res.send(list);
+            //res.render('reco', {combiReco:list, nickname:req.user.NICKNAME});
+
+        }else{
+            console.log(err);
+        }
+    });
+});
+// 장기할인 체크 했을때
+app.get('/longUseDc', function(req, res){
+    let sql = "SELECT DICODE,DINAME,SPCODE,DPNAME,DPCODE,DPNAME,DISCOUNT,PERIOD,FAMILY,COST,CONTENT\
+    FROM DISCOUNTVIEW\
+    WHERE PERIOD<=? AND SPCODE=?\
+    ORDER BY DISCOUNT DESC;";
+
+    conn.query(sql, [userInfo[2].howLongUse, userInfo[0].findProvide], function(err, rows, fields){
+        if(!err){
+            let list = [];
+            for(var i in rows){
+                let diName = rows[i].DINAME;
+                let content = rows[i].CONTENT;
+                list.push({diName,content});
+            }
+            console.log(list);
+            res.send(list);
+            //res.render('reco', {combiReco:list, nickname:req.user.NICKNAME});
+
+        }else{
+            console.log(err);
+        }
+    });
+});
+// 단말기 정보 가져오기
+app.get('/productInfo', function(req, res){
+    let sql = "SELECT PDNAME,MEMORYSIZE,CPNAME,PDPRICE,GRPRICE\
+    FROM GRANTSVIEW\
+    WHERE SPCODE = ? AND CPCODE = ? AND ONDATE >= DATA_SUB(NOW(), INTERVAL 180DAY);";
+
+    conn.query(sql, [userInfo[0].findProvide, userInfo[12].company], function(err, rows, fields){
+        if(!err){
+            let list = [];
+            for(var i in rows){
+                let pdname = rows[i].PDNAME;
+                let memsize = rows[i].MEMORYSIZE;
+                let cpname = rows[i].CPNAME;
+                let pdprice = rows[i].PDPRICE;
+                let grprice = rows[i].GRPRICE;
+                list.push({pdname, memsize, cpname, pdprice, grprice});
+            }
+            console.log(list);
+            res.send(list);
+            //res.render('reco', {combiReco:list, nickname:req.user.NICKNAME});
+
+        }else{
+            console.log(err);
+        }
+    });
+});
 
 // board.ejs 페이지 라우팅
 app.get('/boardPage', function(req, res) {
