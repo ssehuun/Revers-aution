@@ -1054,7 +1054,7 @@ userInfo = [
     { wifiUse: '1' },
     { company: 'S' },
     { displaySize: '5' },
-    { releaseDate: '6' }
+    { releaseDate: '730' }
 ];
 
 // reco.ejs 추천페이지로 이동, 기본질의
@@ -1188,20 +1188,21 @@ app.get('/longUseDc', function(req, res){
 });
 // 단말기 정보 가져오기
 app.get('/productInfo', function(req, res){
-    let sql = "SELECT PDNAME,MEMORYSIZE,CPNAME,PDPRICE,GRPRICE\
+    let sql = "SELECT PDCODE,PDNAME,MEMORYSIZE,CPNAME,PDPRICE,GRPRICE\
     FROM GRANTSVIEW\
-    WHERE SPCODE = ? AND CPCODE = ? AND ONDATE >= DATA_SUB(NOW(), INTERVAL 180DAY);";
+    WHERE SPCODE = ? AND CPCODE = ? AND ONDATE <= DATE_SUB(NOW(), INTERVAL ? DAY);";
 
-    conn.query(sql, [userInfo[0].findProvide, userInfo[12].company], function(err, rows, fields){
+    conn.query(sql, [userInfo[0].findProvide, userInfo[12].company, userInfo[14].releaseDate], function(err, rows, fields){
         if(!err){
             let list = [];
             for(var i in rows){
+                let pdcode = rows[i].PDCODE;
                 let pdname = rows[i].PDNAME;
                 let memsize = rows[i].MEMORYSIZE;
                 let cpname = rows[i].CPNAME;
                 let pdprice = rows[i].PDPRICE;
                 let grprice = rows[i].GRPRICE;
-                list.push({pdname, memsize, cpname, pdprice, grprice});
+                list.push({pdcode, pdname, memsize, cpname, pdprice, grprice});
             }
             console.log(list);
             res.send(list);
@@ -1338,7 +1339,13 @@ app.get(['/', '/content/:id'], function(req, res) {
         res.render('index',{nickname:''});
     }
 });
-
+app.get('/myPage', function(req, res) {
+    if(req.user && req.user.NICKNAME){
+        res.render('myPage', {nickname:req.user.NICKNAME});
+    }else{
+        res.render('myPage', {nickname:''});
+    }
+});
 
 // 3000번 포트에 접속확인
 http.listen(3000, function() {
@@ -1374,9 +1381,7 @@ app.get('/reverseAuction', function(req, res) {
 app.get('/chat', function(req, res) {
     res.render('chat');
 });
-app.get('/myPage', function(req, res) {
-    res.send('마이페이지');
-});
+
 
 // cookie test
 var products = {

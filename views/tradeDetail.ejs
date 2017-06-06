@@ -14,19 +14,26 @@
 
             .form-control {
                 background-color: rgba(202, 193, 193, 0.5);
+                color: black;
             }
 
             .right-content .section {
                 padding: 100px 0 0px;
             }
 
-            .fixed-table-body {
+            .fixed-table-body1 {
                 overflow-x: auto;
                 height: 500px;
                 border: solid 5px white;
                 border-radius: 10px;
             }
 
+            .fixed-table-body2 {
+                overflow-x: auto;
+                height: 120px;
+                border: solid 1px gray;
+                border-radius: 10px;
+            }
 
             .row1 input {
                 color: black;
@@ -43,6 +50,19 @@
             th,
             table {
                 text-align: center;
+            }
+
+            #deModalHeader {
+                background: #337ab7;
+                ;
+            }
+
+            .modal-content {
+                color: black;
+            }
+
+            .modal-footer {
+                border: 0px solid white;
             }
         </style>
 
@@ -174,7 +194,7 @@
         <section class="section">
             <div class="container">
                 <div class="section-heading">
-                    <h2>나의 거래 확인하기</h2>
+                    <h2>제안 확인하기</h2>
                     <div class="separator"></div>
                 </div>
             </div>
@@ -185,62 +205,66 @@
         <!-- section -->
         <section class="section">
             <div class="container">
-
+                <div class="row" style="text-align: right">
+                    <button class="btn btn-dark btn-lg" onClick="f1()">
+						유사제안 선별하기&nbsp;<i class="fa fa-hand-lizard-o" aria-hidden="true"></i>
+					</button>
+                </div>
                 <div class="row ">
                     <!-- <label>단말기 정보</label> -->
 
-                    <div class="fixed-table-body">
+                    <div class="fixed-table-body1">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col">등록일</th>
                                     <th scope="col">요금제</th>
-                                    <th scope="col">경매시작일</th>
-                                    <th scope="col">경매마감일</th>
-                                    <th scope="col">경매진행상태</th>
-                                    <th scope="col">보기</th>
+                                    <th scope="col">단말기</th>
+                                    <th scope="col">용량</th>
+                                    <th scope="col">최종단말지불액</th>
+                                    <th scope="col">최종월정액</th>
+                                    <th scope="col">사전요청 유사도</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>17-06-05</td>
                                     <td>데이터 선택 69.8</td>
-                                    <td>17-06-30</td>
-                                    <td>17-06-31</td>
-                                    <td>거래대기중</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="함수('게시물코드')"></td>
+                                    <td>아이폰 7 플러스</td>
+                                    <td>128</td>
+                                    <td>10000</td>
+                                    <td>50000</td>
+                                    <td><input type="button" value="보기" class="btn btn-dark btn1" data-toggle="modal" data-target="#detailModal"></td>
                                 </tr>
                                 <tr>
-                                    <td>17-06-06</td>
                                     <td>데이터 선택 69.8</td>
-                                    <td>17-06-08</td>
-                                    <td>17-06-10</td>
-                                    <td>거래진행중</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="함수('게시물코드')"></td>
+                                    <td>아이폰 7 플러스</td>
+                                    <td>128</td>
+                                    <td>10000</td>
+                                    <td>50000</td>
+                                    <td><input type="button" value="보기" class="btn btn-dark btn1"></td>
                                 </tr>
                                 <tr>
-                                    <td>17-06-06</td>
                                     <td>데이터 선택 69.8</td>
-                                    <td>17-06-08</td>
-                                    <td>17-06-09</td>
-                                    <td>선택대기중</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="함수('게시물코드')"></td>
+                                    <td>아이폰 7 플러스</td>
+                                    <td>128</td>
+                                    <td>10000</td>
+                                    <td>50000</td>
+                                    <td><input type="button" value="보기" class="btn btn-dark btn1"></td>
                                 </tr>
                                 <tr>
-                                    <td>17-06-06</td>
                                     <td>데이터 선택 69.8</td>
-                                    <td>17-06-07</td>
-                                    <td>17-06-08</td>
-                                    <td>거래중</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="함수('게시물코드')"></td>
+                                    <td>아이폰 7 플러스</td>
+                                    <td>128</td>
+                                    <td>10000</td>
+                                    <td>50000</td>
+                                    <td><input type="button" value="보기" class="btn btn-dark btn1"></td>
                                 </tr>
                                 <tr>
-                                    <td>17-06-05</td>
                                     <td>데이터 선택 69.8</td>
-                                    <td>17-06-13</td>
-                                    <td>17-06-15</td>
-                                    <td>거래완료</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="함수('게시물코드')"></td>
+                                    <td>아이폰 7 플러스</td>
+                                    <td>128</td>
+                                    <td>10000</td>
+                                    <td>50000</td>
+                                    <td><input type="button" value="보기" class="btn btn-dark btn1"></td>
                                 </tr>
 
 
@@ -259,6 +283,76 @@
 
     </div>
     <!-- ./right-content -->
+
+
+    <!-- 상세 제안서 확인 -->
+    <!-- Modal -->
+    <div id="detailModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div id="deModalHeader" class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">상세제안서 확인하기</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <label for="deConame">통신사:</label> <input type="text" id="deCoName" class="form-control" value="데이터 선택 69.8">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="dePdname">단말기:</label> <input type="text" id="deCoName" class="form-control" value="데이터 선택 69.8">
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="deMemorysize">용량:</label> <input type="text" id="deCoName" class="form-control" value="데이터 선택 69.8">
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <label for="deEtcname">부가옵션:</label>
+                        <div class="fixed-table-body2">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td>데이터 안심옵션</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="deDiname">추가할인:</label>
+                        <div class="fixed-table-body2">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td>가족할인A</td>
+                                </tr>
+                                <tr>
+                                    <td>장기할인A</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="deEtcname">부가내용:</label>
+                        <pre id="deContent"> 사은품 많이 챙겨드려요
+						</pre>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">이
+						제안서로 거래하기</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- .상세제안서 확인 -->
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="static/des/js/jquery-1.11.3.min.js"></script>
     <script src="static/des/js/bootstrap.min.js"></script>
@@ -290,5 +384,17 @@
     <!-- main js -->
     <script src="static/des/js/main.js"></script>
 
+    <script>
+        function f1() {
+            alert("");
+        };
+
+        function f2() {
+            alert("");
+        };
+    </script>
+
+
 </body>
+
 </html>
