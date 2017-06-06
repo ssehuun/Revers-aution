@@ -208,7 +208,7 @@
                                     <td>17-06-30</td>
                                     <td>17-06-31</td>
                                     <td>거래대기중</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="함수('게시물코드')"></td>
+                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="goTrade()"></td>
                                 </tr>
                                 <tr>
                                     <td>17-06-06</td>
@@ -216,7 +216,7 @@
                                     <td>17-06-08</td>
                                     <td>17-06-10</td>
                                     <td>거래진행중</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="함수('게시물코드')"></td>
+                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="goTrade()"></td>
                                 </tr>
                                 <tr>
                                     <td>17-06-06</td>
@@ -224,7 +224,7 @@
                                     <td>17-06-08</td>
                                     <td>17-06-09</td>
                                     <td>선택대기중</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="함수('게시물코드')"></td>
+                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="goTrade()"></td>
                                 </tr>
                                 <tr>
                                     <td>17-06-06</td>
@@ -289,6 +289,13 @@
 
     <!-- main js -->
     <script src="static/des/js/main.js"></script>
+
+    <script>
+        function goTrade(){
+            window.location.href = '/tradeDetail'
+        }
+
+    </script>
 
 </body>
 </html>

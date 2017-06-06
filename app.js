@@ -1317,7 +1317,6 @@ app.post('/auth/login',
         }
     )
 );
-
 app.get('/auth/logout', function(req, res){
     //delete req.session.displayName;
     // req.session.save(function(){
@@ -1344,6 +1343,13 @@ app.get('/myPage', function(req, res) {
         res.render('myPage', {nickname:req.user.NICKNAME});
     }else{
         res.render('myPage', {nickname:''});
+    }
+});
+app.get('/tradeDetail', function(req,res){
+    if(req.user && req.user.NICKNAME){
+        res.render('tradeDetail', {nickname:req.user.NICKNAME});
+    }else{
+        res.render('tradeDetail', {nickname:''});
     }
 });
 
