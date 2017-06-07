@@ -64,6 +64,14 @@
             .modal-footer {
                 border: 0px solid white;
             }
+
+            div#tradeBody {
+   	 			background: rgba(0, 0, 0, 0.75);
+			}
+
+			input.form-control {
+        		color:black;
+			}
         </style>
 
 
@@ -100,6 +108,7 @@
                     <!-- <label>단말기 정보</label> -->
 
                     <div class="fixed-table-body1" id="tradeBody">
+                    	<label>&nbsp;&nbsp;&nbsp;<i class="fa fa-file-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;들어온 모든 제안서</label>
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -155,15 +164,15 @@
                         <label for="deConame">요금제:</label> <input type="text" id="deCoName" class="form-control" value="">
                     </div>
                     <div class="col-md-6">
-                        <label for="deCoprice">기본요금제 가격:</label> <input type="text" id="deCoprice" class="form-control" value="데이터 선택 69.8">
+                        <label for="deCoprice">기본요금제 가격:</label> <input type="text" id="deCoprice" class="form-control" value="">
                     </div>
                     <div class="col-md-6">
-                        <label for="dePdname">단말기:</label> <input type="text" id="dePdname" class="form-control" value="데이터 선택 69.8">
+                        <label for="dePdname">단말기:</label> <input type="text" id="dePdname" class="form-control" value="">
 
                     </div>
 
                     <div class="col-md-6">
-                        <label for="deMemorysize">용량:</label> <input type="text" id="deMemorysize" class="form-control" value="데이터 선택 69.8">
+                        <label for="deMemorysize">용량:</label> <input type="text" id="deMemorysize" class="form-control" value="">
                     </div>
 
 
@@ -186,16 +195,16 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label for="r_pdprice">최종단말금액:</label> <input type="text" id="r_pdprice" class="form-control" value="데이터 선택 69.8">
+                        <label for="r_pdprice">최종단말금액:</label> <input type="text" id="r_pdprice" class="form-control" value="">
                     </div>
 
                     <div class="col-md-6">
-                        <label for="r_coprice">최종월정액:</label> <input type="text" id="r_coprice" class="form-control" value="데이터 선택 69.8">
+                        <label for="r_coprice">최종월정액:</label> <input type="text" id="r_coprice" class="form-control" value="">
                     </div>
 
                     <div class="col-md-12">
                         <label for="deContent">부가내용:</label>
-                        <pre id="deContent"> 사은품 많이 챙겨드려요
+                        <pre id="deContent">
 						</pre>
                     </div>
                 </div>
@@ -246,7 +255,9 @@
 
     </script>
     <script>
+
         $('.updModal').on('click', function() {
+
             let secode = $(this).attr("secode")
             let trcode = $(this).attr("trcode")
             console.log(secode, trcode);
@@ -321,6 +332,8 @@
             })
         })
 
+
+
     $('#simFilter').on('click', function(){
         let trcode = $(this).attr("trcode")
         console.log(trcode);
@@ -333,7 +346,7 @@
             success: function (data) {
 
                 console.log(data)
-                let str = ''
+                let str = '<label>&nbsp;&nbsp;&nbsp;<i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;선별된 제안서</label>'
                 // str += '<div class="row ">'
                 // str += '<div class="fixed-table-body1">'
                 str +=    '<table class="table table-bordered">'
@@ -364,8 +377,83 @@
                 str += '</table>'
                 // str += '</div>'
                 // str += '</div>'
-                $("#tradeBody").append(str)
+                $("#tradeBody").prepend(str)
                 $("#simFilter").unbind("click")
+                $('.updModal').on('click', function() {
+
+            let secode = $(this).attr("secode")
+            let trcode = $(this).attr("trcode")
+            console.log(secode, trcode);
+            $.ajax({
+				type: "GET",
+			    url: "/suggest1",
+                data: {secode, trcode},
+			    dataType: "json",
+			    cache:false,
+			    success: function (data) {
+					console.log(data);
+
+                    $('#deCoName').val(data[0].coname);
+                    $('#deCoprice').val(data[0].coprice);
+                    $('#deSeName').val(data[0].sename);
+                    $('#dePdname').val(data[0].pdname);
+                    $('#deMemorysize').val(data[0].memsize);
+                    $('#r_pdprice').val(data[0].r_pdprice);
+                    $('#r_coprice').val(data[0].r_coprice);
+                    $('#deContent').val(data[0].content);
+				}
+			}).done(function(){
+                $.ajax({
+    				type: "GET",
+    			    url: "/suggest2",
+                    data: {secode, trcode},
+    			    dataType: "json",
+
+    			    cache:false,
+    			    success: function (data) {
+    					console.log(data);
+
+                        $('#diTable').empty()
+                        let str = '';
+                        for(let i in data){
+                            str += '<tr>'
+                            str += '<td>'+data[i].diname+'</td>'
+                            str += '<td>'+data[i].discount
+                            if(data[i].dpcode == 'S'){
+                                str += '원'
+                            }else{
+                                str += '%'
+                            }
+                            str += '</td>'
+                            str += '</tr>'
+                        }
+                        $('#diTable').append(str)
+    				}
+    			})
+            }).done(function(){
+                $.ajax({
+    				type: "GET",
+    			    url: "/suggest3",
+                    data: {secode, trcode},
+    			    dataType: "json",
+
+    			    cache:false,
+    			    success: function (data) {
+
+    					console.log(data);
+                        let str = '';
+                        $('#etTable').empty()
+                        for(let i in data){
+                            str += '<tr>'
+                            str += '<td>'+data[i].etname+'</td>'
+                            str += '<td>'+data[i].etprice+'원</td>'
+                            str += '</tr>'
+                        }
+                        $('#etTable').append(str)
+    				}
+    			})
+            })
+        })
             }
         })
     })

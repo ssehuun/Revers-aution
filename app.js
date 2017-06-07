@@ -1076,7 +1076,8 @@ app.get('/recoPage', function(req, res) {
             for(let i in rows){
                 let spName = rows[i].SPNAME;
                 let coName = rows[i].CONAME;
-                list.push(parseInt(i)+1+'. '+spName + ' ' + coName);
+                let cocode = rows[i].COCODE;
+                list.push({spName, coName, cocode});
             }
             // let jsonResponse = {
             //     "messages": [{"text": "추천이 완료되었습니다. 고객님의 추천 요금제는 홈페이지에서 확인 가능합니다."}]
@@ -1089,8 +1090,6 @@ app.get('/recoPage', function(req, res) {
             console.log(list);
 
             res.render('reco', {basicReco:list, nickname:req.user.NICKNAME, userInfo:userInfo});
-
-            //res.redirect('/recoPage/?rows='+rows);
 
         }else{
             console.log(err);
@@ -1126,7 +1125,8 @@ app.get('/addOption', function(req, res){
             for(var i in rows){
                 let spName = rows[i].SPNAME;
                 let coName = rows[i].CONAME;
-                list.push({spName, coName});
+                let cocode = rows[i].COCODE;
+                list.push({cocode, spName, coName});
             }
             console.log(list);
 
@@ -1151,7 +1151,8 @@ app.get('/familyDc', function(req, res){
             for(var i in rows){
                 let diName = rows[i].DINAME;
                 let content = rows[i].CONTENT;
-                list.push({diName,content});
+                let dicode = rows[i].DICODE;
+                list.push({diName, content, dicode});
             }
             console.log(list);
             res.send(list);
@@ -1175,7 +1176,8 @@ app.get('/longUseDc', function(req, res){
             for(var i in rows){
                 let diName = rows[i].DINAME;
                 let content = rows[i].CONTENT;
-                list.push({diName,content});
+                let dicode = rows[i].DICODE;
+                list.push({diName, content, dicode});
             }
             console.log(list);
             res.send(list);
@@ -1214,7 +1216,9 @@ app.get('/productInfo', function(req, res){
     });
 });
 
+// 나의 거래확인 페이지로 파로
 app.get('/myTrade', function(req, res) {
+
     let sql = "SELECT * FROM TRADEVIEW WHERE MMCODE = ?;";
     conn.query(sql, req.user.CODE, function(err, rows, fields){
         if(!err){
@@ -1346,7 +1350,7 @@ console.log(secode, trcode)
 app.get('/filter', function(req, res) {
     let trcode = req.query.trcode;
     console.log(trcode+'dd');
-    let sql = "SELECT * FROM MATCHJOINTRADEVIEW WHERE TRCODE = ?;";
+    let sql = "SELECT * FROM MATCHJOINTRADEVIEW WHERE TRCODE = ? LIMIT 5;";
     conn.query(sql, trcode, function(err, rows, fields){
         if(!err){
             let list = [];

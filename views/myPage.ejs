@@ -15,6 +15,9 @@
             .form-control {
                 background-color: rgba(202, 193, 193, 0.5);
             }
+            input.form-control {
+            	color:black;
+    		}
 
             .right-content .section {
                 padding: 100px 0 0px;
@@ -96,7 +99,7 @@
                                     <td>거래대기중</td>
                                     <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="goTrade()"></td>
                                 </tr>
-                                
+
 
 
 
@@ -159,10 +162,10 @@
 					let str = '';
 					for(let i in data){
                         str += '<tr>'
-                        str += '<td>'+data[i].trdate+'</td>'
+                        str += '<td>'+data[i].trdate.substring(0,10)+'</td>'
                         str += '<td>'+data[i].coname+'</td>'
-                        str += '<td>'+data[i].opdate+'</td>'
-                        str += '<td>'+data[i].eddate+'</td>'
+                        str += '<td>'+data[i].opdate.substring(0,10)+'</td>'
+                        str += '<td>'+data[i].eddate.substring(0,10)+'</td>'
                         if(data[i]==0){
                             str += '<td>진행중</td>'
                         }else{

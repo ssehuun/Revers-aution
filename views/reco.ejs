@@ -93,14 +93,14 @@ h4#myModalLabel {
 					<div class="col-md-4">
 						<label for="Co_select2">기본요금제 추천</label>
 						<select class="form-control" id="Co_select2">
-						<% for (let cost in basicReco) {%>
-							<option value=""><%=basicReco[cost]%></option>
+						<% for (let i in basicReco) {%>
+							<option value="<%=basicReco[i].cocode%>"><%=basicReco[i].spName%><%=basicReco[i].coName%></option>
 						<%}%>
 						</select>
 					</div>
 					<div class="col-md-4">
 						<label for="Co_select3">기본+데이터안심 조합 추천</label>
-						<button id="co3">조합 데이터 가져오기</button>
+						<!--<button id="co3">조합 데이터 가져오기</button>-->
 						<select class="form-control" id="Co_select3"></select>
 					</div>
 				</div>
@@ -108,12 +108,12 @@ h4#myModalLabel {
 				<div class="row">
 					<div class="col-md-6">
 						<label for="Di_select1">가족할인 추천</label>
-						<button id="di1">가족할인 가져오기</button>
+						<!--<button id="di1">가족할인 가져오기</button>-->
 						<select class="form-control" id="Di_select1"></select>
 					</div>
 					<div class="col-md-6">
 						<label for="Di_select2">장기할인 추천</label>
-						<button id="di2">가족할인 가져오기</button>
+						<!--<button id="di2">가족할인 가져오기</button>-->
 						<select class="form-control" id="Di_select2"></select>
 					</div>
 				</div>
@@ -121,7 +121,7 @@ h4#myModalLabel {
 				<div class="row ">
 					<label>단말기 정보</label>
 					<p>애플사 단말기의 경우 통신사가 지원하지않거나 통신사마다 단말기 가격이 달라질 수 있습니다.</p>
-					<button type="button" name="button" id="di3"></button>
+					<!--<button type="button" name="button" id="di3"></button>-->
 					<div class="fixed-table-body">
 						<table class="table table-bordered">
 							<thead>
@@ -142,7 +142,7 @@ h4#myModalLabel {
 				</div>
 				<div class="row">
 					<p>
-					<textarea name="name" rows="4" cols="80" placeholder="고객님의 요구사항을 적어주세요"></textarea>
+					<textarea id="myCmt" name="name" rows="4" cols="80" placeholder="고객님의 요구사항을 적어주세요"></textarea>
 					</p>
 				</div>
 				<div class="row row1">
@@ -165,10 +165,9 @@ h4#myModalLabel {
 					</div>
 				</div>
 
-
 				<div class="row">
 					<div class="col-md-1 col-md-offset-11">
-						<input class="btn btn-default" type="submit" name="" value="제안받기">
+						<input type="button" name="" class="btn btn-dark" value="제안받기" onclick="goMyTrade();">
 					</div>
 				</div>
 			</div>
@@ -222,8 +221,11 @@ h4#myModalLabel {
 		$('.some_class').datetimepicker();
 	</script>
 	<script>
+		function goMyTrade(){
+			window.location.href = '/myPage'
+		}
 		// 기존+데이터 안심
-		$('#co3').on('click', function(){
+		$(function(){
 			$.ajax({
 				type: "GET",
 			    url: "/addOption",
@@ -235,14 +237,14 @@ h4#myModalLabel {
 					let str = '';
 					str += '<option>선택</option>'
 					for(let i in data){
-						str += '<option>'+(parseInt(i)+1)+'. '+data[i].spName+' '+data[i].coName+'</option>'
+						str += '<option value="'+data[i].cocode+'">'+(parseInt(i)+1)+'. '+data[i].spName+' '+data[i].coName+'</option>'
 					}
 					$(str).appendTo('#Co_select3')
 				}
 			})
 		})
 		// 가족할인
-		$('#di1').on('click', function(){
+		$(function(){
 			$.ajax({
 				type: "GET",
 			    url: "/familyDc",
@@ -254,14 +256,14 @@ h4#myModalLabel {
 					let str = '';
 					str += '<option>선택</option>'
 					for(let i in data){
-						str += '<option>'+(parseInt(i)+1)+'. '+data[i].diName+' '+data[i].content+'</option>'
+						str += '<option value="'+data[i].dicode+'">'+(parseInt(i)+1)+'. '+data[i].diName+' '+data[i].content+'</option>'
 					}
 					$(str).appendTo('#Di_select1')
 				}
 			})
 		})
 		// 장기할인
-		$('#di2').on('click', function(){
+		$(function(){
 			$.ajax({
 				type: "GET",
 			    url: "/longUseDc",
@@ -273,14 +275,14 @@ h4#myModalLabel {
 					let str = '';
 					str += '<option>선택</option>'
 					for(let i in data){
-						str += '<option>'+(parseInt(i)+1)+'. '+data[i].diName+' '+data[i].content+'</option>'
+						str += '<option value="'+data[i].dicode+'">'+(parseInt(i)+1)+'. '+data[i].diName+' '+data[i].content+'</option>'
 					}
 					$(str).appendTo('#Di_select2')
 				}
 			})
 		})
 		// 단말기 정보
-		$('#di3').on('click', function(){
+		$(function(){
 			$.ajax({
 				type: "GET",
 			    url: "/productInfo",
@@ -293,7 +295,7 @@ h4#myModalLabel {
 					for(let i in data){
 						str += '<tr>'
 						str += '<td scope="row">'
-						str += '<input type="radio" name="Pd_select"value="코드값">'
+						str += '<input type="radio" name="Pd_select" pdcode="'+data[i].pdcode+'" memsize="'+data[i].memsize+'">'
 						str += '</td>'
 						str += '<td>'+data[i].pdname+'</td>'
 						str += '<td>'+data[i].memsize+'</td>'
