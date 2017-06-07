@@ -852,9 +852,9 @@ app.get('/wifiUse/:id', function(req, res){
                     "template_type": "button",
                     "text": "고객님의 요금 선호도 조사가 완료되었습니다.\n\n 역경매 시스템을 통해 단말기를 추천 받고 싶으시면 '이어가기'를 선택하시고 요금제 추천만 원하신다면 '그만'을 선택해 주세요.",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/end",
+                            "url": "https://f416d4f5.ngrok.io/recoPage",
                             "type": "json_plugin_url",
-                            "title": "그만"
+                            "title": "그만, 추천시작하기"
                         },
                         {
                             "url": "https://f416d4f5.ngrok.io/going",
@@ -1214,6 +1214,161 @@ app.get('/productInfo', function(req, res){
     });
 });
 
+app.get('/myTrade', function(req, res) {
+    let sql = "SELECT * FROM TRADEVIEW WHERE MMCODE = ?;";
+    conn.query(sql, req.user.CODE, function(err, rows, fields){
+        if(!err){
+            let list = [];
+            for(let i in rows){
+                let trcode = rows[i].TRCODE;
+                let coname = rows[i].CONAME;
+                let trdate = rows[i].TRDATE;
+                let opdate = rows[i].OPDATE;
+                let eddate = rows[i].EDDATE;
+                let confirm = rows[i].CONFIRM;
+                list.push({trcode, coname, trdate, opdate, eddate, confirm});
+            }
+            console.log(list);
+            res.send(list);
+        }else{
+            console.log(err);
+        }
+    });
+});
+app.get('/tradeDetail+:id', function(req,res){
+    let id = req.params.id;
+    console.log(id);
+
+    if(req.user && req.user.NICKNAME){
+        let sql = "SELECT * FROM JOINTRADEVIEW WHERE TRCODE = ?;";
+        conn.query(sql, id, function(err, rows, fields){
+            if(!err){
+                let list = [];
+                for(let i in rows){
+                    let coname = rows[i].CONAME;
+                    let trcode = rows[i].TRCODE;
+                    let secode = rows[i].SECODE;
+                    let pdname = rows[i].PDNAME;
+                    let memsize = rows[i].MEMORYSIZE;
+                    let r_pdprice = rows[i].R_PDPRICE;
+                    let r_coprice = rows[i].R_COPRICE;
+                    list.push({coname, trcode, secode, pdname, memsize, r_pdprice, r_coprice});
+                }
+                console.log(list);
+                res.render('tradeDetail', {data:list, nickname:req.user.NICKNAME});
+            }else{
+                console.log(err);
+            }
+        });
+    }else{
+       res.render('tradeDetail', {data:'', nickname:''});
+    }
+});
+
+app.get('/suggest1', function(req, res) {
+    let secode = req.query.secode;
+    let trcode = req.query.trcode;
+    console.log(secode, trcode)
+    let sql = "SELECT * FROM JOINTRADEVIEW WHERE SECODE = ?\
+    AND TRCODE = ?;";
+
+    conn.query(sql, [secode, trcode], function(err, rows, fields){
+        if(!err){
+            let list = [];
+            for(let i in rows){
+                let coname = rows[i].CONAME;
+                let trcode = rows[i].TRCODE;
+                let secode = rows[i].SECODE;
+                let pdname = rows[i].PDNAME;
+                let sename = rows[i].SENAME;
+                let memsize = rows[i].MEMORYSIZE;
+                let pdprice = rows[i].PDPRICE;
+                let coprice = rows[i].COPRICE;
+                let contnet = rows[i].CONTENT;
+                let r_pdprice = rows[i].R_PDPRICE;
+                let r_coprice = rows[i].R_COPRICE;
+                list.push({coname, coprice, trcode, secode, pdname, memsize, r_pdprice, r_coprice});
+            }
+            console.log(list);
+            res.send(list);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
+app.get('/suggest2', function(req, res) {
+    let secode = req.query.secode;
+    let trcode = req.query.trcode;
+console.log(secode, trcode)
+    let sql = "SELECT * FROM JOINDISCOUNTVIEW WHERE SECODE = ?\
+    AND TRCODE = ?;";
+
+    conn.query(sql, [secode, trcode], function(err, rows, fields){
+        if(!err){
+            let list = [];
+            for(let i in rows){
+                let diname = rows[i].DINAME;
+                let dpcode = rows[i].DPCODE;
+                let discount = rows[i].DISCOUNT;
+                list.push({diname, dpcode, discount});
+            }
+            console.log(list);
+            res.send(list);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
+app.get('/suggest3', function(req, res) {
+    let secode = req.query.secode;
+    let trcode = req.query.trcode;
+console.log(secode, trcode)
+    let sql = "SELECT * FROM JOINTRADEETC WHERE SECODE = ?\
+    AND TRCODE = ?;";
+
+    conn.query(sql, [secode, trcode], function(err, rows, fields){
+        if(!err){
+            let list = [];
+            for(let i in rows){
+                let etprice = rows[i].ETPRICE;
+                let etname = rows[i].ETNAME;
+                list.push({etprice, etname});
+            }
+            console.log(list);
+            res.send(list);
+        }else{
+            console.log(err);
+        }
+    });
+});
+app.get('/filter', function(req, res) {
+    let trcode = req.query.trcode;
+    console.log(trcode+'dd');
+    let sql = "SELECT * FROM MATCHJOINTRADEVIEW WHERE TRCODE = ?;";
+    conn.query(sql, trcode, function(err, rows, fields){
+        if(!err){
+            let list = [];
+            for(let i in rows){
+                let coname = rows[i].CONAME;
+                let trcode = rows[i].TRCODE;
+                let secode = rows[i].SECODE;
+                let matcnt = rows[i].MATCNT;
+                let pdname = rows[i].PDNAME;
+                let memsize = rows[i].MEMORYSIZE;
+                let r_pdprice = rows[i].R_PDPRICE;
+                let r_coprice = rows[i].R_COPRICE;
+                list.push({coname, trcode, secode, pdname, memsize, matcnt, r_pdprice, r_coprice});
+            }
+            console.log(list);
+            res.send(list);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
 // board.ejs 페이지 라우팅
 app.get('/boardPage', function(req, res) {
     // passport는 원래 req가 가지고 있지 않은 객체인 user객체를 req의 소속으로 만들어줌
@@ -1345,16 +1500,10 @@ app.get('/myPage', function(req, res) {
         res.render('myPage', {nickname:''});
     }
 });
-app.get('/tradeDetail', function(req,res){
-    if(req.user && req.user.NICKNAME){
-        res.render('tradeDetail', {nickname:req.user.NICKNAME});
-    }else{
-        res.render('tradeDetail', {nickname:''});
-    }
-});
+
 
 // 3000번 포트에 접속확인
-http.listen(3000, function() {
+http.listen(3300, function() {
     console.log('Example app listening on port 3000!');
 });
 

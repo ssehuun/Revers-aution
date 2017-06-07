@@ -92,14 +92,14 @@
         <section class="section">
             <div class="container">
                 <div class="row" style="text-align: right">
-                    <button class="btn btn-dark btn-lg" onClick="f1()">
+                    <button trcode="<%=data[0].trcode%>" class="btn btn-dark btn-lg" id="simFilter">
 						유사제안 선별하기&nbsp;<i class="fa fa-hand-lizard-o" aria-hidden="true"></i>
 					</button>
                 </div>
-                <div class="row ">
+                <div class="row">
                     <!-- <label>단말기 정보</label> -->
 
-                    <div class="fixed-table-body1">
+                    <div class="fixed-table-body1" id="tradeBody">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -108,52 +108,20 @@
                                     <th scope="col">용량</th>
                                     <th scope="col">최종단말지불액</th>
                                     <th scope="col">최종월정액</th>
-                                    <th scope="col">사전요청 유사도</th>
+                                    <th scope="col">제안서 보기</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody >
+                                <% for (let i in data){ %>
                                 <tr>
-                                    <td>데이터 선택 69.8</td>
-                                    <td>아이폰 7 플러스</td>
-                                    <td>128</td>
-                                    <td>10000</td>
-                                    <td>50000</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1" data-toggle="modal" data-target="#detailModal"></td>
+                                    <td><%=data[i].coname%></td>
+                                    <td><%=data[i].pdname%></td>
+                                    <td><%=data[i].memsize%></td>
+                                    <td><%=data[i].r_pdprice%></td>
+                                    <td><%=data[i].r_coprice%></td>
+                                    <td><input type="button" value="보기" class="btn btn-dark btn1 updModal" data-toggle="modal" secode="<%=data[i].secode%>" trcode="<%=data[i].trcode%>" data-target="#detailModal"></td>
                                 </tr>
-                                <tr>
-                                    <td>데이터 선택 69.8</td>
-                                    <td>아이폰 7 플러스</td>
-                                    <td>128</td>
-                                    <td>10000</td>
-                                    <td>50000</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1"></td>
-                                </tr>
-                                <tr>
-                                    <td>데이터 선택 69.8</td>
-                                    <td>아이폰 7 플러스</td>
-                                    <td>128</td>
-                                    <td>10000</td>
-                                    <td>50000</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1"></td>
-                                </tr>
-                                <tr>
-                                    <td>데이터 선택 69.8</td>
-                                    <td>아이폰 7 플러스</td>
-                                    <td>128</td>
-                                    <td>10000</td>
-                                    <td>50000</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1"></td>
-                                </tr>
-                                <tr>
-                                    <td>데이터 선택 69.8</td>
-                                    <td>아이폰 7 플러스</td>
-                                    <td>128</td>
-                                    <td>10000</td>
-                                    <td>50000</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1"></td>
-                                </tr>
-
-
+                                <%} %>
 
                             </tbody>
                         </table>
@@ -183,26 +151,27 @@
                     <h4 class="modal-title">상세제안서 확인하기</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="col-md-12">
-                        <label for="deConame">통신사:</label> <input type="text" id="deCoName" class="form-control" value="데이터 선택 69.8">
+                    <div class="col-md-6">
+                        <label for="deConame">요금제:</label> <input type="text" id="deCoName" class="form-control" value="">
                     </div>
                     <div class="col-md-6">
-                        <label for="dePdname">단말기:</label> <input type="text" id="deCoName" class="form-control" value="데이터 선택 69.8">
+                        <label for="deCoprice">기본요금제 가격:</label> <input type="text" id="deCoprice" class="form-control" value="데이터 선택 69.8">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="dePdname">단말기:</label> <input type="text" id="dePdname" class="form-control" value="데이터 선택 69.8">
 
                     </div>
 
                     <div class="col-md-6">
-                        <label for="deMemorysize">용량:</label> <input type="text" id="deCoName" class="form-control" value="데이터 선택 69.8">
+                        <label for="deMemorysize">용량:</label> <input type="text" id="deMemorysize" class="form-control" value="데이터 선택 69.8">
                     </div>
 
 
                     <div class="col-md-6">
                         <label for="deEtcname">부가옵션:</label>
                         <div class="fixed-table-body2">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <td>데이터 안심옵션</td>
-                                </tr>
+                            <table class="table table-bordered" id="etTable">
+
                             </table>
                         </div>
                     </div>
@@ -210,19 +179,22 @@
                     <div class="col-md-6">
                         <label for="deDiname">추가할인:</label>
                         <div class="fixed-table-body2">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <td>가족할인A</td>
-                                </tr>
-                                <tr>
-                                    <td>장기할인A</td>
-                                </tr>
+                            <table class="table table-bordered" id="diTable">
+
                             </table>
                         </div>
                     </div>
 
+                    <div class="col-md-6">
+                        <label for="r_pdprice">최종단말금액:</label> <input type="text" id="r_pdprice" class="form-control" value="데이터 선택 69.8">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="r_coprice">최종월정액:</label> <input type="text" id="r_coprice" class="form-control" value="데이터 선택 69.8">
+                    </div>
+
                     <div class="col-md-12">
-                        <label for="deEtcname">부가내용:</label>
+                        <label for="deContent">부가내용:</label>
                         <pre id="deContent"> 사은품 많이 챙겨드려요
 						</pre>
                     </div>
@@ -271,13 +243,134 @@
     <script src="static/des/js/main.js"></script>
 
     <script>
-        function f1() {
-            alert("");
-        };
 
-        function f2() {
-            alert("");
-        };
+    </script>
+    <script>
+        $('.updModal').on('click', function() {
+            let secode = $(this).attr("secode")
+            let trcode = $(this).attr("trcode")
+            console.log(secode, trcode);
+            $.ajax({
+				type: "GET",
+			    url: "/suggest1",
+                data: {secode, trcode},
+			    dataType: "json",
+			    cache:false,
+			    success: function (data) {
+					console.log(data);
+
+                    $('#deCoName').val(data[0].coname);
+                    $('#deCoprice').val(data[0].coprice);
+                    $('#deSeName').val(data[0].sename);
+                    $('#dePdname').val(data[0].pdname);
+                    $('#deMemorysize').val(data[0].memsize);
+                    $('#r_pdprice').val(data[0].r_pdprice);
+                    $('#r_coprice').val(data[0].r_coprice);
+                    $('#deContent').val(data[0].content);
+				}
+			}).done(function(){
+                $.ajax({
+    				type: "GET",
+    			    url: "/suggest2",
+                    data: {secode, trcode},
+    			    dataType: "json",
+
+    			    cache:false,
+    			    success: function (data) {
+    					console.log(data);
+
+                        $('#diTable').empty()
+                        let str = '';
+                        for(let i in data){
+                            str += '<tr>'
+                            str += '<td>'+data[i].diname+'</td>'
+                            str += '<td>'+data[i].discount
+                            if(data[i].dpcode == 'S'){
+                                str += '원'
+                            }else{
+                                str += '%'
+                            }
+                            str += '</td>'
+                            str += '</tr>'
+                        }
+                        $('#diTable').append(str)
+    				}
+    			})
+            }).done(function(){
+                $.ajax({
+    				type: "GET",
+    			    url: "/suggest3",
+                    data: {secode, trcode},
+    			    dataType: "json",
+
+    			    cache:false,
+    			    success: function (data) {
+
+    					console.log(data);
+                        let str = '';
+                        $('#etTable').empty()
+                        for(let i in data){
+                            str += '<tr>'
+                            str += '<td>'+data[i].etname+'</td>'
+                            str += '<td>'+data[i].etprice+'원</td>'
+                            str += '</tr>'
+                        }
+                        $('#etTable').append(str)
+    				}
+    			})
+            })
+        })
+
+    $('#simFilter').on('click', function(){
+        let trcode = $(this).attr("trcode")
+        console.log(trcode);
+        $.ajax({
+            type: "GET",
+            url: "/filter",
+            data: {trcode},
+            dataType: "json",
+            cache:false,
+            success: function (data) {
+
+                console.log(data)
+                let str = ''
+                // str += '<div class="row ">'
+                // str += '<div class="fixed-table-body1">'
+                str +=    '<table class="table table-bordered">'
+                str +=        '<thead>'
+                str +=            '<tr>'
+                str +=                '<th scope="col">요금제</th>'
+                str +=                '<th scope="col">단말기</th>'
+                str +=                '<th scope="col">용량</th>'
+                str +=                '<th scope="col">최종단말지불액</th>'
+                str +=                '<th scope="col">최종월정액</th>'
+                str +=                '<th scope="col">유사도</th>'
+                str +=                '<th scope="col">제안서 보기</th>'
+                str +=            '</tr>'
+                str +=        '</thead>'
+                str +=        '<tbody>'
+                for(let i in data){
+                    str += '<tr>'
+                    str += '<td>'+data[i].coname+'</td>'
+                    str += '<td>'+data[i].pdname+'</td>'
+                    str += '<td>'+data[i].memsize+'</td>'
+                    str += '<td>'+data[i].r_pdprice+'</td>'
+                    str += '<td>'+data[i].r_coprice+'</td>'
+                    str += '<td>'+data[i].matcnt+'</td>'
+                    str += '<td><input type="button" value="보기" class="btn btn-dark btn1 updModal" data-toggle="modal" secode="'+data[i].secode+'" trcode="'+data[i].trcode+'" data-target="#detailModal"></td>'
+                    str += '</tr>'
+                }
+                str += '</tbody>'
+                str += '</table>'
+                // str += '</div>'
+                // str += '</div>'
+                $("#tradeBody").append(str)
+                $("#simFilter").unbind("click")
+            }
+        })
+    })
+
+
     </script>
 
 

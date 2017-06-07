@@ -87,7 +87,7 @@
                                     <th scope="col">보기</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="myBody">
                                 <tr>
                                     <td>17-06-05</td>
                                     <td>데이터 선택 69.8</td>
@@ -96,38 +96,8 @@
                                     <td>거래대기중</td>
                                     <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="goTrade()"></td>
                                 </tr>
-                                <tr>
-                                    <td>17-06-06</td>
-                                    <td>데이터 선택 69.8</td>
-                                    <td>17-06-08</td>
-                                    <td>17-06-10</td>
-                                    <td>거래진행중</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="goTrade()"></td>
-                                </tr>
-                                <tr>
-                                    <td>17-06-06</td>
-                                    <td>데이터 선택 69.8</td>
-                                    <td>17-06-08</td>
-                                    <td>17-06-09</td>
-                                    <td>선택대기중</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="goTrade()"></td>
-                                </tr>
-                                <tr>
-                                    <td>17-06-06</td>
-                                    <td>데이터 선택 69.8</td>
-                                    <td>17-06-07</td>
-                                    <td>17-06-08</td>
-                                    <td>거래중</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="함수('게시물코드')"></td>
-                                </tr>
-                                <tr>
-                                    <td>17-06-05</td>
-                                    <td>데이터 선택 69.8</td>
-                                    <td>17-06-13</td>
-                                    <td>17-06-15</td>
-                                    <td>거래완료</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="함수('게시물코드')"></td>
-                                </tr>
+                                
+
 
 
 
@@ -177,10 +147,36 @@
     <script src="static/des/js/main.js"></script>
 
     <script>
-        function goTrade(){
-            window.location.href = '/tradeDetail'
-        }
-
+        $(function(){
+            $.ajax({
+				type: "GET",
+			    url: "/myTrade",
+			    dataType: "json",
+			    cache:false,
+			    success: function (data) {
+					console.log(data);
+					$('#myBody').empty();
+					let str = '';
+					for(let i in data){
+                        str += '<tr>'
+                        str += '<td>'+data[i].trdate+'</td>'
+                        str += '<td>'+data[i].coname+'</td>'
+                        str += '<td>'+data[i].opdate+'</td>'
+                        str += '<td>'+data[i].eddate+'</td>'
+                        if(data[i]==0){
+                            str += '<td>진행중</td>'
+                        }else{
+                            str += '<td>거래완료</td>'
+                        }
+                        str += '<td>'
+                        str += '<a href="/tradeDetail'+data[i].trcode+'">보기</a>'
+                        str += '</td>'
+						str += '<tr>'
+					}
+					$(str).appendTo('#myBody')
+				}
+			})
+        })
     </script>
 
 </body>
