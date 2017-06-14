@@ -2,517 +2,574 @@
 <html lang="ko">
 
 <head>
-<% include partials/head.ejs %>
-<style>
-input[type="submit"] {
-	color: black;
-}
+    <% include partials/head.ejs %>
+        <style>
+            input[type="submit"] {
+                color: black;
+            }
 
 
-.image-box {
-	background: white;
-	border-radius: 10px;
-}
+            .image-box {
+                background: white;
+                border-radius: 10px;
+            }
 
-.form-control {
-	background-color: rgba(202, 193, 193, 0.5);
-    color: #555;
-}
+            .form-control {
+                background-color: rgba(202, 193, 193, 0.5);
+                color: #555;
+            }
 
-.modal-header {
-	background: #ec008c;
-}
+            .modal-header {
+                background: #ec008c;
+            }
 
-.modal-body {
-	color: black;
-	background: white;
-}
+            .modal-body {
+                color: black;
+                background: white;
+            }
 
-.modal-body h4 {
-	color: black;
-}
+            .modal-body h4 {
+                color: black;
+            }
 
-.modal-body hr {
-	border-top: 1px solid rgb(236, 0, 140);
-}
+            .modal-body hr {
+                border-top: 1px solid rgb(236, 0, 140);
+            }
 
-.detailPage {
-	width: 90%;
-}
+            .detailPage {
+                width: 90%;
+            }
 
-.modal-footer {
-	background: rgb(255, 255, 255);
-}
-.modal_row1{
-	margin:0 3% 0 3%;
-}
+            .modal-footer {
+                background: rgb(255, 255, 255);
+            }
 
-span#myModalLabel{
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+            .modal_row1 {
+                margin: 0 3% 0 3%;
+            }
 
-.span1{
-	background-color: #f5f5f5;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-</style>
+            span#myModalLabel {
+                background-color: #f5f5f5;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            .span1 {
+                background-color: #f5f5f5;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+        </style>
 </head>
 
 <body class="slider-background">
 
-	<!-- Preloader -->
-	<div id="preloader">
-		<div id="status">&nbsp;</div>
-	</div>
-	<!-- ./Preloader -->
+    <% include partials/header.ejs %>
+    
+    <div class="right-content">
+        <!-- portfolio -->
+        <section id="portfolio" class="section">
+            <div class="container">
 
-	<!-- pattern -->
-	<div id="bg_pattern"></div>
-	<!-- ./pattern -->
+                <div class="section-heading">
+                    <h2>거래 상품 페이지</h2>
+                    <div class="separator"></div>
+                </div>
 
+                <div class="text-center">
+                    <ul id="filter">
+                        <li class="current"><a href="#">All</a></li>
+                        <li><a href="#">LG</a></li>
+                        <li><a href="#">KT</a></li>
+                        <li><a href="#">SK</a></li>
+                    </ul>
+                </div>
 
-	<!-- scrollToTop -->
-	<a href="#" class="scrollToTop"> <i class="fa fa-angle-up fa-2x"></i></a>
-	<!-- ./scrollToTop -->
+                <div class="row">
+                    <ul id="portfolio-filter">
 
+                        <li class="lg">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="image-box">
 
-	<!-- sidebar -->
-	<nav class="sidebar">
-		<a class="logo" href="/"> <img src="static/des/img/logo.png"
-			alt="" style="width: 160px;">
-		</a> <a href="#" class="menu-toggle"><i class="fa fa-navicon"></i></a>
+                                    <div class="caption">
+                                        <a href="#" data-toggle="modal" data-target="#modal-popup">
+                                            <h4>요청요금제 : LTE 69</h4>
+                                            <p>통신사 :KT</p>
+                                            <p>추가옵션 : 데이터 안심옵션</p>
+                                            <p>희망단말기 : 없음</p>
+                                            <p>제안시작일 : 월/일 몇시</p>
+                                            <p>제안마감일 : 월/일 몇시</p>
+                                        </a>
+                                    </div>
+                                </div>
 
-		<ul class="menu">
-			<li><a data-scroll href="" data-toggle="modal"
-				data-target="#register">회원가입</a></li> <% if(nickname){ %>
-			<li><%= nickname %>님 환영합니다!</li>
-			<li><a href='/auth/logout'>로그아웃</a></li> <% }else{ %>
-			<li><a data-scroll href="" data-toggle="modal"
-				data-target="#login">로그인</a></li> <% } %>
-			<li><a data-scroll href="">마이페이지</a></li>
-			<li><a data-scroll href="#findCost">요금제찾기/구매하기</a></li>
-			<li><a data-scroll href="#findCost">판매자등록/판매하기</a></li>
-			<li><a data-scroll href="">판매자페이지</a></li>
-			<li><a data-scroll href="#team">개발 팀</a></li>
-			<li><a data-scroll href="#contact">Contact</a></li>
-			<li><a href="https://www.messenger.com/t/731585810353330"
-				target="popup"
-				onclick="window.open('https://www.messenger.com/t/731585810353330','popup','width=900,height=600'); return false;">탐탐봇</a></li>
-		</ul>
-	</nav>
-	<!-- ./sidebar -->
+                            </div>
+                        </li>
 
+                        <li class="sk">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="image-box">
 
-	<!-- 로그인Modal -->
-	<div class="modal fade" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" id="login">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title" id="myModalLabel">로그인</h4>
-				</div>
-				<div class="modal-body">
-					<form class="" action="/auth/login" method="post">
-						<p>
-							<input type="text" name="username" value="" placeholder="이메일">
-						</p>
-						<p>
-							<input type="password" name="password" value=""
-								placeholder="비밀번호">
-						</p>
-						<p>
-							<input class="btn btn-default btn-lg" type="submit" name=""
-								value="제출">
-						</p>
-					</form>
-				</div>
-				<!--<div class="modal-footer">
-	                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-	                <button type="button" class="btn btn-primary">로그인</button>
-	            </div>-->
-			</div>
-		</div>
-	</div>
+                                    <div class="caption">
+                                        <a href="#" data-toggle="modal" data-target="#modal-popup">
+                                            <h4>요청요금제 :Band 데이터 6.5G</h4>
+                                            <p>통신사 :KT</p>
+                                            <p>추가옵션 : 없음</p>
+                                            <p>희망단말기 : 갤럭시 S8</p>
+                                            <p>제안시작일 : 월/일 몇시</p>
+                                            <p>제안마감일 : 월/일 몇시</p>
+                                        </a>
+                                    </div>
+                                </div>
 
-	<!-- 회원가입 모달-->
-	<div class="modal fade" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" id="register">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title" id="myModalLabel">회원가입</h4>
-				</div>
-				<div class="modal-body">
-					<form class="" action="/auth/register" method="post">
-						<p>
-							<input type="text" class="form-control" name="username"
-								placeholder="이메일">
-						</p>
-						<p>
-							<input type="password" class="form-control" name="password"
-								placeholder="비밀번호">
-						</p>
-						<p>
-							<input type="text" class="form-control" name="realname"
-								placeholder="이름">
-						</p>
-						<p>
-							<input type="text" class="form-control" name="nickname"
-								placeholder="닉네임">
-						</p>
-						<p>
-							<input type="text" class="form-control" name="phone"
-								placeholder="연락처">
-						</p>
-						<p>
-							<input class="btn btn-default btn-lg" type="submit" name=""
-								value="제출">
-						</p>
-					</form>
-				</div>
-				<!--<div class="modal-footer">
-	                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-	                <button type="button" class="btn btn-primary" id="rgBtn">회원가입</button>
-				</div>-->
-			</div>
-		</div>
-	</div>
+                            </div>
+                        </li>
+                        <li class="lg">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="image-box">
 
+                                    <div class="caption">
+                                        <a href="#" data-toggle="modal" data-target="#modal-popup">
+                                            <h4>요청요금제 : LTE 69</h4>
+                                            <p>통신사 :LG</p>
+                                            <p>추가옵션 : 데이터 안심옵션</p>
+                                            <p>희망단말기 : 없음</p>
+                                            <p>제안시작일 : 월/일 몇시</p>
+                                            <p>제안마감일 : 월/일 몇시</p>
+                                        </a>
+                                    </div>
+                                </div>
 
-	<div class="right-content">
-		<!-- portfolio -->
-		<section id="portfolio" class="section">
-			<div class="container">
+                            </div>
+                        </li>
 
-				<div class="section-heading">
-					<h2>거래 상품 페이지</h2>
-					<div class="separator"></div>
-				</div>
+                        <li class="sk">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="image-box">
 
-				<div class="text-center">
-					<ul id="filter">
-						<li class="current"><a href="#">All</a></li>
-						<li><a href="#">LG</a></li>
-						<li><a href="#">KT</a></li>
-						<li><a href="#">SK</a></li>
-					</ul>
-				</div>
+                                    <div class="caption">
+                                        <a href="#" data-toggle="modal" data-target="#modal-popup">
+                                            <h4>요청요금제 :Band 데이터 6.5G</h4>
+                                            <p>통신사 :SK</p>
+                                            <p>추가옵션 : 없음</p>
+                                            <p>희망단말기 : 갤럭시 S8</p>
+                                            <p>제안시작일 : 월/일 몇시</p>
+                                            <p>제안마감일 : 월/일 몇시</p>
+                                        </a>
+                                    </div>
+                                </div>
 
-				<div class="row">
-					<ul id="portfolio-filter">
+                            </div>
+                        </li>
 
-						<li class="lg">
-							<div class="col-sm-4 col-md-3">
-								<div class="image-box">
+                        <li class="kt">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="image-box">
 
-									<div class="caption">
-										<a href="#" data-toggle="modal" data-target="#modal-popup">
-											<h4>요청요금제 : LTE 69</h4>
-											<p>통신사 :KT</p>
-											<p>추가옵션 : 데이터 안심옵션</p>
-											<p>희망단말기 : 없음</p>
-											<p>제안시작일 : 월/일 몇시</p>
-											<p>제안마감일 : 월/일 몇시</p>
-										</a>
-									</div>
-								</div>
+                                    <div class="caption">
+                                        <a href="#" data-toggle="modal" data-target="#modal-popup">
+                                            <h4>요청요금제 :데이터 선택 65.8</h4>
+                                            <p>통신사 :KT</p>
+                                            <p>추가옵션 : 없음</p>
+                                            <p>희망단말기 : 갤럭시 S7</p>
+                                            <p>제안시작일 : 월/일 몇시</p>
+                                            <p>제안마감일 : 월/일 몇시</p>
+                                        </a>
+                                    </div>
+                                </div>
 
-							</div>
-						</li>
+                            </div>
+                        </li>
 
-						<li class="sk">
-							<div class="col-sm-4 col-md-3">
-								<div class="image-box">
+                        <li class="kt">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="image-box">
 
-									<div class="caption">
-										<a href="#" data-toggle="modal" data-target="#modal-popup">
-											<h4>요청요금제 :Band 데이터 6.5G</h4>
-											<p>통신사 :KT</p>
-											<p>추가옵션 : 없음</p>
-											<p>희망단말기 : 갤럭시 S8</p>
-											<p>제안시작일 : 월/일 몇시</p>
-											<p>제안마감일 : 월/일 몇시</p>
-										</a>
-									</div>
-								</div>
+                                    <div class="caption">
+                                        <a href="#" data-toggle="modal" data-target="#modal-popup">
+                                            <h4>요청요금제 :데이터 선택 65.8</h4>
+                                            <p>통신사 :KT</p>
+                                            <p>추가옵션 : 없음</p>
+                                            <p>희망단말기 : 갤럭시 S7</p>
+                                            <p>제안시작일 : 월/일 몇시</p>
+                                            <p>제안마감일 : 월/일 몇시</p>
+                                        </a>
+                                    </div>
+                                </div>
 
-							</div>
-						</li>
-						<li class="lg">
-							<div class="col-sm-4 col-md-3">
-								<div class="image-box">
+                            </div>
+                        </li>
 
-									<div class="caption">
-										<a href="#" data-toggle="modal" data-target="#modal-popup">
-											<h4>요청요금제 : LTE 69</h4>
-											<p>통신사 :LG</p>
-											<p>추가옵션 : 데이터 안심옵션</p>
-											<p>희망단말기 : 없음</p>
-											<p>제안시작일 : 월/일 몇시</p>
-											<p>제안마감일 : 월/일 몇시</p>
-										</a>
-									</div>
-								</div>
+                        <li class="kt">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="image-box">
 
-							</div>
-						</li>
+                                    <div class="caption">
+                                        <a href="#" data-toggle="modal" data-target="#modal-popup">
+                                            <h4>요청요금제 :데이터 선택 65.8</h4>
+                                            <p>통신사 :KT</p>
+                                            <p>추가옵션 : 없음</p>
+                                            <p>희망단말기 : 갤럭시 S7</p>
+                                            <p>제안시작일 : 월/일 몇시</p>
+                                            <p>제안마감일 : 월/일 몇시</p>
+                                        </a>
+                                    </div>
+                                </div>
 
-						<li class="sk">
-							<div class="col-sm-4 col-md-3">
-								<div class="image-box">
+                            </div>
+                        </li>
 
-									<div class="caption">
-										<a href="#" data-toggle="modal" data-target="#modal-popup">
-											<h4>요청요금제 :Band 데이터 6.5G</h4>
-											<p>통신사 :SK</p>
-											<p>추가옵션 : 없음</p>
-											<p>희망단말기 : 갤럭시 S8</p>
-											<p>제안시작일 : 월/일 몇시</p>
-											<p>제안마감일 : 월/일 몇시</p>
-										</a>
-									</div>
-								</div>
+                        <li class="kt">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="image-box">
 
-							</div>
-						</li>
+                                    <div class="caption">
+                                        <a href="#" data-toggle="modal" data-target="#modal-popup">
+                                            <h4>요청요금제 :데이터 선택 65.8</h4>
+                                            <p>통신사 :KT</p>
+                                            <p>추가옵션 : 없음</p>
+                                            <p>희망단말기 : 갤럭시 S7</p>
+                                            <p>제안시작일 : 월/일 몇시</p>
+                                            <p>제안마감일 : 월/일 몇시</p>
+                                        </a>
+                                    </div>
+                                </div>
 
-						<li class="kt">
-							<div class="col-sm-4 col-md-3">
-								<div class="image-box">
+                            </div>
+                        </li>
 
-									<div class="caption">
-										<a href="#" data-toggle="modal" data-target="#modal-popup">
-											<h4>요청요금제 :데이터 선택 65.8</h4>
-											<p>통신사 :KT</p>
-											<p>추가옵션 : 없음</p>
-											<p>희망단말기 : 갤럭시 S7</p>
-											<p>제안시작일 : 월/일 몇시</p>
-											<p>제안마감일 : 월/일 몇시</p>
-										</a>
-									</div>
-								</div>
-
-							</div>
-						</li>
-
-						<li class="kt">
-							<div class="col-sm-4 col-md-3">
-								<div class="image-box">
-
-									<div class="caption">
-										<a href="#" data-toggle="modal" data-target="#modal-popup">
-											<h4>요청요금제 :데이터 선택 65.8</h4>
-											<p>통신사 :KT</p>
-											<p>추가옵션 : 없음</p>
-											<p>희망단말기 : 갤럭시 S7</p>
-											<p>제안시작일 : 월/일 몇시</p>
-											<p>제안마감일 : 월/일 몇시</p>
-										</a>
-									</div>
-								</div>
-
-							</div>
-						</li>
-
-						<li class="kt">
-							<div class="col-sm-4 col-md-3">
-								<div class="image-box">
-
-									<div class="caption">
-										<a href="#" data-toggle="modal" data-target="#modal-popup">
-											<h4>요청요금제 :데이터 선택 65.8</h4>
-											<p>통신사 :KT</p>
-											<p>추가옵션 : 없음</p>
-											<p>희망단말기 : 갤럭시 S7</p>
-											<p>제안시작일 : 월/일 몇시</p>
-											<p>제안마감일 : 월/일 몇시</p>
-										</a>
-									</div>
-								</div>
-
-							</div>
-						</li>
-
-						<li class="kt">
-							<div class="col-sm-4 col-md-3">
-								<div class="image-box">
-
-									<div class="caption">
-										<a href="#" data-toggle="modal" data-target="#modal-popup">
-											<h4>요청요금제 :데이터 선택 65.8</h4>
-											<p>통신사 :KT</p>
-											<p>추가옵션 : 없음</p>
-											<p>희망단말기 : 갤럭시 S7</p>
-											<p>제안시작일 : 월/일 몇시</p>
-											<p>제안마감일 : 월/일 몇시</p>
-										</a>
-									</div>
-								</div>
-
-							</div>
-						</li>
-
-					</ul>
-				</div>
+                    </ul>
+                </div>
 
 
-			</div>
-			<!-- ./container -->
+            </div>
+            <!-- ./container -->
 
-		</section>
-		<!-- ./portfolio -->
-	</div>
+        </section>
+        <!-- ./portfolio -->
+    </div>
 
-	<!--거래 상품 모달-->
-	<div class="modal fade modal-theme" id="modal-popup" tabindex="-1"
-		role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog detailPage" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span class="span_1" aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title" id="myModalLabel">상세페이지</h4>
-				</div>
-				<div class="modal-body">
-					<div class="row modal_row1" >
-						<h4>사용자 요구사항</h4>
-						<p>
-						<label>통신사</label> <span class="span1">KT</span>
-						<label>희망단말기</label><span class="span1">없음</span>
-						<label>추가옵션</label><span class="span1">없음</span>
-						<label>가족할인</label><span class="span1">없음</span>
-						<label>장기할인</label><span class="span1">없음</span>
-						</p>
-						<p>
-						<label>경매시작일</label><span class="span1">월 일 시 분</span>
-						<label>경매마감일</label><span class="span1">월 일 시 분</span>
-						</p>
-						<p>추가내용</p>
-						<pre> 장기고객입니다. 친절한 곳에서 사고 싶어요.
-						</pre>
+    <!--거래 상품 모달-->
+    <div class="modal fade modal-theme" id="modal-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog detailPage" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span class="span_1" aria-hidden="true">&times;</span>
+               </button>
+                    <h4 class="modal-title" id="myModalLabel">상세페이지</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row modal_row1">
+                        <h4>사용자 요구사항</h4>
+                        <p>
+                            <label>통신사</label> <span class="span1" id="planSP">..</span>
+                            <label>희망단말기</label><span class="span1" id="planPD">.</span>
+                            <label>추가옵션</label><span class="span1" id="planET">..</span>
+                            <label>가족할인</label><span class="span1" id="planFDI">..</span>
+                            <label>장기할인</label><span class="span1" id="planPDI">..</span>
+                        </p>
+                        <p>
+                            <label>경매시작일</label><span class="span1" id="planOP">..</span>
+                            <label>경매마감일</label><span class="span1" id="planED">..</span>
+                        </p>
+                        <p>추가내용</p>
+                        <pre id='planContent'> 장기고객입니다. 친절한 곳에서 사고 싶어요.
+                  </pre>
 
-					</div>
-					<hr>
-					<div class="row modal_row1">
-						<h4>제안신청란</h4>
-						<div class="col-md-6">
-						<label for="Sp_select">통신사:</label> <select class="form-control"
-							id="Sp_select">
-							<option>KT</option>
-							<option>LG</option>
-							<option>SK</option>
-						</select>
-						</div>
-						<div class="col-md-6">
-						<label for="Co_select">요금제:</label> <select class="form-control"
-							id="Co_select">
-							<option value='K0001'>데이터 선택 32.8</option>
-							<option value='K0002'>데이터 선택 38.3</option>
-							<option value='K0003'>데이터 선택 43.8</option>
-						</select>
-						</div>
-						<div class="col-md-6">
-						<label for="PD_select">단말기:</label> <select class="form-control"
-							id="PD_select">
-							<option>없음</option>
-							<option>2</option>
-							<option>3</option>
-						</select>
-						 </div>
-						<div class="col-md-6">
-						<label for="Etc_select">추가옵션:</label> <select class="form-control"
-							 id="Etc_select">
-							<option>없음</option>
-							<option>2</option>
-							<option>3</option>
-						</select>
-						</div>
-						<div class="col-md-6">
-						<label for="FDI_select">가족할인옵션:</label> <select class="form-control"
-							id="Etc_select">
-							<option>없음</option>
-							<option>2</option>
-							<option>3</option>
-						</select>
-						</div>
-						<div class="col-md-6">
-						<label for="PDI_select">장기할인옵션:</label> <select class="form-control"
-							id="PDI_select">
-							<option>없음</option>
-							<option>2</option>
-							<option>3</option>
-						</select>
-						</div>
-						 <div class="col-md-12">
-						 <label for="Content_select">부가내용(300자이내)</label>
-						 <textarea rows="4" style="width:100%" id="content"></textarea>
-						 </div>
-						 <div class="col-md-4 col-md-offset-8">
-						 <label for="Pdprice_select">&nbsp;최종단말액:&nbsp;</label><input id="Pdprice_select" type="number"/>원
-						 <br><label for="Coprice_select">&nbsp;최종월정액:&nbsp;</label><input id="Coprice_select" type="number"/>원
-						 </div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<input class="btn btn-default btn-lg" type="submit" name=""
-						value="제출">
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- ./ modal-theme -->
+                    </div>
+                    <hr>
+                    <div class="row modal_row1">
+                        <h4>제안신청란</h4>
+                        <div class="col-md-6">
+                            <label for="Sp_select">통신사:</label> <select class="form-control" id="Sp_select">
+                     <option >없음</option>
+                     <option value='K'>KT</option>
+                     <option value='L'>LG</option>
+                     <option value='S'>SK</option>
+                  </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Co_select">요금제:</label> <select class="form-control" id="Co_select">
+                     <option>통신사 선택필요</option>
+                  </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="PD_select">단말기:</label> <select class="form-control" id="PD_select">
+                     <option>없음</option>
+                     <option>2</option>
+                     <option>3</option>
+                  </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Etc_select">추가옵션:</label> <select class="form-control" id="Etc_select">
+                     <option>없음</option>
+                     <option>2</option>
+                     <option>3</option>
+                  </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="FDI_select">가족할인옵션:</label> <select class="form-control" id="FDI_select">
+                     <option>없음</option>
+                     <option>2</option>
+                     <option>3</option>
+                  </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="PDI_select">장기할인옵션:</label> <select class="form-control" id="PDI_select">
+                     <option>없음</option>
+                     <option>2</option>
+                     <option>3</option>
+                  </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="Content_select">부가내용(300자이내)</label>
+                            <textarea rows="4" style="width:100%" id="content"></textarea>
+                        </div>
+                        <div class="col-md-4 col-md-offset-8">
+                            <label for="Pdprice_select">&nbsp;최종단말액:&nbsp;</label><input id="Pdprice_select" type="number" />원
+                            <br><label for="Coprice_select">&nbsp;최종월정액:&nbsp;</label><input id="Coprice_select" type="number" />원
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input class="btn btn-default btn-lg" type="submit" name="" value="제출">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ./ modal-theme -->
 
 
 
 
 
 
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="static/des/js/jquery-1.11.3.min.js"></script>
-	<script src="static/des/js/bootstrap.min.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="static/des/js/jquery-1.11.3.min.js"></script>
+    <script src="static/des/js/bootstrap.min.js"></script>
 
-	<!-- smooth-scroll -->
-	<script src="static/des/plugins/smooth-scroll/smooth-scroll.js"></script>
+    <!-- smooth-scroll -->
+    <script src="static/des/plugins/smooth-scroll/smooth-scroll.js"></script>
 
-	<!-- backstretch -->
-	<script src="static/des/plugins/backstretch/backstretch.min.js"></script>
+    <!-- backstretch -->
+    <script src="static/des/plugins/backstretch/backstretch.min.js"></script>
 
-	<!-- owl-carousel -->
-	<script src="static/des/plugins/owl-carousel/owl.carousel.js"></script>
+    <!-- owl-carousel -->
+    <script src="static/des/plugins/owl-carousel/owl.carousel.js"></script>
 
-	<!-- wow -->
-	<script src="static/des/plugins/wow/wow.js"></script>
+    <!-- wow -->
+    <script src="static/des/plugins/wow/wow.js"></script>
 
-	<!-- typed -->
-	<script src="static/des/plugins/typed/typed.min.js"></script>
+    <!-- typed -->
+    <script src="static/des/plugins/typed/typed.min.js"></script>
 
-	<!-- magnific-popup -->
-	<script
-		src="static/des/plugins/magnific-popup/jquery.magnific-popup.js"></script>
+    <!-- magnific-popup -->
+    <script src="static/des/plugins/magnific-popup/jquery.magnific-popup.js"></script>
 
-	<!-- jqBootstrapValidation -->
-	<script
-		src="static/des/plugins/jqBootstrapValidation/jqBootstrapValidation.js"></script>
+    <!-- jqBootstrapValidation -->
+    <script src="static/des/plugins/jqBootstrapValidation/jqBootstrapValidation.js"></script>
 
-	<!-- switcher -->
-	<script type="text/javascript" src="static/des/switcher/switcher.js"></script>
+    <!-- switcher -->
+    <script type="text/javascript" src="static/des/switcher/switcher.js"></script>
 
-	<!-- main js -->
-	<script src="static/des/js/main.js"></script>
+    <!-- main js -->
+    <script src="static/des/js/main.js"></script>
 
+    <!-- 동적 생성 -->
+    <script>
+        $(function() {
+            $.ajax({
+                type: "GET",
+                url: "/getTradeList",
+                dataType: "json",
+                cache: false,
+                success: function(data) {
+                    console.log(data);
+                    $('#portfolio-filter').empty();
+                    let str = '';
+                    for (let i in data) {
+                        str += '<li class="' + data[i].spname.toLowerCase() + '">'
+                        str += '<div class="col-sm-4 col-md-3">'
+                        str += '<div class="image-box">'
+                        str += '<div class="caption">'
+                        str += '<a href="#" trcode="' + data[i].trcode + '" class="updModal" data-toggle="modal" data-target="#modal-popup">'
+                        str += '<h4>요청요금제 : ' + data[i].coname + '</h4>'
+                        str += '<p>통신사 :' + data[i].spname + '</p>'
+                        str += '<p>희망단말기 : '
+                        if (data[i].pdname == null) {
+                            str += '없음'
+                        } else {
+                            str += data[i].pdname
+                        }
+                        str += '</p><p>제안시작일 : ' + data[i].opdate.substring(0, 10) + '</p>'
+                        str += '<p>제안마감일 : ' + data[i].eddate.substring(0, 10) + '</p>'
+                        str += '</a></div></div></div></li>'
+                    }
+                    $(str).appendTo('#portfolio-filter')
+                    $('.updModal').on('click', function() {
+
+                        let trcode = $(this).attr("trcode")
+                        console.log(trcode);
+                        $.ajax({
+                            type: "GET",
+                            url: "/getTradeList1",
+                            data: {
+                                trcode: trcode
+                            },
+                            dataType: "json",
+                            cache: false,
+                            success: function(data) {
+                                console.log(data);
+
+                                $('#planSP').text(data[0].spname);
+                                if (data[0].pdname == null) {
+                                    $('#planPD').html("없음");
+                                } else {
+                                    $('#planPD').html(data[0].pdname);
+                                }
+
+                                $('#planOP').html(data[0].opdate.substring(0, 10));
+                                $('#planED').html(data[0].eddate.substring(0, 10));
+                                $('#planContent').html(data[0].content);
+                            }
+                        })
+                    })
+                }
+
+            })
+        });
+
+        //요금제 불러오기
+        $("#Sp_select").change(function() {
+            //alert( $("#Sp_select option:selected").val() );
+            let spcode = $("#Sp_select option:selected").val();
+            let price = 0;
+            //요금제 불러오기
+            $.ajax({
+                type: "GET",
+                url: "/getCostList",
+                data: {
+                    spcode: spcode
+                },
+                dataType: "json",
+                cache: false,
+                success: function(data) {
+                    console.log(data);
+                    $('#Co_select').empty();
+                    let str = '';
+                    for (let i in data) {
+                        str += '<option value="' + data[i].cocode + '" coprice="' + data[i].coprice + '">' + data[i].coname + '&nbsp;:&nbsp;' + data[i].coprice + '원</option>'
+                    }
+                    $(str).appendTo('#Co_select')
+                }
+            }).done(function() {
+                //추가할인 옵션
+                $.ajax({
+                    type: "GET",
+                    url: "/getETCList",
+                    data: {
+                        spcode: spcode
+                    },
+                    dataType: "json",
+                    cache: false,
+                    success: function(data) {
+                        console.log(data);
+                        $('#Etc_select').empty();
+                        let str = '';
+                        for (let i in data) {
+                            str += '<option value="' + data[i].etccode + '">' + data[i].etcname + '&nbsp;:&nbsp;' + data[i].etcprice + '원</option>'
+                        }
+                        $(str).appendTo('#Etc_select')
+                    }
+                })
+
+            })
+        });
+
+        $(function() { //단말기 불러오기
+            $.ajax({
+                type: "GET",
+                url: "/getProductList",
+                dataType: "json",
+                cache: false,
+                success: function(data) {
+                    console.log(data);
+                    $('#PD_select').empty();
+                    let str = '';
+                    for (let i in data) {
+                        str += '<option value="' + data[i].pdcode + '">' + data[i].pdname + '&nbsp;:&nbsp;' + data[i].memsize + 'G</option>'
+                    }
+                    $(str).appendTo('#PD_select')
+                }
+            })
+        });
+
+        //요금제 변경시 장기할인,가족할인 옵션 불러오기
+        $("#Co_select").change(function() {
+            //alert( $("#Co_select option:selected").attr("coprice"));
+            let spcode = $("#Sp_select option:selected").val();
+            let coprice = $("#Co_select option:selected").attr("coprice");
+            //요금제 불러오기
+            $.ajax({
+                type: "GET",
+                url: "/getFDIList",
+                data: {
+                    spcode: spcode,
+                    coprice: coprice
+                },
+                dataType: "json",
+                cache: false,
+                success: function(data) {
+                    console.log(data);
+                    $('#FDI_select').empty();
+                    let str = '';
+                    for (let i in data) {
+                        str += '<option value="' + data[i].dicode + '">' + data[i].diname + '&nbsp;:&nbsp;' + data[i].discount
+                        if (data[i].dpcode == 'S') {
+                            str += '원 할인'
+                        } else if (data[i].dpcode == 'P') {
+                            str += '% 할인'
+                        }
+                        str += '</option>'
+                    }
+                    $(str).appendTo('#FDI_select')
+                }
+            }).done(function() {
+                //alert( $("#Co_select option:selected").attr("coprice"));
+                let spcode = $("#Sp_select option:selected").val();
+                let coprice = $("#Co_select option:selected").attr("coprice");
+                //장기할인 가져오기
+                $.ajax({
+                    type: "GET",
+                    url: "/getPDIList",
+                    data: {
+                        spcode: spcode,
+                        coprice: coprice
+                    },
+                    dataType: "json",
+                    cache: false,
+                    success: function(data) {
+                        console.log(data);
+                        $('#PDI_select').empty();
+                        let str = '';
+                        for (let i in data) {
+                            str += '<option value="' + data[i].dicode + '">' + data[i].diname + '&nbsp;:&nbsp;' + data[i].discount
+                            if (data[i].dpcode == 'S') {
+                                str += '원 할인'
+                            } else if (data[i].dpcode == 'P') {
+                                str += '% 할인'
+                            }
+                            str += '</option>'
+                        }
+                        $(str).appendTo('#PDI_select')
+                    }
+                })
+
+            })
+        });
+    </script>
 </body>
 
 </html>

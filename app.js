@@ -895,7 +895,7 @@ app.get('/wifiUse/:id', function(req, res){
                     "buttons": [{
                             "url": "https://22cc956b.ngrok.io/recoPage",
                             "type": "json_plugin_url",
-                            "title": "그만, 추천시작하기"
+                            "title": "그만. 추천시작하기, 요금제 추천페이지에서 확인하세요"
                         },
                         {
                             "url": "https://22cc956b.ngrok.io/going",
@@ -1070,7 +1070,7 @@ app.get(['/releaseDate','/releaseDate/:id'], function(req, res){
                     "buttons": [{
                             "url": "https://22cc956b.ngrok.io/recoPage",
                             "type": "json_plugin_url",
-                            "title": "추천 시작하기"
+                            "title": "추천 시작하기, 요금제 추천하기에서 확인하세요"
                         }
                     ]
                 },
@@ -1080,23 +1080,197 @@ app.get(['/releaseDate','/releaseDate/:id'], function(req, res){
     };
     res.send(jsonResponse);
 });
-// userInfo = [
-//     { findProvide: 'S' },
-//     { currentProvide: 'S' },
-//     { howLongUse: '10' },
-//     { sameFamily: '2' },
-//     { age: 'G' },
-//     { hotSpot: '1' },
-//     { whichMost: 'data' },
-//     { callByDay: '1' },
-//     { video: '0' },
-//     { game: '0' },
-//     { webSurfing: '0' },
-//     { wifiUse: '1' },
-//     { company: 'S' },
-//     { displaySize: '5' },
-//     { releaseDate: '730' }
-// ];
+userInfo = [
+    { findProvide: 'S' },
+    { currentProvide: 'S' },
+    { howLongUse: '10' },
+    { sameFamily: '2' },
+    { age: 'G' },
+    { hotSpot: '1' },
+    { whichMost: 'data' },
+    { callByDay: '1' },
+    { video: '0' },
+    { game: '0' },
+    { webSurfing: '0' },
+    { wifiUse: '1' },
+    { company: 'S' },
+    { displaySize: '5' },
+    { releaseDate: '730' }
+];
+
+// board.ejs에서 등록된 거래들 가져오기
+app.get('/getTradeList', function(req, res) {
+    let sql = "SELECT * FROM TRADEVIEW WHERE CONFIRM='0';";
+    conn.query(sql, req.user.CODE, function(err, rows, fields){
+        if(!err){
+            let list = [];
+            for(let i in rows){
+                let trcode = rows[i].TRCODE;
+                let coname = rows[i].CONAME;
+                let pdname = rows[i].PDNAME;
+                let spname = rows[i].SPNAME;
+                let trdate = rows[i].TRDATE;
+                let opdate = rows[i].OPDATE;
+                let eddate = rows[i].EDDATE;
+                let confirm = rows[i].CONFIRM;
+                list.push({trcode, coname, pdname, spname,trdate, opdate, eddate, confirm});
+            }
+            console.log(list);
+            res.send(list);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
+
+// board.ejs에서 상세 내역 가져오기
+app.get('/getTradeList1', function(req, res) {
+    let id = req.query.trcode;
+    let sql = "SELECT * FROM TRADEVIEW WHERE TRCODE=?;";
+    conn.query(sql, id, function(err, rows, fields){
+        if(!err){
+            let list = [];
+            for(let i in rows){
+                let trcode = rows[i].TRCODE;
+                let coname = rows[i].CONAME;
+                let pdname = rows[i].PDNAME;
+                let spname = rows[i].SPNAME;
+                let trdate = rows[i].TRDATE;
+                let opdate = rows[i].OPDATE;
+                let eddate = rows[i].EDDATE;
+                let confirm = rows[i].CONFIRM;
+                let content = rows[i].CONTENT;
+                list.push({trcode, coname, pdname, spname,trdate, opdate, eddate, confirm, content});
+            }
+            console.log(list);
+            res.send(list);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
+// board.ejs에서 요금제 불러오기
+
+app.get('/getCostList', function(req, res) {
+    let id = req.query.spcode;
+    let sql = "SELECT COCODE, CONAME, COPRICE FROM COSTVIEW WHERE SPCODE=?;";
+    conn.query(sql, id, function(err, rows, fields){
+        if(!err){
+            let list = [];
+            for(let i in rows){
+                let cocode = rows[i].COCODE;
+                let coname = rows[i].CONAME;
+                let coprice =rows[i].COPRICE;
+
+                list.push({cocode, coname, coprice});
+            }
+            console.log(list);
+            res.send(list);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
+//통신사별 추가옵션 불러오기
+app.get('/getETCList', function(req, res) {
+    let id = req.query.spcode;
+    let sql = "SELECT CODE, NAME, PRICE FROM ETCCOSTVIEW WHERE SPCODE=?;";
+    conn.query(sql, id, function(err, rows, fields){
+        if(!err){
+            let list = [];
+            for(let i in rows){
+                let etccode = rows[i].CODE;
+                let etcname = rows[i].NAME;
+                let etcprice =rows[i].PRICE;
+
+                list.push({etccode, etcname, etcprice});
+            }
+            console.log(list);
+            res.send(list);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
+//가족할인 가져오기
+app.get('/getFDIList', function(req, res) {
+    let coprice = req.query.coprice;
+    let spcode = req.query.spcode;
+    console.log(coprice);
+    console.log(spcode);
+    let sql = "SELECT * FROM DISCOUNTVIEW WHERE SPCODE=? AND COST<=? AND DINAME LIKE '%가족%';";
+    conn.query(sql, [spcode, coprice], function(err, rows, fields){
+        if(!err){
+            let list = [];
+            for(let i in rows){
+                let   dicode = rows[i].DICODE;
+                let diname = rows[i].DINAME;
+                let discount = rows[i].DISCOUNT;
+                let dpcode =rows[i].DPCODE;
+
+                list.push({dicode, diname, discount,dpcode});
+            }
+            console.log(list);
+            res.send(list);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
+
+//장기할인 가져오기
+app.get('/getPDIList', function(req, res) {
+    let coprice = req.query.coprice;
+    let spcode = req.query.spcode;
+    console.log(coprice);
+    console.log(spcode);
+    let sql = "SELECT * FROM DISCOUNTVIEW WHERE SPCODE=? AND COST<=? AND DINAME LIKE '%장기%';";
+    conn.query(sql, [spcode, coprice], function(err, rows, fields){
+        if(!err){
+            let list = [];
+            for(let i in rows){
+                let   dicode = rows[i].DICODE;
+                let diname = rows[i].DINAME;
+                let discount = rows[i].DISCOUNT;
+                let dpcode =rows[i].DPCODE;
+
+                list.push({dicode, diname, discount,dpcode});
+            }
+            console.log(list);
+            res.send(list);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
+//단말기 정보 불러오기
+app.get('/getProductList', function(req, res) {
+    let sql = "SELECT PDCODE, PDNAME, MEMORYSIZE FROM PRODUCTVIEW";
+    conn.query(sql,  function(err, rows, fields){
+        if(!err){
+            let list = [];
+            for(let i in rows){
+                let pdcode = rows[i].PDCODE;
+                let pdname = rows[i].PDNAME;
+                //let pdprice =rows[i].PRICE;
+                let memsize =rows[i].MEMORYSIZE;
+
+                list.push({pdcode, pdname, memsize});
+            }
+            console.log(list);
+            res.send(list);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
 
 // reco.ejs 추천페이지로 이동, 기본질의
 app.get('/recoPage', function(req, res) {
@@ -1120,7 +1294,8 @@ app.get('/recoPage', function(req, res) {
                     let spName = rows[i].SPNAME;
                     let coName = rows[i].CONAME;
                     let cocode = rows[i].COCODE;
-                    list.push({spName, coName, cocode});
+                    let coprice = rows[i].COPRICE;
+                    list.push({spName, coName, cocode, coprice});
                 }
                 // let jsonResponse = {
                 //     "messages": [{"text": "추천이 완료되었습니다. 고객님의 추천 요금제는 홈페이지에서 확인 가능합니다."}]
@@ -1145,8 +1320,11 @@ app.get('/recoPage', function(req, res) {
 });
 
 
-// 데이터 안심 추가옵션
+// reco.ejs 데이터 안심 추가옵션
 app.get('/addOption', function(req, res){
+    let spcode = req.query.spcode;
+    let age = req.query.age;
+
     let sql = "SELECT COCODE,CONAME,SPCODE,SPNAME,COPRICE,TALK,MSN,DATASIZE,EXTRA,APCODE,AGNAME,FLOOR((DATASIZE/COPRICE)*100) AS DATARATE, ABS((DATASIZE-4000)/4000) as DATANEAR\
     FROM COSTVIEW\
     WHERE\
@@ -1167,14 +1345,15 @@ app.get('/addOption', function(req, res){
     ORDER BY COPRICE DESC\
     LIMIT 3";
 
-    conn.query(sql, [userInfo[0].findProvide, userInfo[4].age, userInfo[0].findProvide, userInfo[4].age], function(err, rows, fields){
+    conn.query(sql, [spcode, age, spcode, age], function(err, rows, fields){
         if(!err){
             let list = [];
             for(var i in rows){
                 let spName = rows[i].SPNAME;
                 let coName = rows[i].CONAME;
                 let cocode = rows[i].COCODE;
-                list.push({cocode, spName, coName});
+                let coprice = rows[i].COPRICE;
+                list.push({coprice,cocode, spName, coName});
             }
             console.log(list);
 
@@ -1186,21 +1365,27 @@ app.get('/addOption', function(req, res){
         }
     });
 });
-// 가족체크 했을때 가족할인옵션
+// reco.ejs 가족체크 했을때 가족할인옵션
 app.get('/familyDc', function(req, res){
+    let spcode = req.query.spcode;
+    let sameFamily = req.query.sameFamily;
+    let coprice = req.query.coprice;
+    console.log('here',spcode, sameFamily, coprice);
     let sql = "SELECT DICODE,DINAME,SPCODE,DPNAME,DPCODE,DPNAME,DISCOUNT,PERIOD,FAMILY,COST,CONTENT \
     FROM DISCOUNTVIEW \
     WHERE FAMILY<=? AND SPCODE= ?\
     ORDER BY DISCOUNT DESC;";
 
-    conn.query(sql, [userInfo[3].sameFamily, userInfo[0].findProvide], function(err, rows, fields){
+    conn.query(sql, [sameFamily, spcode], function(err, rows, fields){
         if(!err){
             let list = [];
             for(var i in rows){
                 let diName = rows[i].DINAME;
                 let content = rows[i].CONTENT;
                 let dicode = rows[i].DICODE;
-                list.push({diName, content, dicode});
+                let dpcode = rows[i].DPCODE;
+                let discount = rows[i].DISCOUNT;
+                list.push({diName, content, dicode, dpcode, discount});
             }
             console.log(list);
             res.send(list);
@@ -1211,21 +1396,28 @@ app.get('/familyDc', function(req, res){
         }
     });
 });
-// 장기할인 체크 했을때
+// reco.ejs 장기할인 체크 했을때
 app.get('/longUseDc', function(req, res){
+    let spcode = req.query.spcode;
+    let howLongUse = req.query.howLongUse;
+    let coprice = req.query.coprice;
+    console.log('here',spcode, howLongUse, coprice);
+
     let sql = "SELECT DICODE,DINAME,SPCODE,DPNAME,DPCODE,DPNAME,DISCOUNT,PERIOD,FAMILY,COST,CONTENT\
     FROM DISCOUNTVIEW\
     WHERE PERIOD<=? AND SPCODE=?\
     ORDER BY DISCOUNT DESC;";
 
-    conn.query(sql, [userInfo[2].howLongUse, userInfo[0].findProvide], function(err, rows, fields){
+    conn.query(sql, [howLongUse, spcode], function(err, rows, fields){
         if(!err){
             let list = [];
             for(var i in rows){
                 let diName = rows[i].DINAME;
                 let content = rows[i].CONTENT;
                 let dicode = rows[i].DICODE;
-                list.push({diName, content, dicode});
+                let dpcode = rows[i].DPCODE;
+                let discount = rows[i].DISCOUNT;
+                list.push({diName, content, dicode, dpcode, discount});
             }
             console.log(list);
             res.send(list);
@@ -1236,13 +1428,19 @@ app.get('/longUseDc', function(req, res){
         }
     });
 });
-// 단말기 정보 가져오기
+// reco.ejs 단말기 정보 가져오기
 app.get('/productInfo', function(req, res){
+    let spcode = req.query.spcode;
+    let howLongUse = req.query.howLongUse;
+    let coprice = req.query.coprice;
+    let company = req.query.company;
+    let releaseDate = req.query.releaseDate;
+
     let sql = "SELECT PDCODE,PDNAME,MEMORYSIZE,CPNAME,PDPRICE,GRPRICE\
     FROM GRANTSVIEW\
     WHERE SPCODE = ? AND CPCODE = ? AND ONDATE <= DATE_SUB(NOW(), INTERVAL ? DAY);";
 
-    conn.query(sql, [userInfo[0].findProvide, userInfo[12].company, userInfo[14].releaseDate], function(err, rows, fields){
+    conn.query(sql, [spcode, company, releaseDate], function(err, rows, fields){
         if(!err){
             let list = [];
             for(var i in rows){
@@ -1263,7 +1461,8 @@ app.get('/productInfo', function(req, res){
         }
     });
 });
-// 나의 거래 확인 페이지
+
+// 마이페이지
 app.get('/myPage', function(req, res) {
     if(req.user && req.user.NICKNAME){
         let sql = "SELECT * FROM TRADEVIEW WHERE MMCODE = ?;";
@@ -1289,15 +1488,8 @@ app.get('/myPage', function(req, res) {
         res.render('myPage', {nickname:'', tradeInfo:''});
     }
 });
-// app.get('/myPage', function(req, res) {
-//     if(req.user && req.user.NICKNAME){
-//         res.render('myPage', {nickname:req.user.NICKNAME});
-//     }else{
-//         res.render('myPage', {nickname:''});
-//     }
-// });
 
-// 나의 거래확인 페이지로 파로
+// goMyTrade 나의 거래확인 페이지로 파로
 app.get('/myTrade', function(req, res) {
     let sql = "SELECT * FROM TRADEVIEW WHERE MMCODE = ?;";
     conn.query(sql, req.user.CODE, function(err, rows, fields){
@@ -1454,64 +1646,22 @@ app.get('/filter', function(req, res) {
     });
 });
 
+
+app.get('/sellerPage', function(req, res) {
+    if(req.user && req.user.NICKNAME){
+        res.render('error', {nickname:req.user.NICKNAME});
+    }else{
+        res.render('error', {nickname:''});
+    }
+});
 // board.ejs 페이지 라우팅
-app.get('/boardPage', function(req, res) {
-    // passport는 원래 req가 가지고 있지 않은 객체인 user객체를 req의 소속으로 만들어줌
-    // user는 deserializeUser의 done함수의 두번째 인자인 user로 부터 기인
+app.get('/enrollSeller', function(req, res) {
     if(req.user && req.user.NICKNAME){
         res.render('board',{nickname:req.user.NICKNAME});
     }else{
         res.render('board',{nickname:''});
     }
 });
-
-passport.serializeUser(function(user, done) {
-    // done함수의 두번째 인자로 user를 식별하는데 이 값이 세션에 저장된다.
-    done(null, user.CODE);
-});
-// 두번째 로그인시 세션에 저장된 user.username이 id 값으로 들어감
-passport.deserializeUser(function(id, done) {
-    console.log('deserializeUser', id);
-    var sql = 'SELECT * FROM MEMBER WHERE CODE=?';
-    conn.query(sql, [id], function(err, results){
-        if(!results[0]){
-            done('There is no user');
-        }else{
-            done(null, results[0]);
-        }
-    });
-});
-
-passport.use(new LocalStrategy(
-    function(username, password, done) {
-        var uname = username;
-        var pwd = password;
-        var sql = 'SELECT * FROM MEMBER WHERE EMAIL=?';
-        //conn.query(sql, [c], function(err, results){
-        conn.query(sql, [uname], function(err, results){
-            //console.log(results);
-            if(!results[0]){
-                return done('There is no user');
-            }
-            var user = results[0];
-            //입력한 비번과 저장되어있는 salt를 인자로 받음
-            return hasher({password:pwd, salt:user.SALT}, function(err, pass, salt, hash){
-                if(hash === user.PASSWORD){
-                    // 비번까지 맞으면, done함수의 인자인 user가 serializeUser로 넘어감
-                    //console.log('LocalStrategy', user);
-                    done(null, user);
-                    // req.session.displayName = user.displayName;
-                    // req.session.save(function(){
-                    //     res.redirect('/');
-                    // });
-                }else{
-                    done(null, false);
-                    //res.send('누구? <a href="/auth/login">login</a>');
-                }
-            });
-        });
-    }
-));
 
 app.get('/auth/register', function(req, res){
     res.render('register');
@@ -1578,21 +1728,54 @@ app.get(['/', '/content/:id'], function(req, res) {
         res.render('index',{nickname:''});
     }
 });
-app.get('/sellerPage', function(req, res) {
-    if(req.user && req.user.NICKNAME){
-        res.render('error', {nickname:req.user.NICKNAME});
-    }else{
-        res.render('error', {nickname:''});
-    }
+
+passport.serializeUser(function(user, done) {
+    // done함수의 두번째 인자로 user를 식별하는데 이 값이 세션에 저장된다.
+    done(null, user.CODE);
 });
-app.get('/enrollSeller', function(req, res) {
-    if(req.user && req.user.NICKNAME){
-        res.render('error', {nickname:req.user.NICKNAME});
-    }else{
-        res.render('error', {nickname:''});
-    }
+// 두번째 로그인시 세션에 저장된 user.username이 id 값으로 들어감
+passport.deserializeUser(function(id, done) {
+    console.log('deserializeUser', id);
+    var sql = 'SELECT * FROM MEMBER WHERE CODE=?';
+    conn.query(sql, [id], function(err, results){
+        if(!results[0]){
+            done('There is no user');
+        }else{
+            done(null, results[0]);
+        }
+    });
 });
 
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+        var uname = username;
+        var pwd = password;
+        var sql = 'SELECT * FROM MEMBER WHERE EMAIL=?';
+        //conn.query(sql, [c], function(err, results){
+        conn.query(sql, [uname], function(err, results){
+            //console.log(results);
+            if(!results[0]){
+                return done('There is no user');
+            }
+            var user = results[0];
+            //입력한 비번과 저장되어있는 salt를 인자로 받음
+            return hasher({password:pwd, salt:user.SALT}, function(err, pass, salt, hash){
+                if(hash === user.PASSWORD){
+                    // 비번까지 맞으면, done함수의 인자인 user가 serializeUser로 넘어감
+                    //console.log('LocalStrategy', user);
+                    done(null, user);
+                    // req.session.displayName = user.displayName;
+                    // req.session.save(function(){
+                    //     res.redirect('/');
+                    // });
+                }else{
+                    done(null, false);
+                    //res.send('누구? <a href="/auth/login">login</a>');
+                }
+            });
+        });
+    }
+));
 // 3000번 포트에 접속확인
 http.listen(3300, function() {
     console.log('Example app listening on port 3000!');

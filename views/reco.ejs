@@ -3,56 +3,62 @@
 
 <head>
     <% include partials/head.ejs %>
-        <style>
-            input[type="submit"] {
-                color: black;
-            }
+	<style>
+input[type="submit"] {
+color: black;
+}
 
-            h4#myModalLabel {
-                color: black;
-            }
+h4#myModalLabel {
+color: black;
+}
 
-            .form-control {
-                background-color: rgba(202, 193, 193, 0.5);
-            }
+.form-control {
+background-color: rgba(202, 193, 193, 0.5);
+}
 
-            .right-content .section {
-                padding: 100px 0 0px;
-            }
+.right-content .section {
+padding: 100px 0 0px;
+}
 
-            .fixed-table-body {
-                overflow-x: auto;
-                height: 250px;
-                border: solid 5px white;
-                border-radius: 10px;
-            }
+.fixed-table-body {
+overflow-x: auto;
+height:250px;
+border: solid 5px white;
+border-radius: 10px;
+}
 
-            .container_border {
-                border: solid 5px white;
-                border-radius: 10px;
-                padding-left: 5%;
-                padding-right: 5%;
-                background: #3a3838;
-            }
+.container_border {
+border: solid 5px white;
+border-radius: 10px;
+padding-left: 5%;
+padding-right: 5%;
+background: #3a3838;
+}
 
-            .row1 input {
-                color: black;
-            }
-        </style>
+.row1 input{
+color:black;
+}
+option {
+COLOR: BLACK;
+}
 
-        <!-- datepicker -->
-        <link rel="stylesheet" type="text/css" href="static/datetimepicker/build/jquery.datetimepicker.css" />
-        <style type="text/css">
-            .custom-date-style {
-                background-color: red !important;
-            }
+textarea#myCmt {
+width: 100%;
+}
+.custom-date-style {
+	background-color: red !important;
+}
 
-            .input {}
+.input {}
 
-            .input-wide {
-                width: 500px;
-            }
-        </style>
+.input-wide {
+	width: 500px;
+}
+</style>
+
+
+    <!-- datepicker -->
+    <link rel="stylesheet" type="text/css" href="static/datetimepicker/build/jquery.datetimepicker.css" />
 
 </head>
 
@@ -88,14 +94,31 @@
 					<div class="col-md-4">
 						<label for="Co_select2">기본요금제 추천</label>
 						<select class="form-control" id="Co_select2">
-						<% for (let i in basicReco) {%>
-							<option value="<%=basicReco[i].cocode%>"><%=basicReco[i].spName%><%=basicReco[i].coName%></option>
+							<option value="">선택</option>
+						<% for (var i in basicReco) {%>
+							<option value="<%=basicReco[i].cocode%>" coprice="<%=basicReco[i].coprice%>" spcode="<%=userInfo[0].findProvide%>"
+							sameFamily="<%=userInfo[3].sameFamily%>"
+							howLongUse="<%=userInfo[2].howLongUse%>"
+							company="<%=userInfo[12].company%>"
+							releaseDate="<%=userInfo[12].releaseDate%>"
+							>
+							<%=parseInt(i)+1%>.
+							<%=basicReco[i].spName%> <%=basicReco[i].coName%>
+							</option>
 						<%}%>
 						</select>
 					</div>
 					<div class="col-md-4">
 						<label for="Co_select3">기본+데이터안심 조합 추천</label>
 						<!--<button id="co3">조합 데이터 가져오기</button>-->
+
+						<input id="combi" type="hidden" name="" value=""  spcode="<%=userInfo[0].findProvide%>"
+						sameFamily="<%=userInfo[3].sameFamily%>"
+						howLongUse="<%=userInfo[2].howLongUse%>"
+						company="<%=userInfo[12].company%>"
+						releaseDate="<%=userInfo[14].releaseDate%>"
+						age = "<%=userInfo[4].age%>">
+
 						<select class="form-control" id="Co_select3"></select>
 					</div>
 				</div>
@@ -143,11 +166,11 @@
 				<div class="row row1">
 					<div class="col-md-3">
 						<label>단말할인 선택 </label><br />
-						<input type="text"id="result1" readonly/>
+						<input type="text" id="result1" readonly/>
 					</div>
 					<div class="col-md-3">
 						<label>24개월 약정할인 선택시 </label><br />
-						<input type="text"id="result2" readonly/>
+						<input type="text" id="result2" readonly/>
 					</div>
 
 					<div class="col-md-3">
@@ -216,33 +239,61 @@
 		$('.some_class').datetimepicker();
 	</script>
 	<script>
+		let cnt;
+		function result(){
+			//let result1 = $("#Di_select2 option:selected").attr("dpcode")
+			if(cnt==2){
+				let result1 = $("#Co_select2 option:selected").attr("coprice")
+			}else if(cnt==3){
+				let result1 = praseInt($("#Co_select3 option:selected").attr("coprice"))+5500
+			}
+
+			let dc_family = $("#Di_select1 option:selected").attr("discount")
+			let dc_long = $("#Di_select2 option:selected").attr("discount")
+
+			if(dc_family != null){
+				$("#result1").value = $("#Co_select2 option:selected").attr("coprice")
+				if(result1 == 'S'){
+					result1 = parseInt(result1) - parseInt(dc_family)
+				}else if(result1 == 'P'){
+					result1 = parseInt(result1) * (100-parseInt(dc_family))/100
+				}
+			}
+			if(dc_long != null){
+				$("#result1").value = $("#Co_select2 option:selected").attr("coprice")
+				if(result1 == 'S'){
+					result1 = parseInt(result1) - parseInt(dc_long)
+				}else if(result1 == 'P'){
+					result1 = parseInt(result1) * (100-parseInt(dc_long))/100
+				}
+			}
+			$("#result1").text(result1)
+			$("#result2").text(result1*0.8)
+		}
+
+
+
+
 		function goMyTrade(){
 			window.location.href = '/myPage'
 		}
-		// 기존+데이터 안심
-		$(function(){
-			$.ajax({
-				type: "GET",
-			    url: "/addOption",
-			    dataType: "json",
-			    cache:false,
-			    success: function (data) {
-					console.log(data);
-					$('#Co_select3').empty();
-					let str = '';
-					str += '<option>선택</option>'
-					for(let i in data){
-						str += '<option value="'+data[i].cocode+'">'+(parseInt(i)+1)+'. '+data[i].spName+' '+data[i].coName+'</option>'
-					}
-					$(str).appendTo('#Co_select3')
-				}
-			})
-		})
-		// 가족할인
-		$(function(){
+
+		// 기본요금제 option 바뀌면
+		$("#Co_select2").change(function() {
+			cnt=2;
+			let cocode = $("#Co_select2 option:selected").val();
+			let coprice = $("#Co_select2 option:selected").attr("coprice");
+			let spcode = $("#Co_select2 option:selected").attr("spcode");
+			let sameFamily = $("#Co_select2 option:selected").attr("sameFamily");
+			let howLongUse = $("#Co_select2 option:selected").attr("howLongUse");
+			let company = $("#Co_select2 option:selected").attr("company");
+			let releaseDate = $("#Co_select2 option:selected").attr("releaseDate");
+			console.log(cocode, coprice, spcode, sameFamily, howLongUse, company, releaseDate);
+			//가족할인
 			$.ajax({
 				type: "GET",
 			    url: "/familyDc",
+				data: {coprice:coprice, spcode:spcode, sameFamily:sameFamily},
 			    dataType: "json",
 			    cache:false,
 			    success: function (data) {
@@ -251,18 +302,19 @@
 					let str = '';
 					str += '<option>선택</option>'
 					for(let i in data){
-						str += '<option value="'+data[i].dicode+'">'+(parseInt(i)+1)+'. '+data[i].diName+' '+data[i].content+'</option>'
+						str += '<option value="'+data[i].dicode+'" dpcode="'+data[i].dpcode+'" discount="'+data[i].discount+'">'+(parseInt(i)+1)+'. '+data[i].diName+'</option>'
 					}
 					$(str).appendTo('#Di_select1')
+					result()
 				}
 			})
-		})
-		// 장기할인
-		$(function(){
+
+			// 장기할인
 			$.ajax({
 				type: "GET",
 			    url: "/longUseDc",
 			    dataType: "json",
+				data: {coprice:coprice, spcode:spcode, howLongUse:howLongUse},
 			    cache:false,
 			    success: function (data) {
 					console.log(data);
@@ -270,18 +322,18 @@
 					let str = '';
 					str += '<option>선택</option>'
 					for(let i in data){
-						str += '<option value="'+data[i].dicode+'">'+(parseInt(i)+1)+'. '+data[i].diName+' '+data[i].content+'</option>'
+						str += '<option value="'+data[i].dicode+'" dpcode="'+data[i].dpcode+'" discount="'+data[i].discount+'">'+(parseInt(i)+1)+'. '+data[i].diName+' '+data[i].content+'</option>'
 					}
 					$(str).appendTo('#Di_select2')
 				}
 			})
-		})
-		// 단말기 정보
-		$(function(){
+
+			// //단말기 보여주기
 			$.ajax({
 				type: "GET",
 			    url: "/productInfo",
 			    dataType: "json",
+				data: {coprice:coprice, spcode:spcode, company:company, releaseDate:releaseDate},
 			    cache:false,
 			    success: function (data) {
 					console.log(data);
@@ -302,7 +354,120 @@
 					$(str).appendTo('#Di_select3')
 				}
 			})
+		});
+
+
+
+		let userinfo  = $("#combi")
+		let sameFamily = userinfo.attr("sameFamily")
+		let spcode = userinfo.attr("spcode")
+		let company = userinfo.attr("company")
+		let releaseDate = userinfo.attr("releaseDate")
+		let howLongUse = userinfo.attr("howLongUse")
+		let age = userinfo.attr("age")
+
+		console.log(company, spcode, releaseDate, howLongUse, age)
+		// 기존+데이터 안심
+		$(function(){
+			$.ajax({
+				type: "GET",
+				url: "/addOption",
+				data: {spcode:spcode, company:company, age:age, releaseDate:releaseDate},
+				dataType: "json",
+				cache:false,
+				success: function (data) {
+					console.log(data);
+					$('#Co_select3').empty();
+					let str = '';
+					str += '<option>선택</option>'
+					for(let i in data){
+						str += '<option value="'+data[i].cocode+'" coprice="'+data[i].coprice+'">'+(parseInt(i)+1)+'. '+data[i].spName+' '+data[i].coName+'</option>'
+					}
+					$(str).appendTo('#Co_select3')
+				}
+			})
 		})
+
+		// 안심 옵션 바꿧을때
+		$("#Co_select3").change(function() {
+			cnt=3;
+			let cocode = $("#Co_select3 option:selected").attr("cocode");
+			let coprice = $("#Co_select3 option:selected").attr("coprice");
+			let spcode = $("#Co_select3 option:selected").attr("spcode");
+			let sameFamily = $("#Co_selecte option:selected").attr("sameFamily");
+			let howLongUse = $("#Co_select3 option:selected").attr("howLongUse");
+			let company = $("#Co_select3 option:selected").attr("company");
+			let releaseDate = $("#Co_select3 option:selected").attr("releaseDate");
+			console.log(cocode, coprice, spcode, sameFamily, howLongUse, company, releaseDate);
+
+			//가족할인
+			// $.ajax({
+			// 	type: "GET",
+			// 	url: "/familyDc",
+			// 	data: {coprice:coprice, spcode:spcode, sameFamily:sameFamily},
+			// 	dataType: "json",
+			// 	cache:false,
+			// 	success: function (data) {
+			// 		console.log(data);
+			// 		$('#Di_select1').empty();
+			// 		let str = '';
+			// 		str += '<option>선택</option>'
+			// 		for(let i in data){
+			// 			str += '<option value="'+data[i].dicode+'" dpcode="'+data[i].dpcode+'" discount="'+data[i].discount+'">'+(parseInt(i)+1)+'. '+data[i].diName+'</option>'
+			// 		}
+			// 		$(str).appendTo('#Di_select1')
+			// 		result()
+			// 	}
+			// })
+
+			// 장기할인
+			// $.ajax({
+			// 	type: "GET",
+			// 	url: "/longUseDc",
+			// 	dataType: "json",
+			// 	data: {coprice:coprice, spcode:spcode, howLongUse:howLongUse},
+			// 	cache:false,
+			// 	success: function (data) {
+			// 		console.log(data);
+			// 		$('#Di_select2').empty();
+			// 		let str = '';
+			// 		str += '<option>선택</option>'
+			// 		for(let i in data){
+			// 			str += '<option value="'+data[i].dicode+'" dpcode="'+data[i].dpcode+'" discount="'+data[i].discount+'">'+(parseInt(i)+1)+'. '+data[i].diName+' '+data[i].content+'</option>'
+			// 		}
+			// 		$(str).appendTo('#Di_select2')
+			// 	}
+			// })
+
+			// //단말기 보여주기
+			$.ajax({
+				type: "GET",
+				url: "/productInfo",
+				dataType: "json",
+				data: {coprice:coprice, spcode:spcode, company:company, releaseDate:releaseDate},
+				cache:false,
+				success: function (data) {
+					console.log(data);
+					$('#Di_select3').empty();
+					let str = '';
+					for(let i in data){
+						str += '<tr>'
+						str += '<td scope="row">'
+						str += '<input type="radio" name="Pd_select" pdcode="'+data[i].pdcode+'" memsize="'+data[i].memsize+'">'
+						str += '</td>'
+						str += '<td>'+data[i].pdname+'</td>'
+						str += '<td>'+data[i].memsize+'</td>'
+						str += '<td>'+data[i].cpname+'</td>'
+						str += '<td>'+data[i].pdprice+'</td>'
+						str += '<td>'+data[i].grprice+'</td>'
+						str += '</tr>'
+					}
+					$(str).appendTo('#Di_select3')
+				}
+			})
+		})
+
+
 	</script>
 </body>
 
