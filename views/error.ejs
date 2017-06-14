@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<% include partials/head.ejs %>
+<style>
+input[type="submit"] {
+	color: black;
+}
+
+
+.image-box {
+	background: white;
+	border-radius: 10px;
+}
+
+.form-control {
+	background-color: rgba(202, 193, 193, 0.5);
+    color: #555;
+}
+
+.modal-header {
+	background: #ec008c;
+}
+
+.modal-body {
+	color: black;
+	background: white;
+}
+
+.modal-body h4 {
+	color: black;
+}
+
+.modal-body hr {
+	border-top: 1px solid rgb(236, 0, 140);
+}
+
+.detailPage {
+	width: 90%;
+}
+
+.modal-footer {
+	background: rgb(255, 255, 255);
+}
+.modal_row1{
+	margin:0 3% 0 3%;
+}
+
+span#myModalLabel{
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.span1{
+	background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.fa {
+    font-size: 250px;
+}
+.section-heading{margin-top:100px}
+</style>
+</head>
+
+<body class="slider-background">
+
+    <% include partials/header.ejs %>
+
+	<div class="right-content">
+		<!-- section -->
+	<section class="section">
+		<div class="container">
+
+			<div class="row">
+
+				<div class="col-md-10 col-md-offset-1">
+
+             <div class="section-heading">
+			<i class="fa fa-ban fa-6" aria-hidden="true"></i>
+				<h3>요청한 페이지가 존재하지 않습니다.
+	            <br><br>
+	           		서비스 준비중이거나 잘못된 접근입니다.
+	            <br><br>
+	                  주소를 올바르게 입력했는지 확인하시길 바랍니다.
+                <br><br>
+                    첫 페이지로 이동합니다.
+             </h3>
+			</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+	</div>
+
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="static/des/js/jquery-1.11.3.min.js"></script>
+	<script src="static/des/js/bootstrap.min.js"></script>
+
+	<!-- smooth-scroll -->
+	<script src="static/des/plugins/smooth-scroll/smooth-scroll.js"></script>
+
+	<!-- backstretch -->
+	<script src="static/des/plugins/backstretch/backstretch.min.js"></script>
+
+	<!-- owl-carousel -->
+	<script src="static/des/plugins/owl-carousel/owl.carousel.js"></script>
+
+	<!-- wow -->
+	<script src="static/des/plugins/wow/wow.js"></script>
+
+	<!-- typed -->
+	<script src="static/des/plugins/typed/typed.min.js"></script>
+
+	<!-- magnific-popup -->
+	<script
+		src="static/des/plugins/magnific-popup/jquery.magnific-popup.js"></script>
+
+	<!-- jqBootstrapValidation -->
+	<script
+		src="static/des/plugins/jqBootstrapValidation/jqBootstrapValidation.js"></script>
+
+	<!-- switcher -->
+	<script type="text/javascript" src="static/des/switcher/switcher.js"></script>
+
+	<!-- main js -->
+	<script src="static/des/js/main.js"></script>
+
+    <script>
+        $(function(){
+            setTimeout('gourl()', 2000)
+        })
+        function gourl(){
+            window.location.href= '/'
+        }
+    </script>
+</body>
+
+</html>

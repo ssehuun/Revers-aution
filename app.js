@@ -86,6 +86,33 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+//error 처리
+app.use(function(err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+app.use(logErrors);
+app.use(clientErrorHandler);
+app.use(errorHandler);
+
+function logErrors(err, req, res, next) {
+  console.error(err.stack);
+  next(err);
+}
+function clientErrorHandler(err, req, res, next) {
+  if (req.xhr) {
+    res.status(500).send({ error: 'Something failed!' });
+  } else {
+    next(err);
+  }
+}
+function errorHandler(err, req, res, next) {
+  res.status(500);
+  res.render('error', { error: err });
+}
+
+
+
 // 디자인 페이지 - 성민
 // app.get('/index1', function (req, res) {
 // 	res.render('des/index');
@@ -102,15 +129,15 @@ app.get('/serviceProvide', function(req, res) {
                 "template_type": "button",
                 "text": "1. 고객님이 특별히 찾고 있는 통신사가 있습니까?",
                 "buttons": [{
-                    "url": "https://f416d4f5.ngrok.io/findProvide/1",
+                    "url": "https://22cc956b.ngrok.io/findProvide/1",
                     "type": "json_plugin_url",
                     "title": "KT"
                 },{
-                    "url": "https://f416d4f5.ngrok.io/findProvide/2",
+                    "url": "https://22cc956b.ngrok.io/findProvide/2",
                     "type": "json_plugin_url",
                     "title": "SKT"
                 },{
-                    "url": "https://f416d4f5.ngrok.io/findProvide/3",
+                    "url": "https://22cc956b.ngrok.io/findProvide/3",
                     "type": "json_plugin_url",
                     "title": "LGU+"
                 }]
@@ -145,15 +172,15 @@ app.get('/findProvide/:id', function(req, res) {
                 "template_type": "button",
                 "text": "2. 고객님의 현재 통신사는 무엇입니까?",
                 "buttons": [{
-                    "url": "https://f416d4f5.ngrok.io/currentProvide/1",
+                    "url": "https://22cc956b.ngrok.io/currentProvide/1",
                     "type": "json_plugin_url",
                     "title": "KT"
                 },{
-                    "url": "https://f416d4f5.ngrok.io/currentProvide/2",
+                    "url": "https://22cc956b.ngrok.io/currentProvide/2",
                     "type": "json_plugin_url",
                     "title": "SKT"
                 },{
-                    "url": "https://f416d4f5.ngrok.io/currentProvide/3",
+                    "url": "https://22cc956b.ngrok.io/currentProvide/3",
                     "type": "json_plugin_url",
                     "title": "LGU+"
                 }]
@@ -165,48 +192,48 @@ app.get('/findProvide/:id', function(req, res) {
     res.send(jsonResponse);
 });
 // 3번 현재 요금제는 무엇입니까?
-app.get(['/currentProvide', '/currentProvide/:id'], function(req, res) {
-    let id = req.params.id;
-    if(id === '1'){
-        userInfo.push({
-            "currentProvide" : "KT"
-        });
-    }else if(id === '2'){
-        userInfo.push({
-            "currentProvide" : "SKT"
-        });
-    }else if(id === '3'){
-        userInfo.push({
-            "currentProvide" : "LGU+"
-        });
-    }
-    console.log(userInfo);
-    var jsonResponse = {
-    "messages": [{
-        "attachment": {
-            "payload": {
-                "template_type": "button",
-                "text": "3. 현재 이용중인 요금제는 무엇입니까?",
-                "buttons": [{
-                    "url": "https://f416d4f5.ngrok.io/currentFee/1",
-                    "type": "json_plugin_url",
-                    "title": "24요금제"
-                },{
-                    "url": "https://f416d4f5.ngrok.io/currentFee/2",
-                    "type": "json_plugin_url",
-                    "title": "45요금제"
-                },{
-                    "url": "https://f416d4f5.ngrok.io/currentFee/3",
-                    "type": "json_plugin_url",
-                    "title": "69요금제"
-                }]
-            },
-            "type": "template"
-        }
-    }]
-};
-    res.send(jsonResponse);
-});
+// app.get(['/currentProvide', '/currentProvide/:id'], function(req, res) {
+//     let id = req.params.id;
+//     if(id === '1'){
+//         userInfo.push({
+//             "currentProvide" : "KT"
+//         });
+//     }else if(id === '2'){
+//         userInfo.push({
+//             "currentProvide" : "SKT"
+//         });
+//     }else if(id === '3'){
+//         userInfo.push({
+//             "currentProvide" : "LGU+"
+//         });
+//     }
+//     console.log(userInfo);
+//     var jsonResponse = {
+//     "messages": [{
+//         "attachment": {
+//             "payload": {
+//                 "template_type": "button",
+//                 "text": "3. 현재 이용중인 요금제는 무엇입니까?",
+//                 "buttons": [{
+//                     "url": "https://22cc956b.ngrok.io/currentFee/1",
+//                     "type": "json_plugin_url",
+//                     "title": "24요금제"
+//                 },{
+//                     "url": "https://22cc956b.ngrok.io/currentFee/2",
+//                     "type": "json_plugin_url",
+//                     "title": "45요금제"
+//                 },{
+//                     "url": "https://22cc956b.ngrok.io/currentFee/3",
+//                     "type": "json_plugin_url",
+//                     "title": "69요금제"
+//                 }]
+//             },
+//             "type": "template"
+//         }
+//     }]
+// };
+//     res.send(jsonResponse);
+// });
 // 4. 현재 사용기기는 무엇입니까?
 // app.get(['/currentFee', '/currentFee/:id'], function(req, res){
 //     const sql = 'SELECT * FROM PRODUCT';
@@ -242,25 +269,39 @@ app.get(['/currentProvide', '/currentProvide/:id'], function(req, res) {
 // });
 
 // 5. 요금제에 가입한지 얼마나 되었습니까?
-app.get(['/currentFee', '/currentFee/:id'], function(req, res){
+app.get(['/currentProvide', '/currentProvide/:id'], function(req, res) {
+    let id = req.params.id;
+    if(id === '1'){
+        userInfo.push({
+            "currentProvide" : "KT"
+        });
+    }else if(id === '2'){
+        userInfo.push({
+            "currentProvide" : "SKT"
+        });
+    }else if(id === '3'){
+        userInfo.push({
+            "currentProvide" : "LGU+"
+        });
+    }
     var jsonResponse = {
         "messages": [{
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "5. 통신사에 가입한지 얼마나 되었습니까?",
+                    "text": "3. 통신사에 가입한지 얼마나 되었습니까?",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/howLongUse/1",
+                            "url": "https://22cc956b.ngrok.io/howLongUse/1",
                             "type": "json_plugin_url",
                             "title": "7년 이상"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/howLongUse/2",
+                            "url": "https://22cc956b.ngrok.io/howLongUse/2",
                             "type": "json_plugin_url",
                             "title": "10~14년 이상"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/howLongUse/3",
+                            "url": "https://22cc956b.ngrok.io/howLongUse/3",
                             "type": "json_plugin_url",
                             "title": "15년 이상"
                         }
@@ -294,19 +335,19 @@ app.get('/howLongUse/:id', function(req, res){
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "6. 가족중에 같은 통신사가 몇 명 있습니까?(본인제외)",
+                    "text": "4. 가족중에 같은 통신사가 몇 명 있습니까?(본인제외)",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/sameFamily/1",
+                            "url": "https://22cc956b.ngrok.io/sameFamily/1",
                             "type": "json_plugin_url",
                             "title": "없음"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/sameFamily/2",
+                            "url": "https://22cc956b.ngrok.io/sameFamily/2",
                             "type": "json_plugin_url",
                             "title": "1명"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/sameFamily/3",
+                            "url": "https://22cc956b.ngrok.io/sameFamily/3",
                             "type": "json_plugin_url",
                             "title": "2명 이상"
                         }
@@ -340,14 +381,14 @@ app.get('/sameFamily/:id', function(req, res){
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "7-1. 고객님은 미성년자 입니까 성인입니까?",
+                    "text": "5-1. 고객님은 미성년자 입니까 성인입니까?",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/notAdult",
+                            "url": "https://22cc956b.ngrok.io/notAdult",
                             "type": "json_plugin_url",
                             "title": "미성년자"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/adult",
+                            "url": "https://22cc956b.ngrok.io/adult",
                             "type": "json_plugin_url",
                             "title": "성인"
                         }
@@ -378,19 +419,19 @@ app.get(['/notAdult', '/notAdult/:id'], function(req, res){
                 "attachment": {
                     "payload": {
                         "template_type": "button",
-                        "text": "여기서부터는 고객님의 성향을 파악하기 위한 질문입니다.\n\n8. 단말기의 핫스팟 기능을 많이 사용하십니까?",
+                        "text": "여기서부터는 고객님의 성향을 파악하기 위한 질문입니다.\n\n6. 단말기의 핫스팟 기능을 많이 사용하십니까?",
                         "buttons": [{
-                                "url": "https://f416d4f5.ngrok.io/hotSpot/1",
+                                "url": "https://22cc956b.ngrok.io/hotSpot/1",
                                 "type": "json_plugin_url",
                                 "title": "자주한다"
                             },
                             {
-                                "url": "https://f416d4f5.ngrok.io/hotSpot/2",
+                                "url": "https://22cc956b.ngrok.io/hotSpot/2",
                                 "type": "json_plugin_url",
                                 "title": "가끔 한다"
                             },
                             {
-                                "url": "https://f416d4f5.ngrok.io/hotSpot/3",
+                                "url": "https://22cc956b.ngrok.io/hotSpot/3",
                                 "type": "json_plugin_url",
                                 "title": "거의 안한다"
                             }
@@ -407,14 +448,14 @@ app.get(['/notAdult', '/notAdult/:id'], function(req, res){
                 "attachment": {
                     "payload": {
                         "template_type": "button",
-                        "text": "7-2. 미성년자 고객님의 연령대는 어떻게 되십니까?",
+                        "text": "5-2. 미성년자 고객님의 연령대는 어떻게 되십니까?",
                         "buttons": [{
-                                "url": "https://f416d4f5.ngrok.io/notAdult/1",
+                                "url": "https://22cc956b.ngrok.io/notAdult/1",
                                 "type": "json_plugin_url",
                                 "title": "어린이(만12세 이하)"
                             },
                             {
-                                "url": "https://f416d4f5.ngrok.io/notAdult/2",
+                                "url": "https://22cc956b.ngrok.io/notAdult/2",
                                 "type": "json_plugin_url",
                                 "title": "청소년(만18세 이하)"
                             }
@@ -451,19 +492,19 @@ app.get(['/adult','/adult/:id'], function(req, res){
                 "attachment": {
                     "payload": {
                         "template_type": "button",
-                        "text": "여기서부터는 고객님의 성향을 파악하기 위한 질문입니다.\n\n8. 단말기의 핫스팟 기능을 많이 사용하십니까?",
+                        "text": "여기서부터는 고객님의 성향을 파악하기 위한 질문입니다.\n\n6. 단말기의 핫스팟 기능을 많이 사용하십니까?",
                         "buttons": [{
-                                "url": "https://f416d4f5.ngrok.io/hotSpot/1",
+                                "url": "https://22cc956b.ngrok.io/hotSpot/1",
                                 "type": "json_plugin_url",
                                 "title": "거의 안한다"
                             },
                             {
-                                "url": "https://f416d4f5.ngrok.io/hotSpot/2",
+                                "url": "https://22cc956b.ngrok.io/hotSpot/2",
                                 "type": "json_plugin_url",
                                 "title": "가끔 한다"
                             },
                             {
-                                "url": "https://f416d4f5.ngrok.io/hotSpot/3",
+                                "url": "https://22cc956b.ngrok.io/hotSpot/3",
                                 "type": "json_plugin_url",
                                 "title": "자주한다"
                             }
@@ -480,19 +521,19 @@ app.get(['/adult','/adult/:id'], function(req, res){
                 "attachment": {
                     "payload": {
                         "template_type": "button",
-                        "text": "7-3. 성인 고객님의 연령대가 어떻게 되십니까?",
+                        "text": "5-2. 성인 고객님의 연령대가 어떻게 되십니까?",
                         "buttons": [{
-                                "url": "https://f416d4f5.ngrok.io/adult/1",
+                                "url": "https://22cc956b.ngrok.io/adult/1",
                                 "type": "json_plugin_url",
                                 "title": "청년(만19세 이상 만24세 미만)"
                             },
                             {
-                                "url": "https://f416d4f5.ngrok.io/adult/2",
+                                "url": "https://22cc956b.ngrok.io/adult/2",
                                 "type": "json_plugin_url",
                                 "title": "성인(만25세 이상 만64세 이하)"
                             },
                             {
-                                "url": "https://f416d4f5.ngrok.io/adult/3",
+                                "url": "https://22cc956b.ngrok.io/adult/3",
                                 "type": "json_plugin_url",
                                 "title": "노인(만65세 이상)"
                             }
@@ -527,19 +568,19 @@ app.get(['/hotSpot/:id'], function(req, res){
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "9. 음성/데이터/문자 중 가장 많이 쓰는 유형이 무엇입니까?",
+                    "text": "7. 음성/데이터/문자 중 가장 많이 쓰는 유형이 무엇입니까?",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/whichMost/1",
+                            "url": "https://22cc956b.ngrok.io/whichMost/1",
                             "type": "json_plugin_url",
                             "title": "음성"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/whichMost/2",
+                            "url": "https://22cc956b.ngrok.io/whichMost/2",
                             "type": "json_plugin_url",
                             "title": "데이터"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/whichMost/3",
+                            "url": "https://22cc956b.ngrok.io/whichMost/3",
                             "type": "json_plugin_url",
                             "title": "문자"
                         }
@@ -573,19 +614,19 @@ app.get(['/whichMost','/whichMost/:id'], function(req, res){
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "10. 하루 통화량이 얼마나 되십니까?",
+                    "text": "8. 하루 통화량이 얼마나 되십니까?",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/callByDay/1",
+                            "url": "https://22cc956b.ngrok.io/callByDay/1",
                             "type": "json_plugin_url",
                             "title": "10분이하"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/callByDay/2",
+                            "url": "https://22cc956b.ngrok.io/callByDay/2",
                             "type": "json_plugin_url",
                             "title": "60분이하"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/callByDay/3",
+                            "url": "https://22cc956b.ngrok.io/callByDay/3",
                             "type": "json_plugin_url",
                             "title": "60분이상"
                         }
@@ -619,19 +660,19 @@ app.get(['/callByDay','/callByDay/:id'], function(req, res){
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "11. 하루 문자량이 얼마나 되십니까?",
+                    "text": "9. 하루 문자량이 얼마나 되십니까?",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/textByDay",
+                            "url": "https://22cc956b.ngrok.io/textByDay",
                             "type": "json_plugin_url",
                             "title": "10개이하"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/textByDay",
+                            "url": "https://22cc956b.ngrok.io/textByDay",
                             "type": "json_plugin_url",
                             "title": "10개 이상 100개이하"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/textByDay",
+                            "url": "https://22cc956b.ngrok.io/textByDay",
                             "type": "json_plugin_url",
                             "title": "100개 이상"
                         }
@@ -665,19 +706,19 @@ app.get(['/textByDay','/textByDay/:id'], function(req, res){
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "12. 동영상을 하루 평균 데이터로 얼마나 시청하십니까?",
+                    "text": "10. 동영상을 하루 평균 데이터로 얼마나 시청하십니까?",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/video/1",
+                            "url": "https://22cc956b.ngrok.io/video/1",
                             "type": "json_plugin_url",
                             "title": "하루평균 30분~1시간"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/video/2",
+                            "url": "https://22cc956b.ngrok.io/video/2",
                             "type": "json_plugin_url",
                             "title": "하루평균 1시간~2시간"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/video/3",
+                            "url": "https://22cc956b.ngrok.io/video/3",
                             "type": "json_plugin_url",
                             "title": "하루평균 2시간 이상"
                         }
@@ -711,19 +752,19 @@ app.get(['/video', '/video/:id'], function(req, res){
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "13. 게임을 하루 평균 데이터로 얼마나 이용하십니까?",
+                    "text": "11. 게임을 하루 평균 데이터로 얼마나 이용하십니까?",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/game/1",
+                            "url": "https://22cc956b.ngrok.io/game/1",
                             "type": "json_plugin_url",
                             "title": "하루평균 30분~1시간"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/game/2",
+                            "url": "https://22cc956b.ngrok.io/game/2",
                             "type": "json_plugin_url",
                             "title": "하루평균 1시간~2시간"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/game/3",
+                            "url": "https://22cc956b.ngrok.io/game/3",
                             "type": "json_plugin_url",
                             "title": "하루평균 2시간 이상"
                         }
@@ -757,19 +798,19 @@ app.get(['/game', '/game/:id'], function(req, res){
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "14. 웹 서핑을 하루 평균 데이터로 얼마나 이용하십니까?",
+                    "text": "12. 웹 서핑을 하루 평균 데이터로 얼마나 이용하십니까?",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/webSurfing/1",
+                            "url": "https://22cc956b.ngrok.io/webSurfing/1",
                             "type": "json_plugin_url",
                             "title": "하루평균 30분~1시간"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/webSurfing/2",
+                            "url": "https://22cc956b.ngrok.io/webSurfing/2",
                             "type": "json_plugin_url",
                             "title": "하루평균 1시간~2시간"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/webSurfing/3",
+                            "url": "https://22cc956b.ngrok.io/webSurfing/3",
                             "type": "json_plugin_url",
                             "title": "하루평균 2시간 이상"
                         }
@@ -803,19 +844,19 @@ app.get(['/webSurfing','/webSurfing/:id'], function(req, res){
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "15. 와이파이를 자주 사용하십니까?",
+                    "text": "13. 와이파이를 자주 사용하십니까?",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/wifiUse/1",
+                            "url": "https://22cc956b.ngrok.io/wifiUse/1",
                             "type": "json_plugin_url",
                             "title": "거의 사용하지 않는다"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/wifiUse/2",
+                            "url": "https://22cc956b.ngrok.io/wifiUse/2",
                             "type": "json_plugin_url",
                             "title": "와이파이 속도가 빠르다면 사용한다"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/wifiUse/3",
+                            "url": "https://22cc956b.ngrok.io/wifiUse/3",
                             "type": "json_plugin_url",
                             "title": "와이파이가 있는곳에선 무조건 사용한다"
                         }
@@ -852,12 +893,12 @@ app.get('/wifiUse/:id', function(req, res){
                     "template_type": "button",
                     "text": "고객님의 요금 선호도 조사가 완료되었습니다.\n\n 역경매 시스템을 통해 단말기를 추천 받고 싶으시면 '이어가기'를 선택하시고 요금제 추천만 원하신다면 '그만'을 선택해 주세요.",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/recoPage",
+                            "url": "https://22cc956b.ngrok.io/recoPage",
                             "type": "json_plugin_url",
                             "title": "그만, 추천시작하기"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/going",
+                            "url": "https://22cc956b.ngrok.io/going",
                             "type": "json_plugin_url",
                             "title": "이어가기"
                         }
@@ -886,19 +927,19 @@ app.get('/going', function(req, res){
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "16. 고객님께서 원하는 제조사를 선택해주세요.",
+                    "text": "14. 고객님께서 원하는 제조사를 선택해주세요.",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/company/1",
+                            "url": "https://22cc956b.ngrok.io/company/1",
                             "type": "json_plugin_url",
                             "title": "삼성"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/company/2",
+                            "url": "https://22cc956b.ngrok.io/company/2",
                             "type": "json_plugin_url",
                             "title": "엘지"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/company/3",
+                            "url": "https://22cc956b.ngrok.io/company/3",
                             "type": "json_plugin_url",
                             "title": "애플"
                         }
@@ -933,19 +974,19 @@ app.get(['/company', '/company/:id'], function(req, res){
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "17. 고객님께서 원하시는 화면크기를 선택해주세요.",
+                    "text": "15. 고객님께서 원하시는 화면크기를 선택해주세요.",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/displaySize/1",
+                            "url": "https://22cc956b.ngrok.io/displaySize/1",
                             "type": "json_plugin_url",
                             "title": "4인치 ~ 5인치(작음)"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/displaySize/2",
+                            "url": "https://22cc956b.ngrok.io/displaySize/2",
                             "type": "json_plugin_url",
                             "title": "5인치 ~ 5.7인치(보통)"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/displaySize/3",
+                            "url": "https://22cc956b.ngrok.io/displaySize/3",
                             "type": "json_plugin_url",
                             "title": "5.7인치 이상(넓음)"
                         }
@@ -979,19 +1020,19 @@ app.get(['/displaySize','/displaySize/:id'], function(req, res){
             "attachment": {
                 "payload": {
                     "template_type": "button",
-                    "text": "18. 단말기 출시일을 선택해주세요(갤럭시8 기준(17.04.21)).",
+                    "text": "16. 단말기 출시일을 선택해주세요(갤럭시8 기준(17.04.21)).",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/releaseDate/1",
+                            "url": "https://22cc956b.ngrok.io/releaseDate/1",
                             "type": "json_plugin_url",
                             "title": "6개월 전까지"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/releaseDate/2",
+                            "url": "https://22cc956b.ngrok.io/releaseDate/2",
                             "type": "json_plugin_url",
                             "title": "6개월~1년전까지"
                         },
                         {
-                            "url": "https://f416d4f5.ngrok.io/releaseDate/3",
+                            "url": "https://22cc956b.ngrok.io/releaseDate/3",
                             "type": "json_plugin_url",
                             "title": "1년~2년전까지"
                         }
@@ -1027,7 +1068,7 @@ app.get(['/releaseDate','/releaseDate/:id'], function(req, res){
                     "template_type": "button",
                     "text": "설문이 끝났습니다. 요금제 추천을 시작할까요?.",
                     "buttons": [{
-                            "url": "https://f416d4f5.ngrok.io/recoPage",
+                            "url": "https://22cc956b.ngrok.io/recoPage",
                             "type": "json_plugin_url",
                             "title": "추천 시작하기"
                         }
@@ -1039,63 +1080,70 @@ app.get(['/releaseDate','/releaseDate/:id'], function(req, res){
     };
     res.send(jsonResponse);
 });
-userInfo = [
-    { findProvide: 'S' },
-    { currentProvide: 'S' },
-    { howLongUse: '10' },
-    { sameFamily: '2' },
-    { age: 'G' },
-    { hotSpot: '1' },
-    { whichMost: 'data' },
-    { callByDay: '1' },
-    { video: '0' },
-    { game: '0' },
-    { webSurfing: '0' },
-    { wifiUse: '1' },
-    { company: 'S' },
-    { displaySize: '5' },
-    { releaseDate: '730' }
-];
+// userInfo = [
+//     { findProvide: 'S' },
+//     { currentProvide: 'S' },
+//     { howLongUse: '10' },
+//     { sameFamily: '2' },
+//     { age: 'G' },
+//     { hotSpot: '1' },
+//     { whichMost: 'data' },
+//     { callByDay: '1' },
+//     { video: '0' },
+//     { game: '0' },
+//     { webSurfing: '0' },
+//     { wifiUse: '1' },
+//     { company: 'S' },
+//     { displaySize: '5' },
+//     { releaseDate: '730' }
+// ];
 
 // reco.ejs 추천페이지로 이동, 기본질의
 app.get('/recoPage', function(req, res) {
-    let recoCost;
-    let sql = "SELECT COCODE, CONAME, SPCODE, SPNAME, COPRICE, TALK, MSN, DATASIZE, FLOOR((DATASIZE/COPRICE)*100) AS DATARATE, ABS((DATASIZE-4000)/4000) as DATANEAR \
-    FROM COSTVIEW \
-    WHERE SPCODE = ? \
-    AND (APCODE = ?) \
-    AND (DATASIZE >= 4000*0.7 AND ABS((DATASIZE-4000)/4000)<1) \
-    AND (TALK=-1 OR TALK >=30*10) \
-    AND (MSN=-1 OR MSN >=30*5) \
-    ORDER BY COPRICE ASC LIMIT 3";
+    if(req.user && req.user.NICKNAME){
 
-    conn.query(sql, [userInfo[0].findProvide, userInfo[4].age], function(err, rows, fields){
-        if(!err){
-            //console.log(rows);
-            let list = [];
-            for(let i in rows){
-                let spName = rows[i].SPNAME;
-                let coName = rows[i].CONAME;
-                let cocode = rows[i].COCODE;
-                list.push({spName, coName, cocode});
+        let recoCost;
+        let sql = "SELECT COCODE, CONAME, SPCODE, SPNAME, COPRICE, TALK, MSN, DATASIZE, FLOOR((DATASIZE/COPRICE)*100) AS DATARATE, ABS((DATASIZE-4000)/4000) as DATANEAR \
+        FROM COSTVIEW \
+        WHERE SPCODE = ? \
+        AND (APCODE = ?) \
+        AND (DATASIZE >= 4000*0.7 AND ABS((DATASIZE-4000)/4000)<1) \
+        AND (TALK=-1 OR TALK >=30*10) \
+        AND (MSN=-1 OR MSN >=30*5) \
+        ORDER BY COPRICE ASC LIMIT 3";
+
+        conn.query(sql, [userInfo[0].findProvide, userInfo[4].age], function(err, rows, fields){
+            if(!err){
+                //console.log(rows);
+                let list = [];
+                for(let i in rows){
+                    let spName = rows[i].SPNAME;
+                    let coName = rows[i].CONAME;
+                    let cocode = rows[i].COCODE;
+                    list.push({spName, coName, cocode});
+                }
+                // let jsonResponse = {
+                //     "messages": [{"text": "추천이 완료되었습니다. 고객님의 추천 요금제는 홈페이지에서 확인 가능합니다."}]
+                // };
+                // for(let i in list){
+                //     jsonResponse.messages.push({
+                //         "text":(parseInt(i)+1)+". "+list[i]
+                //     });
+                // }
+                console.log(list);
+
+                res.render('reco', {basicReco:list, nickname:req.user.NICKNAME, userInfo:userInfo});
+
+            }else{
+                console.log(err);
             }
-            // let jsonResponse = {
-            //     "messages": [{"text": "추천이 완료되었습니다. 고객님의 추천 요금제는 홈페이지에서 확인 가능합니다."}]
-            // };
-            // for(let i in list){
-            //     jsonResponse.messages.push({
-            //         "text":(parseInt(i)+1)+". "+list[i]
-            //     });
-            // }
-            console.log(list);
-
-            res.render('reco', {basicReco:list, nickname:req.user.NICKNAME, userInfo:userInfo});
-
-        }else{
-            console.log(err);
-        }
-    });
+        });
+    }
+    else{
+        res.render('error', {nickname:''});
+    }
 });
+
 
 // 데이터 안심 추가옵션
 app.get('/addOption', function(req, res){
@@ -1215,10 +1263,42 @@ app.get('/productInfo', function(req, res){
         }
     });
 });
+// 나의 거래 확인 페이지
+app.get('/myPage', function(req, res) {
+    if(req.user && req.user.NICKNAME){
+        let sql = "SELECT * FROM TRADEVIEW WHERE MMCODE = ?;";
+        conn.query(sql, req.user.CODE, function(err, rows, fields){
+            if(!err){
+                let list = [];
+                for(let i in rows){
+                    let trcode = rows[i].TRCODE;
+                    let coname = rows[i].CONAME;
+                    let trdate = rows[i].TRDATE;
+                    let opdate = rows[i].OPDATE;
+                    let eddate = rows[i].EDDATE;
+                    let confirm = rows[i].CONFIRM;
+                    list.push({trcode, coname, trdate, opdate, eddate, confirm});
+                }
+                console.log(list);
+                res.render('myPage', {nickname:req.user.NICKNAME , tradeInfo:list});
+            }else{
+                console.log(err);
+            }
+        });
+    }else{
+        res.render('myPage', {nickname:'', tradeInfo:''});
+    }
+});
+// app.get('/myPage', function(req, res) {
+//     if(req.user && req.user.NICKNAME){
+//         res.render('myPage', {nickname:req.user.NICKNAME});
+//     }else{
+//         res.render('myPage', {nickname:''});
+//     }
+// });
 
 // 나의 거래확인 페이지로 파로
 app.get('/myTrade', function(req, res) {
-
     let sql = "SELECT * FROM TRADEVIEW WHERE MMCODE = ?;";
     conn.query(sql, req.user.CODE, function(err, rows, fields){
         if(!err){
@@ -1239,6 +1319,7 @@ app.get('/myTrade', function(req, res) {
         }
     });
 });
+
 app.get('/tradeDetail+:id', function(req,res){
     let id = req.params.id;
     console.log(id);
@@ -1328,7 +1409,7 @@ console.log(secode, trcode)
 app.get('/suggest3', function(req, res) {
     let secode = req.query.secode;
     let trcode = req.query.trcode;
-console.log(secode, trcode)
+    console.log(secode, trcode)
     let sql = "SELECT * FROM JOINTRADEETC WHERE SECODE = ?\
     AND TRCODE = ?;";
 
@@ -1347,10 +1428,10 @@ console.log(secode, trcode)
         }
     });
 });
+// 유사도 필터
 app.get('/filter', function(req, res) {
     let trcode = req.query.trcode;
-    console.log(trcode+'dd');
-    let sql = "SELECT * FROM MATCHJOINTRADEVIEW WHERE TRCODE = ? LIMIT 5;";
+    let sql = "SELECT * FROM MATCHJOINTRADEVIEW WHERE TRCODE = ? AND MATCNT>1 LIMIT 5;";
     conn.query(sql, trcode, function(err, rows, fields){
         if(!err){
             let list = [];
@@ -1408,7 +1489,7 @@ passport.use(new LocalStrategy(
         var sql = 'SELECT * FROM MEMBER WHERE EMAIL=?';
         //conn.query(sql, [c], function(err, results){
         conn.query(sql, [uname], function(err, results){
-            console.log(results);
+            //console.log(results);
             if(!results[0]){
                 return done('There is no user');
             }
@@ -1417,7 +1498,7 @@ passport.use(new LocalStrategy(
             return hasher({password:pwd, salt:user.SALT}, function(err, pass, salt, hash){
                 if(hash === user.PASSWORD){
                     // 비번까지 맞으면, done함수의 인자인 user가 serializeUser로 넘어감
-                    console.log('LocalStrategy', user);
+                    //console.log('LocalStrategy', user);
                     done(null, user);
                     // req.session.displayName = user.displayName;
                     // req.session.save(function(){
@@ -1497,14 +1578,20 @@ app.get(['/', '/content/:id'], function(req, res) {
         res.render('index',{nickname:''});
     }
 });
-app.get('/myPage', function(req, res) {
+app.get('/sellerPage', function(req, res) {
     if(req.user && req.user.NICKNAME){
-        res.render('myPage', {nickname:req.user.NICKNAME});
+        res.render('error', {nickname:req.user.NICKNAME});
     }else{
-        res.render('myPage', {nickname:''});
+        res.render('error', {nickname:''});
     }
 });
-
+app.get('/enrollSeller', function(req, res) {
+    if(req.user && req.user.NICKNAME){
+        res.render('error', {nickname:req.user.NICKNAME});
+    }else{
+        res.render('error', {nickname:''});
+    }
+});
 
 // 3000번 포트에 접속확인
 http.listen(3300, function() {
@@ -1640,12 +1727,12 @@ app.post('/upload', upload.single('userfile'), function(req, res) {
 //                     "template_type": "button",
 //                     "text": "16. 데이터 속도(3G, 4G)가 본인에게 중요합니까?",
 //                     "buttons": [{
-//                             "url": "https://f416d4f5.ngrok.io/recoProduct",
+//                             "url": "https://22cc956b.ngrok.io/recoProduct",
 //                             "type": "json_plugin_url",
 //                             "title": "예"
 //                         },
 //                         {
-//                             "url": "https://f416d4f5.ngrok.io/recoProduct",
+//                             "url": "https://22cc956b.ngrok.io/recoProduct",
 //                             "type": "json_plugin_url",
 //                             "title": "아니오"
 //                         }

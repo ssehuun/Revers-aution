@@ -92,18 +92,25 @@
                             </thead>
                             <tbody id="myBody">
                                 <tr>
-                                    <td>17-06-05</td>
-                                    <td>데이터 선택 69.8</td>
-                                    <td>17-06-30</td>
-                                    <td>17-06-31</td>
-                                    <td>거래대기중</td>
-                                    <td><input type="button" value="보기" class="btn btn-dark btn1" onClick="goTrade()"></td>
-                                </tr>
-
-
-
-
-
+                                <% if (tradeInfo) {%>
+                                    <%for(let i in tradeInfo){%>
+                                        <td><%=tradeInfo[i].trdate%></td>
+                                        <td><%=tradeInfo[i].coname%></td>
+                                        <td><%=tradeInfo[i].opdate%></td>
+                                        <td><%=tradeInfo[i].eddate%></td>
+                                        <%if (tradeInfo[i].confirm == 0){%>
+                                        <td>진행중</td>
+                                        <%}else{%>
+                                        <td>거래완료</td>
+                                        <%}%>
+                                        <td>
+                                            <a href="/tradeDetail<%=tradeInfo[i].trcode%>">보기</a>
+                                        </td>
+                                    <%}%>
+                                <%}else {%>
+                                    <td colspan="6">거래 내역이 없습니다.</td>
+                                <%}%>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -150,36 +157,36 @@
     <script src="static/des/js/main.js"></script>
 
     <script>
-        $(function(){
-            $.ajax({
-				type: "GET",
-			    url: "/myTrade",
-			    dataType: "json",
-			    cache:false,
-			    success: function (data) {
-					console.log(data);
-					$('#myBody').empty();
-					let str = '';
-					for(let i in data){
-                        str += '<tr>'
-                        str += '<td>'+data[i].trdate.substring(0,10)+'</td>'
-                        str += '<td>'+data[i].coname+'</td>'
-                        str += '<td>'+data[i].opdate.substring(0,10)+'</td>'
-                        str += '<td>'+data[i].eddate.substring(0,10)+'</td>'
-                        if(data[i]==0){
-                            str += '<td>진행중</td>'
-                        }else{
-                            str += '<td>거래완료</td>'
-                        }
-                        str += '<td>'
-                        str += '<a href="/tradeDetail'+data[i].trcode+'">보기</a>'
-                        str += '</td>'
-						str += '<tr>'
-					}
-					$(str).appendTo('#myBody')
-				}
-			})
-        })
+        // $(function(){
+        //     $.ajax({
+		// 		type: "GET",
+		// 	    url: "/myTrade",
+		// 	    dataType: "json",
+		// 	    cache:false,
+		// 	    success: function (data) {
+		// 			console.log(data);
+		// 			$('#myBody').empty();
+		// 			let str = '';
+		// 			for(let i in data){
+        //                 str += '<tr>'
+        //                 str += '<td>'+data[i].trdate.substring(0,10)+'</td>'
+        //                 str += '<td>'+data[i].coname+'</td>'
+        //                 str += '<td>'+data[i].opdate.substring(0,10)+'</td>'
+        //                 str += '<td>'+data[i].eddate.substring(0,10)+'</td>'
+        //                 if(data[i].confirm==0){
+        //                     str += '<td>진행중</td>'
+        //                 }else{
+        //                     str += '<td>거래완료</td>'
+        //                 }
+        //                 str += '<td>'
+        //                 str += '<a href="/tradeDetail'+data[i].trcode+'">보기</a>'
+        //                 str += '</td>'
+		// 				str += '<tr>'
+		// 			}
+		// 			$(str).appendTo('#myBody')
+		// 		}
+		// 	})
+        // })
     </script>
 
 </body>
